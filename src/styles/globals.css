@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Background */
+  --bg-primary: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-elevated: #1a1a1a;
+
+  /* Text */
+  --text-primary: #e8e4de;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --text-dim: #444444;
+  --text-ghost: #333333;
+
+  /* Accent */
+  --accent-red: #c41e1e;
+  --accent-red-hover: #e02020;
+  --accent-red-dim: rgba(196, 30, 30, 0.06);
+
+  /* Difficulty */
+  --difficulty-auto: #1d9e75;
+  --difficulty-easy: #639922;
+  --difficulty-medium: #ef9f27;
+  --difficulty-hard: #c41e1e;
+
+  /* Borders */
+  --border-default: #2a2a2a;
+  --border-hover: #555555;
+  --border-accent: #c41e1e;
+
+  /* Typography */
+  --font-display: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CRT Scanline Overlay */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.01) 2px,
+    rgba(255, 255, 255, 0.01) 4px
+  );
+}
