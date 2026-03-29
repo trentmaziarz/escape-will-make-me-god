@@ -1,0 +1,17 @@
+{
+  "common": {
+    "title": "DEINDEX.ME",
+    "tagline": "Delete Your Digital Presence",
+    "mute": "MUTE",
+    "unmute": "UNMUTE"
+  },
+  "manifesto": {
+    "begin": "Begin your disappearance"
+  },
+  "detonator": {
+    "scan": "Scanning...",
+    "review": "Review targets",
+    "detonate": "Detonate",
+    "complete": "You are disappearing."
+  }
+}
