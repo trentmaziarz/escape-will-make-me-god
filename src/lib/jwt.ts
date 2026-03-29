@@ -1,25 +1,40 @@
-import { SignJWT, jwtVerify } from "jose";
+import { EncryptJWT, jwtDecrypt } from "jose";
+import { createHash } from "crypto";
 
-const getSecret = () => {
+function getSecret(): Uint8Array {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("JWT_SECRET is not configured");
-  return new TextEncoder().encode(secret);
-};
+  // dir/A256GCM requires exactly 256 bits (32 bytes).
+  // SHA-256 the env var to guarantee correct length regardless of input.
+  return createHash("sha256").update(secret).digest();
+}
 
-export interface TokenPayload {
+export interface DeindexPayload {
   email: string;
   phone: string;
+  iat: number;
 }
 
-export async function signToken(payload: TokenPayload): Promise<string> {
-  return new SignJWT(payload as unknown as Record<string, unknown>)
-    .setProtectedHeader({ alg: "HS256" })
+export async function createToken(
+  email: string,
+  phone: string
+): Promise<string> {
+  return new EncryptJWT({ email, phone })
+    .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
     .setIssuedAt()
     .setExpirationTime("1h")
-    .sign(getSecret());
+    .encrypt(getSecret());
 }
 
-export async function verifyToken(token: string): Promise<TokenPayload> {
-  const { payload } = await jwtVerify(token, getSecret());
-  return payload as unknown as TokenPayload;
+export async function verifyToken(token: string): Promise<DeindexPayload> {
+  const { payload } = await jwtDecrypt(token, getSecret());
+
+  if (typeof payload.email !== "string" || !payload.email) {
+    throw new Error("Token missing required field: email");
+  }
+  if (typeof payload.phone !== "string" || !payload.phone) {
+    throw new Error("Token missing required field: phone");
+  }
+
+  return payload as unknown as DeindexPayload;
 }
