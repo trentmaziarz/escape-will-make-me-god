@@ -1,0 +1,43 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import ManifestoText from "./ManifestoText";
+import InputForm from "./InputForm";
+
+export default function ManifestoFlow() {
+  const [showManifesto, setShowManifesto] = useState(false);
+  const [manifestoComplete, setManifestoComplete] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowManifesto(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <>
+      {/* Title */}
+      <motion.div
+        className="mb-12"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-none tracking-tight text-text-primary">
+          DEINDEX<span className="text-accent-red">.ME</span>
+        </h1>
+        <p className="mt-2 font-mono text-[11px] uppercase tracking-[4px] text-text-muted">
+          Offline is the new luxury
+        </p>
+      </motion.div>
+
+      {/* Manifesto lines */}
+      {showManifesto && (
+        <ManifestoText onComplete={() => setManifestoComplete(true)} />
+      )}
+
+      {/* Input form — fades up after manifesto completes */}
+      {manifestoComplete && <InputForm />}
+    </>
+  );
+}
