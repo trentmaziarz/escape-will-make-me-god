@@ -43,6 +43,47 @@ const config: Config = {
       },
       borderRadius: {
         none: "0",
+        DEFAULT: "0",
+        sm: "0",
+        md: "0",
+        lg: "0",
+        xl: "0",
+        "2xl": "0",
+        "3xl": "0",
+        full: "0",
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeUp: {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        dissolve: {
+          "0%": { opacity: "1", filter: "blur(0)", transform: "scale(1)" },
+          "50%": { opacity: "0.5", filter: "blur(2px)", transform: "scale(0.98)" },
+          "100%": { opacity: "0", filter: "blur(8px)", transform: "scale(0.95) translateY(-10px)" },
+        },
+        pulseRed: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(196,30,30,0.3)" },
+          "50%": { boxShadow: "0 0 60px rgba(196,30,30,0.6), 0 0 120px rgba(196,30,30,0.2)" },
+        },
+        glitch: {
+          "0%, 100%": { transform: "translate(0)" },
+          "20%": { transform: "translate(-2px, 1px)" },
+          "40%": { transform: "translate(2px, -1px)" },
+          "60%": { transform: "translate(-1px, -2px)" },
+          "80%": { transform: "translate(1px, 2px)" },
+        },
+      },
+      animation: {
+        "fade-in": "fadeIn 0.6s ease-out forwards",
+        "fade-up": "fadeUp 0.8s ease-out forwards",
+        dissolve: "dissolve 0.8s ease-out forwards",
+        "pulse-red": "pulseRed 2s infinite",
+        glitch: "glitch 0.3s ease-in-out",
       },
     },
   },

@@ -1,0 +1,34 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+
+export default function MuteToggle() {
+  const [muted, setMuted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("deindex-muted");
+    if (stored === "true") setMuted(true);
+    setMounted(true);
+  }, []);
+
+  const toggle = useCallback(() => {
+    setMuted((prev) => {
+      const next = !prev;
+      localStorage.setItem("deindex-muted", String(next));
+      return next;
+    });
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <button
+      onClick={toggle}
+      aria-label={muted ? "Unmute sound" : "Mute sound"}
+      className="fixed top-4 right-4 z-[200] border border-text-ghost bg-transparent px-2.5 py-1.5 font-mono text-[11px] tracking-[2px] text-text-muted transition-colors hover:border-border-hover hover:text-text-primary"
+    >
+      {muted ? "UNMUTE" : "MUTE"}
+    </button>
+  );
+}
