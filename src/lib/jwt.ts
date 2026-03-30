@@ -1,6 +1,9 @@
 import { EncryptJWT, jwtDecrypt } from "jose";
 import { createHash } from "crypto";
 
+// SECURITY: We use encrypted JWTs (dir/A256GCM), not merely signed ones,
+// because the payload contains PII (email, phone). Signing alone would
+// expose these values in a base64-readable payload.
 function getSecret(): Uint8Array {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("JWT_SECRET is not configured");

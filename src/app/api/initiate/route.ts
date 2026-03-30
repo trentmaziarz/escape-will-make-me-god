@@ -23,6 +23,9 @@ function getClientIp(request: NextRequest): string {
   );
 }
 
+// SECURITY: The verification email prevents abuse — without it, anyone could
+// enter someone else's email and trigger deletion requests on their behalf.
+// The encrypted JWT in the link proves email ownership for the detonation step.
 export async function POST(request: NextRequest) {
   // --- Parse & validate body ---
   let body: z.infer<typeof InitiateSchema>;

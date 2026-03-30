@@ -225,6 +225,8 @@ export async function POST(request: NextRequest) {
   }
 
   // --- Email PDF to user ---
+  // Report email failure is non-fatal: the deletion requests have already
+  // been sent. The user loses the report but their data is still being deleted.
   let reportEmailed = false;
   try {
     await resend.emails.send({

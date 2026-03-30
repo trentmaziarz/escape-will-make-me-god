@@ -10,6 +10,8 @@ export interface DeletionTemplate {
   body: string;
 }
 
+// GDPR Article 17(2) requires notification to third parties who received
+// the data. The template explicitly invokes this to ensure legal compliance.
 export function generateGDPR(input: GDPRTemplateInput): DeletionTemplate {
   const { email, phone } = input;
 

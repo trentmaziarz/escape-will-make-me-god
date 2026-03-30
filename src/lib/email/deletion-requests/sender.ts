@@ -4,6 +4,8 @@ import { generateGDPR } from "./gdpr-template";
 import { generateCCPA } from "./ccpa-template";
 import type { DeletionTemplate } from "./gdpr-template";
 
+// GDPR takes precedence over CCPA when both apply — GDPR's erasure
+// rights (Art. 17) are stricter and more widely enforceable.
 function pickTemplate(
   service: ServiceEntry,
   email: string,

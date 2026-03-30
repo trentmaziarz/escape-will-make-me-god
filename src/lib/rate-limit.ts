@@ -43,6 +43,7 @@ function ensureCleanup(): void {
   }
 }
 
+// SECURITY: Hash IPs before using as keys — never store raw IPs in memory.
 function hashIp(ip: string): string {
   return createHash("sha256").update(ip).digest("hex");
 }
