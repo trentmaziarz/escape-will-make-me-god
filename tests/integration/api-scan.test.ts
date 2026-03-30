@@ -199,8 +199,8 @@ describe("POST /api/scan", () => {
     expect(mockVerifyToken).not.toHaveBeenCalled();
   });
 
-  it("returns 429 when rate limited (11th request)", async () => {
-    for (let i = 0; i < 10; i++) {
+  it("returns 429 when rate limited (31st request)", async () => {
+    for (let i = 0; i < 30; i++) {
       const res = await POST(makeRequest(VALID_BODY));
       expect(res.status).toBe(200);
     }

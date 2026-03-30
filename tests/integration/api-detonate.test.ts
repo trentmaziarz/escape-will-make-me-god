@@ -199,9 +199,9 @@ describe("POST /api/detonate", () => {
     expect(mockResendSend).not.toHaveBeenCalled();
   });
 
-  it("returns 429 when rate limited (3rd request)", async () => {
-    // detonate limit is 2 per IP per hour
-    for (let i = 0; i < 2; i++) {
+  it("returns 429 when rate limited (21st request)", async () => {
+    // detonate limit is 20 per IP per hour
+    for (let i = 0; i < 20; i++) {
       const res = await POST(
         makeRequest({
           token: "valid-token",

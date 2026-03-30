@@ -66,15 +66,29 @@ async function fetchBreaches(
 
   await acquireToken();
 
-  const response = await fetch(
-    `${HIBP_API_BASE}/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`,
-    {
-      headers: {
-        "hibp-api-key": apiKey,
-        "user-agent": "deindex.me",
-      },
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
+
+  let response: Response;
+  try {
+    response = await fetch(
+      `${HIBP_API_BASE}/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`,
+      {
+        headers: {
+          "hibp-api-key": apiKey,
+          "user-agent": "deindex.me",
+        },
+        signal: controller.signal,
+      }
+    );
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") {
+      throw new Error("HIBP API request timed out");
     }
-  );
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (response.status === 404) return [];
 
