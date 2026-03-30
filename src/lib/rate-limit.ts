@@ -19,7 +19,7 @@ export interface RateLimitResult {
 const LIMITS: Record<string, RateLimitConfig> = {
   initiate: { windowMs: 60 * 60 * 1000, maxRequests: 5 },
   detonate: { windowMs: 60 * 60 * 1000, maxRequests: 2 },
-  scan: { windowMs: 60 * 60 * 1000, maxRequests: 5 },
+  scan: { windowMs: 60 * 60 * 1000, maxRequests: 10 },
 };
 
 const store = new Map<string, RateLimitEntry>();

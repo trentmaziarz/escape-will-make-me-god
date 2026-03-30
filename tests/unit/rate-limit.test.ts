@@ -51,7 +51,7 @@ describe("checkRateLimit", () => {
     // scan should still work (separate action)
     const result = checkRateLimit("scan", "192.168.1.1");
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(4);
+    expect(result.remaining).toBe(9);
   });
 
   it("tracks IPs independently", () => {

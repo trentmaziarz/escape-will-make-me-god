@@ -5,6 +5,7 @@ import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import type { DiscoveredService } from "@/lib/scanner";
 import { hibpScanner } from "@/lib/hibp";
 import { databaseScanner } from "@/lib/database-scanner";
+import { getServiceById } from "@/lib/services-db";
 
 const ScanSchema = z.object({
   token: z.string().min(1, "Token is required"),
@@ -95,9 +96,30 @@ export async function POST(request: NextRequest) {
     (a, b) => b.confidence - a.confidence
   );
 
+  // Enrich with service metadata for client display
+  const enriched = services.map((svc) => {
+    const entry = getServiceById(svc.serviceId);
+    return {
+      serviceId: svc.serviceId,
+      confidence: svc.confidence,
+      source: svc.source,
+      name: entry?.name ?? svc.serviceId,
+      icon: entry?.icon ?? "•",
+      category: entry?.category ?? "other",
+      deletionDifficulty: entry?.deletionDifficulty ?? "hard",
+      deletionMethod: entry?.deletionMethod ?? "manual-guide",
+    };
+  });
+
+  // Mask email for client display
+  const [local, domain] = email.split("@");
+  const maskedEmail =
+    local && domain ? `${local.slice(0, 2)}***@${domain}` : "***@***";
+
   return NextResponse.json({
-    services,
+    services: enriched,
     scannedAt: new Date().toISOString(),
+    maskedEmail,
     ...(partial && {
       partial: true,
       note: "Some sources were unavailable; results may be incomplete",
