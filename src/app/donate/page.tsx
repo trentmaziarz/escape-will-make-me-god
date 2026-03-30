@@ -62,7 +62,7 @@ export default function DonatePage() {
 
   if (success) {
     return (
-      <main className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+      <main id="main-content" className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
         <div className="mx-auto w-full max-w-[680px] text-center">
           <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-6">
             Thank You
@@ -86,7 +86,7 @@ export default function DonatePage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+    <main id="main-content" className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
         {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
@@ -104,7 +104,7 @@ export default function DonatePage() {
 
         {/* Transparency */}
         <div className="mb-12">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-6">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-6">
             Where your money goes
           </h2>
           <div className="space-y-3 text-[13px] text-text-secondary leading-[1.8]">
@@ -129,7 +129,7 @@ export default function DonatePage() {
 
         {/* Amount Selection */}
         <div className="mb-8">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-6">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-6">
             Choose an amount
           </h2>
           <div className="flex gap-3 mb-4">
@@ -168,8 +168,10 @@ export default function DonatePage() {
 
           {isCustom && (
             <div className="flex items-center border border-border">
-              <span className="px-4 py-3 text-[15px] text-text-muted border-r border-border">$</span>
+              <span className="px-4 py-3 text-[15px] text-text-muted border-r border-border" aria-hidden="true">$</span>
+              <label htmlFor="custom-amount" className="sr-only">Custom donation amount in dollars</label>
               <input
+                id="custom-amount"
                 type="number"
                 min="1"
                 max="1000"
@@ -180,7 +182,7 @@ export default function DonatePage() {
                   setCustomAmount(e.target.value);
                   setError(null);
                 }}
-                className="flex-1 bg-transparent px-4 py-3 text-[15px] text-text-primary font-mono outline-none placeholder:text-text-ghost"
+                className="flex-1 bg-transparent px-4 py-3 text-[16px] sm:text-[15px] text-text-primary font-mono outline-none placeholder:text-text-ghost"
               />
             </div>
           )}
@@ -195,6 +197,7 @@ export default function DonatePage() {
         <button
           onClick={handleDonate}
           disabled={loading || !getAmountCents()}
+          aria-label={loading ? "Redirecting to Stripe" : "Donate selected amount"}
           className="w-full py-4 text-[11px] tracking-[4px] uppercase border border-accent-red text-accent-red hover:bg-accent-red hover:text-bg-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-accent-red"
         >
           {loading ? "Redirecting to Stripe..." : "Donate"}

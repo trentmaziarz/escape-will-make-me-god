@@ -102,7 +102,7 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
           className={`text-[10px] tracking-[2px] uppercase px-3 py-1.5 border transition-colors ${
             activeCategory === "all"
               ? "border-accent-red text-accent-red"
-              : "border-border text-text-ghost hover:text-text-muted hover:border-border-hover"
+              : "border-border text-text-dim hover:text-text-muted hover:border-border-hover"
           }`}
         >
           ALL ({services.length})
@@ -119,7 +119,7 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
               className={`text-[10px] tracking-[2px] uppercase px-3 py-1.5 border transition-colors ${
                 activeCategory === cat
                   ? "border-accent-red text-accent-red"
-                  : "border-border text-text-ghost hover:text-text-muted hover:border-border-hover"
+                  : "border-border text-text-dim hover:text-text-muted hover:border-border-hover"
               }`}
             >
               {CATEGORY_LABELS[cat]} ({count})
@@ -141,9 +141,9 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
       ) : (
         Array.from(grouped.entries()).map(([category, categoryServices]) => (
           <section key={category} className="mb-12">
-            <h3 className="font-display text-[14px] font-bold text-text-muted tracking-[4px] uppercase mb-4 pb-2 border-b border-border">
+            <h2 className="font-display text-[14px] font-bold text-text-muted tracking-[4px] uppercase mb-4 pb-2 border-b border-border">
               {CATEGORY_LABELS[category]}
-            </h3>
+            </h2>
             <div className="flex flex-col gap-1.5" role="list" aria-label={`${CATEGORY_LABELS[category]} services`}>
               {categoryServices.map((service, i) => (
                 <motion.div

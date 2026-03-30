@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function DetonatePage() {
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <main id="main-content" className="min-h-screen bg-bg-primary">
       <Suspense
         fallback={
           <div className="flex min-h-screen items-center justify-center">

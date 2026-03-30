@@ -8,12 +8,12 @@
   --bg-surface: #111111;
   --bg-elevated: #1a1a1a;
 
-  /* Text */
-  --text-primary: #e8e4de;
-  --text-secondary: #888888;
-  --text-muted: #555555;
-  --text-dim: #444444;
-  --text-ghost: #333333;
+  /* Text — contrast ratios against --bg-primary (#0a0a0a) */
+  --text-primary: #e8e4de;    /* ~13.2:1 */
+  --text-secondary: #888888;  /* ~5.6:1  — passes AA normal */
+  --text-muted: #7b7b7b;      /* ~4.7:1  — passes AA normal */
+  --text-dim: #636363;        /* ~3.4:1  — passes AA large text */
+  --text-ghost: #525252;      /* ~2.4:1  — decorative only */
 
   /* Accent */
   --accent-red: #c41e1e;
@@ -51,6 +51,38 @@ body {
   font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus indicators — visible keyboard focus for all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 2px;
+}
+
+/* Skip navigation link — visible only on focus */
+.skip-nav {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 1000;
+  padding: 8px 16px;
+  background: var(--bg-primary);
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.skip-nav:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

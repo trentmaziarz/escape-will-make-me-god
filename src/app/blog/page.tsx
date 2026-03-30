@@ -15,13 +15,13 @@ export default function BlogPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+    <main id="main-content" className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px] text-center">
         {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
           The Movement
         </h1>
-        <p className="text-[10px] text-text-ghost tracking-[2px] uppercase mb-16">
+        <p className="text-[10px] text-text-muted tracking-[2px] uppercase mb-16">
           Essays on surveillance, privacy, and digital resistance
         </p>
 
@@ -49,13 +49,15 @@ export default function BlogPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="inline-flex flex-col sm:flex-row gap-0 w-full max-w-[480px]">
+            <label htmlFor="blog-email" className="sr-only">Email address</label>
             <input
+              id="blog-email"
               type="email"
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="flex-1 bg-transparent border border-border px-4 py-3 text-[13px] text-text-primary font-mono outline-none placeholder:text-text-ghost focus:border-text-dim transition-colors"
+              className="flex-1 bg-transparent border border-border px-4 py-3 text-[16px] sm:text-[13px] text-text-primary font-mono outline-none placeholder:text-text-ghost focus:border-text-dim transition-colors"
             />
             <button
               type="submit"

@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="flex min-h-screen flex-col px-4 py-10 sm:px-6">
+    <main id="main-content" className="flex min-h-screen flex-col px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
         {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
           The Cause
         </h1>
-        <p className="text-[10px] text-text-ghost tracking-[2px] uppercase mb-12">
+        <p className="text-[10px] text-text-muted tracking-[2px] uppercase mb-12">
           Why this exists
         </p>
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
 
         {/* Principles */}
         <section className="mb-16">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-8">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
             Principles
           </h2>
           <div className="space-y-6">
@@ -99,7 +99,7 @@ export default function AboutPage() {
 
         {/* Who built this */}
         <section className="mb-16">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-8">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
             Who built this
           </h2>
           <p className="text-[15px] text-text-secondary leading-[1.8] mb-6">
@@ -116,7 +116,7 @@ export default function AboutPage() {
 
         {/* Links */}
         <section className="mb-16">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-8">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
             Get involved
           </h2>
           <div className="space-y-4">
@@ -149,7 +149,7 @@ export default function AboutPage() {
 
         {/* Press */}
         <section className="mb-16">
-          <h2 className="text-[10px] tracking-[4px] uppercase text-text-ghost mb-8">
+          <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
             Press &amp; media
           </h2>
           <p className="text-[13px] text-text-secondary leading-[1.8] mb-4">

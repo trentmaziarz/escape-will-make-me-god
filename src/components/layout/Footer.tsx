@@ -36,7 +36,7 @@ export default function Footer() {
             <Link
               key={href}
               href={href}
-              className="text-[9px] tracking-[2px] uppercase text-text-ghost hover:text-text-muted transition-colors"
+              className="text-[9px] tracking-[2px] uppercase text-text-muted hover:text-text-secondary transition-colors"
             >
               {label}
             </Link>
@@ -45,11 +45,11 @@ export default function Footer() {
             href="https://github.com/DEINDEX-ME/deindex.me"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[9px] tracking-[2px] uppercase text-text-ghost hover:text-text-muted transition-colors"
+            className="text-[9px] tracking-[2px] uppercase text-text-muted hover:text-text-secondary transition-colors"
           >
             GitHub
           </a>
-          <span className="text-[9px] tracking-[1px] text-text-ghost ml-auto">
+          <span className="text-[9px] tracking-[1px] text-text-muted ml-auto">
             MIT License
           </span>
         </div>

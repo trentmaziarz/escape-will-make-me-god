@@ -116,7 +116,7 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
 
   return (
     <div
-      className="mb-12 min-h-[340px]"
+      className="mb-12 min-h-[520px]"
       role="region"
       aria-label="Manifesto"
     >

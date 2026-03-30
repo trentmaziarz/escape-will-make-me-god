@@ -48,12 +48,21 @@ function hashIp(ip: string): string {
 }
 
 export function checkRateLimit(action: string, ip: string): RateLimitResult {
-  ensureCleanup();
-
   const config = LIMITS[action];
   if (!config) {
     throw new Error(`Unknown rate limit action: ${action}`);
   }
+
+  // Skip rate limiting when explicitly disabled (E2E tests)
+  if (process.env.DISABLE_RATE_LIMIT === "true") {
+    return {
+      allowed: true,
+      remaining: config.maxRequests,
+      resetAt: Date.now() + config.windowMs,
+    };
+  }
+
+  ensureCleanup();
 
   const key = `${action}:${hashIp(ip)}`;
   const now = Date.now();

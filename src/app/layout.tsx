@@ -50,6 +50,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${jetbrains.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <a href="#main-content" className="skip-nav">
+          Skip to main content
+        </a>
         {children}
         <Footer />
         <MuteToggle />

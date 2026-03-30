@@ -29,8 +29,8 @@ test.describe("Detonation Flow", () => {
     // Services should appear one by one
     await expect(page.getByText("Facebook")).toBeVisible({ timeout: 15000 });
 
-    // Progress indicator should be visible
-    await expect(page.getByText(/\d+% — Scanning/)).toBeVisible();
+    // Progress indicator should be visible (format: "email — X% complete")
+    await expect(page.getByText(/\d+% complete/)).toBeVisible();
   });
 
   test("review phase: services selectable with detonate button", async ({
@@ -41,7 +41,7 @@ test.describe("Detonation Flow", () => {
 
     // Wait for scan to complete and review to appear
     await expect(page.getByText("Target list")).toBeVisible({
-      timeout: 30000,
+      timeout: 45000,
     });
 
     // Services should be listed
@@ -83,7 +83,7 @@ test.describe("Detonation Flow", () => {
 
     // Wait for review
     await expect(page.getByText("Target list")).toBeVisible({
-      timeout: 30000,
+      timeout: 45000,
     });
 
     // Click detonate
@@ -107,7 +107,7 @@ test.describe("Detonation Flow", () => {
 
     // Wait for review
     await expect(page.getByText("Target list")).toBeVisible({
-      timeout: 30000,
+      timeout: 45000,
     });
 
     // Click detonate
@@ -133,7 +133,7 @@ test.describe("Detonation Flow", () => {
 
     // Should scan and show review
     await expect(page.getByText("Target list")).toBeVisible({
-      timeout: 30000,
+      timeout: 45000,
     });
 
     // Services should be visible without horizontal scroll

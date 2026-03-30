@@ -55,6 +55,7 @@ export default function ReviewPhase({
             <div className="flex gap-3">
               <button
                 onClick={onSelectAll}
+                aria-label="Select all services"
                 className="text-[10px] text-text-ghost tracking-[1px] hover:text-text-muted transition-colors"
                 type="button"
               >
@@ -62,6 +63,7 @@ export default function ReviewPhase({
               </button>
               <button
                 onClick={onDeselectAll}
+                aria-label="Deselect all services"
                 className="text-[10px] text-text-ghost tracking-[1px] hover:text-text-muted transition-colors"
                 type="button"
               >
@@ -82,6 +84,7 @@ export default function ReviewPhase({
                 <button
                   key={service.serviceId}
                   role="listitem"
+                  aria-label={`${service.name} — ${selected ? "selected" : "not selected"} for deletion`}
                   onClick={() => onToggle(service.serviceId)}
                   type="button"
                   className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-300 cursor-pointer ${

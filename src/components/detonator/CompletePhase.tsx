@@ -66,7 +66,7 @@ export default function CompletePhase({
         {totalCount} deletion request{totalCount !== 1 ? "s" : ""} sent
       </p>
 
-      <p className="text-[13px] text-text-dim text-center max-w-[400px] leading-[1.8] mb-12">
+      <p className="text-[13px] text-text-muted text-center max-w-[400px] leading-[1.8] mb-12">
         Your detonation report has been sent to{" "}
         <span className="text-text-secondary">
           {maskedEmail || "your email"}
@@ -89,7 +89,8 @@ export default function CompletePhase({
       {/* Subtle donation prompt */}
       <a
         href="/donate"
-        className="font-mono text-[11px] text-text-ghost tracking-[2px] hover:text-text-muted transition-colors"
+        aria-label="Support DEINDEX.ME with a donation"
+        className="font-mono text-[11px] text-text-muted tracking-[2px] hover:text-text-secondary transition-colors"
       >
         Support the cause →
       </a>

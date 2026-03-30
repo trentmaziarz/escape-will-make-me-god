@@ -16,19 +16,19 @@ const LAST_UPDATED = "March 30, 2026";
 
 export default function PrivacyPage() {
   return (
-    <main className="flex min-h-screen flex-col px-4 py-10 sm:px-6">
+    <main id="main-content" className="flex min-h-screen flex-col px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
         {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
           Privacy Policy
         </h1>
-        <p className="text-[10px] text-text-ghost tracking-[2px] uppercase mb-12">
+        <p className="text-[10px] text-text-muted tracking-[2px] uppercase mb-12">
           Last updated {LAST_UPDATED}
         </p>
 
         {/* TL;DR */}
         <div className="border border-border px-6 py-5 mb-12">
-          <p className="text-[11px] tracking-[2px] uppercase text-text-ghost mb-3">
+          <p className="text-[11px] tracking-[2px] uppercase text-text-muted mb-3">
             The short version
           </p>
           <p className="text-[15px] text-text-primary leading-[1.8]">

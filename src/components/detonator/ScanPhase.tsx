@@ -33,12 +33,19 @@ export default function ScanPhase({
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
         {/* Header */}
-        <p className="text-[10px] tracking-[4px] text-text-muted mb-6 uppercase">
+        <h2 className="text-[10px] tracking-[4px] text-text-muted mb-6 uppercase">
           Scanning your digital footprint
-        </p>
+        </h2>
 
         {/* Progress bar */}
-        <div className="h-[2px] w-full bg-bg-elevated mb-8 overflow-hidden">
+        <div
+          className="h-[2px] w-full bg-bg-elevated mb-8 overflow-hidden"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Scan progress: ${progress}%`}
+        >
           <div
             className="h-full bg-accent-red transition-[width] duration-300 ease-out"
             style={{ width: `${progress}%` }}

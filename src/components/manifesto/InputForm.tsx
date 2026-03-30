@@ -136,11 +136,11 @@ export default function InputForm() {
       <p className="mb-6 font-mono text-[11px] leading-relaxed text-text-ghost">
         We use this to find your digital footprint. When we&apos;re done, we
         delete everything — including this. By continuing you agree to our{" "}
-        <a href="/privacy" className="text-text-dim underline hover:text-text-secondary">
+        <a href="/about/privacy" className="text-text-muted underline hover:text-text-secondary">
           privacy policy
         </a>{" "}
         and{" "}
-        <a href="/terms" className="text-text-dim underline hover:text-text-secondary">
+        <a href="/about/terms" className="text-text-muted underline hover:text-text-secondary">
           terms
         </a>
         .

@@ -98,10 +98,19 @@ export default function DetonationPhase({
   return (
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
-        {/* Header: 10px, letter-spacing 6px, #c41e1e, uppercase */}
-        <p className="text-[10px] tracking-[6px] text-accent-red mb-8 uppercase">
+        {/* Header */}
+        <h2 className="text-[10px] tracking-[6px] text-accent-red mb-8 uppercase">
           Detonation in progress
-        </p>
+        </h2>
+
+        {/* Screen reader status announcement */}
+        <div className="sr-only" aria-live="polite" aria-atomic="false">
+          {selectedServices.map((service) =>
+            dissolvedSet.has(service.serviceId)
+              ? `Deletion request sent for ${service.name}.`
+              : null
+          ).filter(Boolean).slice(-1)[0]}
+        </div>
 
         <div className="flex flex-col gap-1.5" role="list" aria-label="Detonation progress">
           {selectedServices.map((service, i) => (

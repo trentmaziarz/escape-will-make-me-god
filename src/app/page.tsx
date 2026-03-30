@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+    <main id="main-content" className="flex min-h-screen flex-col px-4 pt-[12vh] pb-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
         <ManifestoFlow />
       </div>

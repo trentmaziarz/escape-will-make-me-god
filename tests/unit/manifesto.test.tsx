@@ -266,8 +266,8 @@ describe("InputForm", () => {
 
     expect(screen.getByText("privacy policy")).toHaveAttribute(
       "href",
-      "/privacy"
+      "/about/privacy"
     );
-    expect(screen.getByText("terms")).toHaveAttribute("href", "/terms");
+    expect(screen.getByText("terms")).toHaveAttribute("href", "/about/terms");
   });
 });
