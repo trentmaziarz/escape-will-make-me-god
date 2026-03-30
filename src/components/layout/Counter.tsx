@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 const COUNTER_API =
   process.env.NEXT_PUBLIC_APP_URL || "https://deindex.me";
 
@@ -19,12 +21,14 @@ export default async function Counter() {
 
   if (count <= 0) return null;
 
+  const t = await getTranslations("counter");
+
   return (
     <div
       className="fixed bottom-4 left-4 z-[200] font-mono text-[11px] uppercase tracking-[2px] text-text-dim"
       aria-live="polite"
     >
-      {count.toLocaleString()} DELETION REQUESTS SENT
+      {t("text", { count })}
     </div>
   );
 }

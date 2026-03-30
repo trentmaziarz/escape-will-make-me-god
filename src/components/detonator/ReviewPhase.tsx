@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import type { ScannedService } from "@/hooks/useDetonation";
 
 interface ReviewPhaseProps {
@@ -11,13 +12,6 @@ interface ReviewPhaseProps {
   onDeselectAll: () => void;
   onDetonate: () => void;
 }
-
-const difficultyLabel: Record<ScannedService["deletionDifficulty"], string> = {
-  auto: "AUTO",
-  easy: "GUIDED",
-  medium: "EMAIL REQ",
-  hard: "MANUAL",
-};
 
 const difficultyColor: Record<ScannedService["deletionDifficulty"], string> = {
   auto: "text-difficulty-auto border-difficulty-auto",
@@ -34,6 +28,7 @@ export default function ReviewPhase({
   onDeselectAll,
   onDetonate,
 }: ReviewPhaseProps) {
+  const t = useTranslations("detonator");
   const selectedCount = selectedServiceIds.size;
 
   return (
@@ -45,34 +40,32 @@ export default function ReviewPhase({
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <h2 className="font-display text-[28px] font-bold text-text-primary mb-2">
-            Target list
+            {t("review.title")}
           </h2>
           <div className="flex items-center justify-between mb-8">
             <p className="text-xs text-text-muted tracking-[1px]">
-              {selectedCount} service{selectedCount !== 1 ? "s" : ""} selected
-              for deletion. Tap to deselect.
+              {t("review.subtitle", { count: selectedCount })}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={onSelectAll}
-                aria-label="Select all services"
+                aria-label={t("review.selectAllAriaLabel")}
                 className="text-[10px] text-text-ghost tracking-[1px] hover:text-text-muted transition-colors"
                 type="button"
               >
-                ALL
+                {t("review.all")}
               </button>
               <button
                 onClick={onDeselectAll}
-                aria-label="Deselect all services"
+                aria-label={t("review.deselectAllAriaLabel")}
                 className="text-[10px] text-text-ghost tracking-[1px] hover:text-text-muted transition-colors"
                 type="button"
               >
-                NONE
+                {t("review.none")}
               </button>
             </div>
           </div>
 
-          {/* Service cards */}
           <div
             className="flex flex-col gap-1.5 mb-12"
             role="list"
@@ -84,7 +77,13 @@ export default function ReviewPhase({
                 <button
                   key={service.serviceId}
                   role="listitem"
-                  aria-label={`${service.name} — ${selected ? "selected" : "not selected"} for deletion`}
+                  aria-label={
+                    selected
+                      ? t("review.serviceSelectedAria", { name: service.name })
+                      : t("review.serviceNotSelectedAria", {
+                          name: service.name,
+                        })
+                  }
                   onClick={() => onToggle(service.serviceId)}
                   type="button"
                   className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-300 cursor-pointer ${
@@ -100,7 +99,9 @@ export default function ReviewPhase({
                     aria-hidden="true"
                   >
                     {selected && (
-                      <span className="text-[10px] text-accent-red">×</span>
+                      <span className="text-[10px] text-accent-red">
+                        &times;
+                      </span>
                     )}
                   </div>
                   <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
@@ -112,14 +113,15 @@ export default function ReviewPhase({
                   <span
                     className={`text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 border ${difficultyColor[service.deletionDifficulty]}`}
                   >
-                    {difficultyLabel[service.deletionDifficulty]}
+                    {t(
+                      `reviewDifficulty.${service.deletionDifficulty}`
+                    )}
                   </span>
                 </button>
               );
             })}
           </div>
 
-          {/* Detonate button */}
           <div className="text-center">
             <button
               onClick={onDetonate}
@@ -127,10 +129,10 @@ export default function ReviewPhase({
               type="button"
               className="bg-transparent px-12 py-5 border-2 border-accent-red font-display text-lg tracking-[6px] text-accent-red uppercase transition-all duration-300 animate-pulse-red hover:bg-accent-red hover:text-bg-primary hover:tracking-[10px] disabled:opacity-30 disabled:animate-none disabled:cursor-not-allowed"
             >
-              Detonate
+              {t("review.detonate")}
             </button>
             <p className="text-[10px] text-text-ghost tracking-[2px] mt-4">
-              THIS ACTION IS IRREVERSIBLE
+              {t("review.warning")}
             </p>
           </div>
         </motion.div>

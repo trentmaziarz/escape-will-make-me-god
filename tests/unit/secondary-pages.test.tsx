@@ -1,53 +1,41 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-// Mock next/link to render as plain anchors
-vi.mock("next/link", () => ({
-  default: ({
-    href,
-    children,
-    ...props
-  }: {
-    href: string;
-    children: React.ReactNode;
-    [key: string]: unknown;
-  }) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  ),
-}));
+// --- About Page (async server component) ---
 
-// --- About Page ---
-
-import AboutPage from "@/app/about/page";
+import AboutPage from "@/app/[locale]/about/page";
 
 describe("AboutPage", () => {
-  it("renders the page heading", () => {
-    render(<AboutPage />);
+  it("renders the page heading", async () => {
+    const jsx = await AboutPage();
+    render(jsx);
     expect(screen.getByText("The Cause")).toBeInTheDocument();
   });
 
-  it("renders principle sections", () => {
-    render(<AboutPage />);
+  it("renders principle sections", async () => {
+    const jsx = await AboutPage();
+    render(jsx);
     expect(screen.getByText("Free forever")).toBeInTheDocument();
     expect(screen.getByText("Open source")).toBeInTheDocument();
     expect(screen.getByText("Stateless")).toBeInTheDocument();
     expect(screen.getByText("No surveillance")).toBeInTheDocument();
   });
 
-  it("renders GitHub link", () => {
-    render(<AboutPage />);
+  it("renders GitHub link", async () => {
+    const jsx = await AboutPage();
+    render(jsx);
     expect(screen.getByText("GitHub Repository")).toBeInTheDocument();
   });
 
-  it("renders press contact", () => {
-    render(<AboutPage />);
+  it("renders press contact", async () => {
+    const jsx = await AboutPage();
+    render(jsx);
     expect(screen.getByText("press@deindex.me")).toBeInTheDocument();
   });
 
-  it("links to privacy and terms pages", () => {
-    render(<AboutPage />);
+  it("links to privacy and terms pages", async () => {
+    const jsx = await AboutPage();
+    render(jsx);
     expect(screen.getByText("Privacy Policy")).toHaveAttribute(
       "href",
       "/about/privacy"
@@ -59,28 +47,32 @@ describe("AboutPage", () => {
   });
 });
 
-// --- Privacy Page ---
+// --- Privacy Page (async server component) ---
 
-import PrivacyPage from "@/app/about/privacy/page";
+import PrivacyPage from "@/app/[locale]/about/privacy/page";
 
 describe("PrivacyPage", () => {
-  it("renders the page heading", () => {
-    render(<PrivacyPage />);
+  it("renders the page heading", async () => {
+    const jsx = await PrivacyPage();
+    render(jsx);
     expect(screen.getByText("Privacy Policy")).toBeInTheDocument();
   });
 
-  it("renders last updated date", () => {
-    render(<PrivacyPage />);
+  it("renders last updated date", async () => {
+    const jsx = await PrivacyPage();
+    render(jsx);
     expect(screen.getByText(/Last updated March/)).toBeInTheDocument();
   });
 
-  it("renders the short version summary", () => {
-    render(<PrivacyPage />);
+  it("renders the short version summary", async () => {
+    const jsx = await PrivacyPage();
+    render(jsx);
     expect(screen.getByText(/The short version/)).toBeInTheDocument();
   });
 
-  it("renders all 10 sections", () => {
-    render(<PrivacyPage />);
+  it("renders all 10 sections", async () => {
+    const jsx = await PrivacyPage();
+    render(jsx);
     expect(screen.getByText("1. What we collect")).toBeInTheDocument();
     expect(screen.getByText("2. How we use it")).toBeInTheDocument();
     expect(screen.getByText("3. How long we keep it")).toBeInTheDocument();
@@ -95,34 +87,39 @@ describe("PrivacyPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders privacy contact email", () => {
-    render(<PrivacyPage />);
+  it("renders privacy contact email", async () => {
+    const jsx = await PrivacyPage();
+    render(jsx);
     expect(screen.getByText("privacy@deindex.me")).toBeInTheDocument();
   });
 });
 
-// --- Terms Page ---
+// --- Terms Page (async server component) ---
 
-import TermsPage from "@/app/about/terms/page";
+import TermsPage from "@/app/[locale]/about/terms/page";
 
 describe("TermsPage", () => {
-  it("renders the page heading", () => {
-    render(<TermsPage />);
+  it("renders the page heading", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     expect(screen.getByText("Terms of Service")).toBeInTheDocument();
   });
 
-  it("renders last updated date", () => {
-    render(<TermsPage />);
+  it("renders last updated date", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     expect(screen.getByText(/Last updated/)).toBeInTheDocument();
   });
 
-  it("renders the short version summary", () => {
-    render(<TermsPage />);
+  it("renders the short version summary", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     expect(screen.getByText(/The short version/)).toBeInTheDocument();
   });
 
-  it("renders all 10 sections", () => {
-    render(<TermsPage />);
+  it("renders all 10 sections", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     expect(screen.getByText("1. What we do")).toBeInTheDocument();
     expect(screen.getByText("2. Your authorization")).toBeInTheDocument();
     expect(screen.getByText("3. No guarantees")).toBeInTheDocument();
@@ -139,37 +136,41 @@ describe("TermsPage", () => {
     expect(screen.getByText("10. Contact")).toBeInTheDocument();
   });
 
-  it("renders legal contact email", () => {
-    render(<TermsPage />);
+  it("renders legal contact email", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     expect(screen.getByText("legal@deindex.me")).toBeInTheDocument();
   });
 
-  it("links to privacy policy", () => {
-    render(<TermsPage />);
+  it("links to privacy policy", async () => {
+    const jsx = await TermsPage();
+    render(jsx);
     const links = screen.getAllByText("Privacy Policy");
-    expect(links.some((el) => el.getAttribute("href") === "/about/privacy")).toBe(true);
+    expect(
+      links.some((el) => el.getAttribute("href") === "/about/privacy")
+    ).toBe(true);
   });
 });
 
-// --- Blog Placeholder Page ---
+// --- Blog (client component) ---
 
-import BlogPage from "@/app/blog/page";
+import BlogContent from "@/components/blog/BlogContent";
 
 describe("BlogPage", () => {
   it("renders the page heading", () => {
-    render(<BlogPage />);
+    render(<BlogContent />);
     expect(screen.getByText("The Movement")).toBeInTheDocument();
   });
 
   it("renders the coming soon message", () => {
-    render(<BlogPage />);
+    render(<BlogContent />);
     expect(
       screen.getByText(/The movement is coming/)
     ).toBeInTheDocument();
   });
 
   it("renders email signup form", () => {
-    render(<BlogPage />);
+    render(<BlogContent />);
     expect(
       screen.getByPlaceholderText("your@email.com")
     ).toBeInTheDocument();
@@ -177,7 +178,7 @@ describe("BlogPage", () => {
   });
 
   it("shows confirmation after signup", () => {
-    render(<BlogPage />);
+    render(<BlogContent />);
     const input = screen.getByPlaceholderText("your@email.com");
     const form = input.closest("form")!;
 
@@ -190,18 +191,18 @@ describe("BlogPage", () => {
   });
 });
 
-// --- Donate Page ---
+// --- Donate (client component) ---
 
-import DonatePage from "@/app/donate/page";
+import DonateContent from "@/components/donate/DonateContent";
 
 describe("DonatePage", () => {
   it("renders the page heading", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     expect(screen.getByText("Support the Cause")).toBeInTheDocument();
   });
 
   it("renders suggested amounts", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     expect(screen.getByText("$5")).toBeInTheDocument();
     expect(screen.getByText("$10")).toBeInTheDocument();
     expect(screen.getByText("$25")).toBeInTheDocument();
@@ -209,37 +210,38 @@ describe("DonatePage", () => {
   });
 
   it("renders transparency section", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     expect(screen.getByText(/Where your money goes/)).toBeInTheDocument();
   });
 
   it("donate button is disabled when no amount selected", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     const btn = screen.getByText("Donate");
     expect(btn).toBeDisabled();
   });
 
   it("enables donate button after selecting an amount", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     fireEvent.click(screen.getByText("$10"));
     const btn = screen.getByText("Donate");
     expect(btn).not.toBeDisabled();
   });
 
   it("shows custom input when Custom is clicked", () => {
-    render(<DonatePage />);
+    render(<DonateContent success={false} cancelled={false} />);
     fireEvent.click(screen.getByText("Custom"));
     expect(screen.getByPlaceholderText("Amount")).toBeInTheDocument();
   });
 });
 
-// --- Footer ---
+// --- Footer (async server component) ---
 
 import Footer from "@/components/layout/Footer";
 
 describe("Footer", () => {
-  it("renders all nav links", () => {
-    render(<Footer />);
+  it("renders all nav links", async () => {
+    const jsx = await Footer();
+    render(jsx);
     expect(screen.getByText("Detonate")).toHaveAttribute(
       "href",
       "/detonate"
@@ -253,8 +255,9 @@ describe("Footer", () => {
     expect(screen.getByText("Donate")).toHaveAttribute("href", "/donate");
   });
 
-  it("renders legal links", () => {
-    render(<Footer />);
+  it("renders legal links", async () => {
+    const jsx = await Footer();
+    render(jsx);
     expect(screen.getByText("Privacy")).toHaveAttribute(
       "href",
       "/about/privacy"
@@ -265,21 +268,24 @@ describe("Footer", () => {
     );
   });
 
-  it("renders GitHub link", () => {
-    render(<Footer />);
+  it("renders GitHub link", async () => {
+    const jsx = await Footer();
+    render(jsx);
     expect(screen.getByText("GitHub")).toHaveAttribute(
       "href",
       "https://github.com/DEINDEX-ME/deindex.me"
     );
   });
 
-  it("renders MIT license text", () => {
-    render(<Footer />);
+  it("renders MIT license text", async () => {
+    const jsx = await Footer();
+    render(jsx);
     expect(screen.getByText("MIT License")).toBeInTheDocument();
   });
 
-  it("has footer navigation landmark", () => {
-    render(<Footer />);
+  it("has footer navigation landmark", async () => {
+    const jsx = await Footer();
+    render(jsx);
     expect(
       screen.getByRole("navigation", { name: /footer/i })
     ).toBeInTheDocument();

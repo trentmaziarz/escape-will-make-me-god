@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useAudio } from "@/hooks/useAudio";
 import type { DetonationResults } from "@/hooks/useDetonation";
 
@@ -14,10 +15,10 @@ export default function CompletePhase({
   results,
   maskedEmail,
 }: CompletePhaseProps) {
+  const t = useTranslations("detonator.complete");
   const { playTone } = useAudio();
   const chordPlayed = useRef(false);
 
-  // Final chord: sine triad staggered 200ms apart with matching prototype volumes
   useEffect(() => {
     if (chordPlayed.current) return;
     chordPlayed.current = true;
@@ -49,7 +50,6 @@ export default function CompletePhase({
       transition={{ duration: 2, ease: "easeOut" }}
       className="flex min-h-screen flex-col items-center justify-center px-4 py-10"
     >
-      {/* Top decorative line — red gradient */}
       <div
         className="w-px h-20 mb-12"
         style={{
@@ -59,25 +59,25 @@ export default function CompletePhase({
       />
 
       <h2 className="font-display text-[clamp(24px,5vw,40px)] font-normal italic text-text-primary text-center mb-4 leading-tight">
-        You are disappearing.
+        {t("title")}
       </h2>
 
       <p className="text-xs text-text-muted tracking-[3px] text-center mb-12 uppercase">
-        {totalCount} deletion request{totalCount !== 1 ? "s" : ""} sent
+        {t("count", { count: totalCount })}
       </p>
 
       <p className="text-[13px] text-text-muted text-center max-w-[400px] leading-[1.8] mb-12">
-        Your detonation report has been sent to{" "}
-        <span className="text-text-secondary">
-          {maskedEmail || "your email"}
-        </span>{" "}
-        as a PDF attachment.
+        {t.rich("reportSent", {
+          email: maskedEmail || "your email",
+          highlight: (chunks) => (
+            <span className="text-text-secondary">{chunks}</span>
+          ),
+        })}
         <br />
         <br />
-        We have already forgotten you.
+        {t("forgotten")}
       </p>
 
-      {/* Bottom decorative line — subdued #333 gradient */}
       <div
         className="w-px h-20 mb-12"
         style={{
@@ -86,13 +86,12 @@ export default function CompletePhase({
         }}
       />
 
-      {/* Subtle donation prompt */}
       <a
         href="/donate"
-        aria-label="Support DEINDEX.ME with a donation"
+        aria-label={t("supportAriaLabel")}
         className="font-mono text-[11px] text-text-muted tracking-[2px] hover:text-text-secondary transition-colors"
       >
-        Support the cause →
+        {t("supportCause")}
       </a>
     </motion.div>
   );

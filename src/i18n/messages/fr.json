@@ -1,0 +1,319 @@
+{
+  "metadata": {
+    "home": {
+      "title": "DEINDEX.ME — Supprimez votre presence numerique",
+      "description": "Plateforme gratuite et open source pour decouvrir et supprimer votre empreinte numerique. GDPR & CCPA. Pas de compte. Aucune donnee conservee. Une seule session. Effacement total."
+    },
+    "detonate": {
+      "title": "DEINDEX.ME — Detonation",
+      "description": "Votre presence numerique s'arrete ici. Examinez les services decouverts et declenchez la suppression massive."
+    },
+    "database": {
+      "title": "Base de donnees des services — DEINDEX.ME",
+      "description": "Parcourez le repertoire ouvert des services suivis par DEINDEX.ME. Difficulte de suppression, methodes et delais de reponse prevus pour les reseaux sociaux, courtiers en donnees et plus encore."
+    },
+    "about": {
+      "title": "A propos — DEINDEX.ME",
+      "description": "Pourquoi DEINDEX.ME existe. La philosophie derriere la suppression numerique de masse. Open source, gratuit pour toujours, sans compromis."
+    },
+    "privacy": {
+      "title": "Politique de confidentialite — DEINDEX.ME",
+      "description": "Comment DEINDEX.ME traite vos donnees. En bref : on ne les garde pas."
+    },
+    "terms": {
+      "title": "Conditions d'utilisation — DEINDEX.ME",
+      "description": "Conditions regissant votre utilisation de DEINDEX.ME, la plateforme gratuite de suppression de presence numerique."
+    },
+    "blog": {
+      "title": "Blog — DEINDEX.ME",
+      "description": "Essais sur la surveillance, la vie privee et la resistance numerique."
+    },
+    "donate": {
+      "title": "Faire un don — DEINDEX.ME",
+      "description": "Soutenez la plateforme gratuite et open source de suppression numerique."
+    }
+  },
+  "common": {
+    "skipToContent": "Aller au contenu principal",
+    "mute": "MUET",
+    "unmute": "SON",
+    "muteAriaLabel": "Couper le son",
+    "unmuteAriaLabel": "Activer le son",
+    "loading": "Chargement..."
+  },
+  "nav": {
+    "detonate": "Detonation",
+    "database": "Base de donnees",
+    "blog": "Blog",
+    "about": "A propos",
+    "donate": "Faire un don",
+    "privacy": "Confidentialite",
+    "terms": "Conditions",
+    "github": "GitHub",
+    "mitLicense": "Licence MIT"
+  },
+  "counter": {
+    "text": "{count, number} DEMANDES DE SUPPRESSION ENVOYEES"
+  },
+  "landing": {
+    "title": "DEINDEX",
+    "titleAccent": ".ME",
+    "tagline": "L'invisible est le nouveau luxe",
+    "manifesto": {
+      "ariaLabel": "Manifeste",
+      "line1": "Vous etes le produit.",
+      "line2": "Chaque clic, chaque scroll, chaque hesitation — catalogues.",
+      "line3": "Votre visage est dans des bases de donnees dont vous ignorez l'existence.",
+      "line4": "Votre numero de telephone est en vente. Maintenant.",
+      "line5": "Les courtiers en donnees connaissent votre adresse, votre salaire, vos habitudes.",
+      "line6": "Ils n'ont pas besoin de votre permission.",
+      "line7": "Ils ont deja tout.",
+      "line8": "Mais vous avez quelque chose qu'ils n'avaient pas prevu.",
+      "line9": "Le droit de disparaitre.",
+      "line10": "GDPR Article 17. CCPA Section 1798.105.",
+      "line11": "La loi les oblige a vous effacer.",
+      "line12": "Ils comptent sur le fait que vous ne demanderez jamais.",
+      "line13": "Arretez de compter."
+    },
+    "form": {
+      "emailLabel": "EMAIL",
+      "phoneLabel": "TELEPHONE",
+      "phoneOptional": "(facultatif)",
+      "emailPlaceholder": "votre@email.com",
+      "phonePlaceholder": "+33 6 00 00 00 00",
+      "consent": "Nous utilisons ces informations pour trouver votre empreinte numerique. Une fois termine, nous supprimons tout — y compris ceci. En continuant, vous acceptez notre <privacy>politique de confidentialite</privacy> et nos <terms>conditions</terms>.",
+      "submit": "Commencez votre disparition \u2192",
+      "submitting": "Envoi...",
+      "submitAriaLabel": "Commencez votre disparition",
+      "sentTitle": "Verifiez vos emails.",
+      "sentDescription": "Nous avons envoye un lien de verification a <highlight>{email}</highlight>.",
+      "sentInstruction": "Cliquez sur \u00ab Detonation \u00bb pour lancer le scan.",
+      "sentExpiry": "Le lien expire dans 1 heure."
+    }
+  },
+  "detonator": {
+    "invalidLink": "Lien invalide",
+    "invalidLinkDescription": "Ce lien de detonation est invalide ou a expire.",
+    "error": "Erreur",
+    "scanning": {
+      "title": "Analyse de votre empreinte numerique",
+      "progress": "{maskedEmail} — {progress}% termine",
+      "progressAriaLabel": "Progression de l'analyse : {progress}%"
+    },
+    "scanDifficulty": {
+      "auto": "SUPPRESSION AUTO",
+      "easy": "FACILE",
+      "medium": "MOYEN",
+      "hard": "DIFFICILE"
+    },
+    "review": {
+      "title": "Liste des cibles",
+      "subtitle": "{count, plural, one {# service} other {# services}} selectionne(s) pour suppression. Appuyez pour deselectionner.",
+      "all": "TOUT",
+      "none": "AUCUN",
+      "selectAllAriaLabel": "Selectionner tous les services",
+      "deselectAllAriaLabel": "Deselectionner tous les services",
+      "serviceSelectedAria": "{name} — selectionne pour suppression",
+      "serviceNotSelectedAria": "{name} — non selectionne pour suppression",
+      "detonate": "Detonation",
+      "warning": "CETTE ACTION EST IRREVERSIBLE"
+    },
+    "reviewDifficulty": {
+      "auto": "AUTO",
+      "easy": "GUIDE",
+      "medium": "EMAIL REQ",
+      "hard": "MANUEL"
+    },
+    "detonation": {
+      "title": "Detonation en cours",
+      "sent": "ENVOYE",
+      "pending": "EN ATTENTE",
+      "srAnnouncement": "Demande de suppression envoyee pour {name}."
+    },
+    "complete": {
+      "title": "Vous etes en train de disparaitre.",
+      "count": "{count, plural, one {# demande de suppression} other {# demandes de suppression}} envoyee(s)",
+      "reportSent": "Votre rapport de detonation a ete envoye a <highlight>{email}</highlight> en piece jointe PDF.",
+      "forgotten": "Nous vous avons deja oublie.",
+      "supportCause": "Soutenir la cause \u2192",
+      "supportAriaLabel": "Soutenir DEINDEX.ME avec un don"
+    }
+  },
+  "database": {
+    "title": "Le Repertoire Ouvert",
+    "description": "Chaque service que nous suivons. Difficulte de suppression, methode et delai de reponse prevu — le tout verifie et open source.",
+    "servicesIndexed": "{count} services repertories",
+    "searchPlaceholder": "Rechercher des services...",
+    "searchAriaLabel": "Rechercher des services",
+    "allFilter": "TOUT ({count})",
+    "resultsCount": "{count, plural, one {# service} other {# services}} trouve(s)",
+    "noResults": "Aucun service ne correspond a votre recherche.",
+    "contributeCta": "Vous connaissez un service qui devrait figurer ici ?",
+    "contributeButton": "Contribuer sur GitHub",
+    "contributeNote": "La base de donnees est maintenue par la communaute et open source sous licence MIT.",
+    "responseDays": "{days}j",
+    "category": {
+      "social-media": "RESEAUX SOCIAUX",
+      "data-broker": "COURTIERS EN DONNEES",
+      "big-tech": "BIG TECH",
+      "shopping": "SHOPPING",
+      "ad-network": "REGIES PUBLICITAIRES",
+      "other": "AUTRE"
+    },
+    "difficulty": {
+      "auto": "AUTO",
+      "easy": "FACILE",
+      "medium": "MOYEN",
+      "hard": "DIFFICILE"
+    },
+    "method": {
+      "auto-api": "API",
+      "auto-email": "EMAIL AUTO",
+      "user-email": "EMAIL UTILISATEUR",
+      "manual-guide": "MANUEL"
+    }
+  },
+  "about": {
+    "title": "La Cause",
+    "subtitle": "Pourquoi tout ceci existe",
+    "philosophy1": "Vous n'avez jamais consenti a cela. Personne ne vous a assis pour vous demander si c'etait acceptable que 4 000 entreprises construisent un profil sur vous. Personne n'a demande la permission avant que votre numero de telephone soit vendu a des courtiers en donnees, votre historique de navigation transmis aux regies publicitaires, ou votre visage indexe par des systemes de surveillance dont vous ignoriez l'existence.",
+    "philosophy2": "Le systeme a ete concu pour rendre la desinscription impossible. Chaque service enterre sa page de suppression. Chaque courtier exige un formulaire different. La friction est une fonctionnalite. Ils comptent sur le fait que vous abandonniez.",
+    "philosophy3": "DEINDEX.ME est le bouton d'ejection qu'ils n'ont jamais voulu que vous ayez.",
+    "philosophy4": "Une seule session. Entrez votre email. Nous decouvrons votre empreinte. Vous choisissez ce que vous voulez detruire. Nous envoyons les demandes de suppression. Vous recevez un rapport. Nous oublions que vous avez existe. Pas de compte. Aucune donnee conservee. La plateforme se devore elle-meme apres vous avoir servi.",
+    "principlesHeading": "Principes",
+    "freeForever": "Gratuit pour toujours",
+    "freeForeverDescription": "La vie privee est un droit, pas un produit. Cet outil n'aura jamais de paywall, d'offre premium, ni de forfait \u00ab pro \u00bb.",
+    "openSource": "Open source",
+    "openSourceDescription": "Chaque ligne de code est publique. Auditez-la. Forkez-la. Ameliorez-la. La confiance se merite par la transparence, pas par des promesses.",
+    "stateless": "Sans etat",
+    "statelessDescription": "Pas de base de donnees. Pas de sessions utilisateur. Pas de cookies. Vos donnees existent dans votre navigateur le temps d'une session, puis elles disparaissent. Nous ne pouvons pas etre pirates parce que nous ne detenons rien.",
+    "noSurveillance": "Zero surveillance",
+    "noSurveillanceDescription": "Pas de pixels de suivi. Pas d'analytics identifiant des individus. Pas de publicites. Nous utilisons des analytics respectueux de la vie privee, sans cookies, pour compter les pages vues. C'est tout.",
+    "whoBuiltHeading": "Qui a construit ceci",
+    "whoBuilt1": "DEINDEX.ME est construit et maintenu par des gens qui croient qu'internet a besoin d'un bouton d'annulation. Nous sommes des developpeurs, des chercheurs en vie privee et des defenseurs des droits numeriques fatigues de voir les courtiers en donnees profiter d'informations que les gens n'ont jamais accepte de partager.",
+    "whoBuilt2": "Le projet est anime par la communaute et finance entierement par des dons. Pas d'investisseurs. Pas de conseil d'administration. Personne a qui rendre des comptes, sauf les personnes que nous servons.",
+    "getInvolvedHeading": "Participez",
+    "githubRepo": "Depot GitHub",
+    "githubRepoDescription": "Consultez le code source, signalez des problemes, contribuez a la base de donnees des services",
+    "supportCause": "Soutenir la cause",
+    "supportCauseDescription": "Aidez a financer l'hebergement, les couts d'API et le developpement",
+    "pressHeading": "Presse et medias",
+    "pressDescription": "Pour les demandes de presse, interviews ou demandes medias :",
+    "privacyPolicy": "Politique de confidentialite",
+    "termsOfService": "Conditions d'utilisation"
+  },
+  "privacy": {
+    "title": "[_LEGAL_REVIEW_REQUIRED] Privacy Policy",
+    "lastUpdated": "[_LEGAL_REVIEW_REQUIRED] Last updated {date}",
+    "shortVersionLabel": "[_LEGAL_REVIEW_REQUIRED] The short version",
+    "shortVersionText": "[_LEGAL_REVIEW_REQUIRED] We collect your email and phone number for one session. We use them to find your accounts and send deletion requests. Then we delete everything. We have no database. There is nothing to breach.",
+    "section1Heading": "[_LEGAL_REVIEW_REQUIRED] 1. What we collect",
+    "section1Intro": "[_LEGAL_REVIEW_REQUIRED] When you use DEINDEX.ME, you voluntarily provide:",
+    "section1EmailItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Email address</highlight> \u2014 used to discover accounts, send deletion requests, and deliver your detonation report",
+    "section1PhoneItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Phone number</highlight> (optional) \u2014 used to expand account discovery and include in deletion requests where relevant",
+    "section1Closing": "[_LEGAL_REVIEW_REQUIRED] That is everything. We do not collect names, addresses, payment details, IP addresses for identification, or any other personal information.",
+    "section2Heading": "[_LEGAL_REVIEW_REQUIRED] 2. How we use it",
+    "section2DiscoveryItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Account discovery</highlight> \u2014 we query the Have I Been Pwned API and our curated service database to identify where your data exists",
+    "section2DeletionItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Deletion requests</highlight> \u2014 we generate and send GDPR/CCPA deletion requests to services you select",
+    "section2ReportItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Detonation report</highlight> \u2014 we generate a PDF summarizing all actions taken and email it to you",
+    "section3Heading": "[_LEGAL_REVIEW_REQUIRED] 3. How long we keep it",
+    "section3Body": "[_LEGAL_REVIEW_REQUIRED] For the duration of a single session. All your data exists in your browser and in a short-lived encrypted token (JWT) that expires after one hour. Once your detonation report is emailed, everything is purged immediately. There is no database. There is no \u201c30-day retention.\u201d There is no backup. It is gone.",
+    "section4Heading": "[_LEGAL_REVIEW_REQUIRED] 4. What we share",
+    "section4Body1": "[_LEGAL_REVIEW_REQUIRED] Your email and phone number are included in the deletion requests sent to third-party services. This is the entire point \u2014 for a company to delete your data, they need to know which data is yours.",
+    "section4Body2": "[_LEGAL_REVIEW_REQUIRED] We do not sell, rent, or share your information with anyone for any other purpose. Ever.",
+    "section5Heading": "[_LEGAL_REVIEW_REQUIRED] 5. Cookies",
+    "section5Body": "[_LEGAL_REVIEW_REQUIRED] None. Zero. We do not use cookies. We do not use local storage for tracking. We do not use fingerprinting.",
+    "section6Heading": "[_LEGAL_REVIEW_REQUIRED] 6. Analytics",
+    "section6Body": "[_LEGAL_REVIEW_REQUIRED] We use privacy-respecting, cookieless analytics (Plausible or Umami) to understand how people use the site \u2014 page views, referral sources, country-level geography. These tools do not track individuals, do not use cookies, and comply with GDPR without requiring consent. We cannot identify you from our analytics data.",
+    "section7Heading": "[_LEGAL_REVIEW_REQUIRED] 7. Third-party services",
+    "section7Intro": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME uses the following third-party services:",
+    "section7ResendItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Resend</highlight> \u2014 email delivery (verification emails, deletion requests, reports)",
+    "section7StripeItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Stripe</highlight> \u2014 donation processing (we never see or store your payment information)",
+    "section7CloudflareItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Cloudflare</highlight> \u2014 DNS, CDN, and Turnstile bot prevention",
+    "section7HibpItem": "[_LEGAL_REVIEW_REQUIRED] <highlight>Have I Been Pwned</highlight> \u2014 breach database for account discovery",
+    "section8Heading": "[_LEGAL_REVIEW_REQUIRED] 8. Your rights",
+    "section8Body1": "[_LEGAL_REVIEW_REQUIRED] Under GDPR (EU/EEA) and CCPA (California), you have the right to access, correct, and delete your personal data. Since we delete everything immediately after your session ends, there is nothing to request deletion of after the fact.",
+    "section8Body2": "[_LEGAL_REVIEW_REQUIRED] If you have questions about data processing during an active session, contact us at the address below.",
+    "section9Heading": "[_LEGAL_REVIEW_REQUIRED] 9. Contact",
+    "section9Body": "[_LEGAL_REVIEW_REQUIRED] For privacy inquiries:",
+    "section10Heading": "[_LEGAL_REVIEW_REQUIRED] 10. Changes to this policy",
+    "section10Body": "[_LEGAL_REVIEW_REQUIRED] If we update this policy, we will update this page and the \u201cLast updated\u201d date above. We cannot notify you by email because we do not have your email. The spirit of this policy will not change: we collect the minimum, we keep nothing, and we never sell your data.",
+    "footerAbout": "[_LEGAL_REVIEW_REQUIRED] About",
+    "footerTerms": "[_LEGAL_REVIEW_REQUIRED] Terms of Service"
+  },
+  "terms": {
+    "title": "[_LEGAL_REVIEW_REQUIRED] Terms of Service",
+    "lastUpdated": "[_LEGAL_REVIEW_REQUIRED] Last updated {date}",
+    "shortVersionLabel": "[_LEGAL_REVIEW_REQUIRED] The short version",
+    "shortVersionText": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME sends deletion requests on your behalf. We cannot guarantee companies will comply. We do not store your data. The service is free and open source.",
+    "section1Heading": "[_LEGAL_REVIEW_REQUIRED] 1. What we do",
+    "section1Body": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME is a free platform that discovers digital accounts associated with your email address and phone number, then generates and sends deletion requests to those services on your behalf. We use GDPR Article 17 (Right to Erasure) and CCPA Section 1798.105 (Right to Delete) as the legal basis for these requests.",
+    "section2Heading": "[_LEGAL_REVIEW_REQUIRED] 2. Your authorization",
+    "section2Body": "[_LEGAL_REVIEW_REQUIRED] By using DEINDEX.ME, you authorize us to: (a) scan for accounts associated with your email address and phone number using the Have I Been Pwned API and our curated service database, (b) send deletion requests to the services you select, using your email address as the data subject identifier, and (c) email you a PDF report summarizing the actions taken. You confirm that the email address and phone number you provide are your own.",
+    "section3Heading": "[_LEGAL_REVIEW_REQUIRED] 3. No guarantees",
+    "section3Intro": "[_LEGAL_REVIEW_REQUIRED] We send deletion requests. We cannot guarantee that companies will comply. Compliance depends on:",
+    "section3Item1": "[_LEGAL_REVIEW_REQUIRED] The applicable law in your jurisdiction and theirs",
+    "section3Item2": "[_LEGAL_REVIEW_REQUIRED] Whether the company falls within the scope of GDPR or CCPA",
+    "section3Item3": "[_LEGAL_REVIEW_REQUIRED] Whether a legal exception applies (legal holds, fraud prevention, etc.)",
+    "section3Item4": "[_LEGAL_REVIEW_REQUIRED] The company's own data deletion policies and response times",
+    "section3Closing": "[_LEGAL_REVIEW_REQUIRED] GDPR requires a response within 30 days. CCPA requires a response within 45 days. If a company does not respond, your detonation report includes guidance on filing complaints with the relevant supervisory authority.",
+    "section4Heading": "[_LEGAL_REVIEW_REQUIRED] 4. Your responsibility",
+    "section4Body": "[_LEGAL_REVIEW_REQUIRED] Some services require actions that only you can take \u2014 identity verification, multi-step account deletion, or sending emails from your own email client. Your detonation report will clearly identify these services and provide step-by-step instructions. You are responsible for completing these actions yourself.",
+    "section5Heading": "[_LEGAL_REVIEW_REQUIRED] 5. No accounts, no stored data",
+    "section5Body": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME does not create user accounts. We do not store your email, phone number, scan results, or any other personal data after your session ends. All data is held temporarily in your browser and in a short-lived encrypted token. Once your report is emailed, everything is deleted. See our <privacyLink>Privacy Policy</privacyLink> for details.",
+    "section6Heading": "[_LEGAL_REVIEW_REQUIRED] 6. Age requirement",
+    "section6Body": "[_LEGAL_REVIEW_REQUIRED] You must be at least 16 years old to use DEINDEX.ME if you are in the EU/EEA (GDPR minimum), or at least 13 years old if you are in the United States (CCPA/COPPA). If you are under the applicable minimum age, do not use this service.",
+    "section7Heading": "[_LEGAL_REVIEW_REQUIRED] 7. Open source",
+    "section7Body": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME is open source software licensed under the <mitLink>MIT License</mitLink>. The source code is publicly available for review, audit, and contribution.",
+    "section8Heading": "[_LEGAL_REVIEW_REQUIRED] 8. Limitation of liability",
+    "section8Body": "[_LEGAL_REVIEW_REQUIRED] DEINDEX.ME is provided \u201cas is\u201d without warranty of any kind. To the maximum extent permitted by law, we are not liable for any damages arising from the use of this service, including but not limited to: incomplete data deletion by third parties, service downtime, errors in account discovery, or any actions taken by third-party services in response to deletion requests. This is a free service operated in good faith.",
+    "section9Heading": "[_LEGAL_REVIEW_REQUIRED] 9. Changes to these terms",
+    "section9Body": "[_LEGAL_REVIEW_REQUIRED] We may update these terms. Changes will be reflected on this page with an updated date. Continued use of the service after changes constitutes acceptance of the revised terms.",
+    "section10Heading": "[_LEGAL_REVIEW_REQUIRED] 10. Contact",
+    "section10Body": "[_LEGAL_REVIEW_REQUIRED] For questions about these terms:",
+    "footerAbout": "[_LEGAL_REVIEW_REQUIRED] About",
+    "footerPrivacy": "[_LEGAL_REVIEW_REQUIRED] Privacy Policy"
+  },
+  "blog": {
+    "title": "Le Mouvement",
+    "subtitle": "Essais sur la surveillance, la vie privee et la resistance numerique",
+    "comingSoonQuote": "\u00ab Le mouvement arrive. \u00bb",
+    "comingSoonDescription": "Essais de fond sur les courtiers en donnees, le capitalisme de surveillance et le droit de disparaitre. Ecrits pour vous armer de connaissances, pas pour vous vendre un produit.",
+    "emailPlaceholder": "votre@email.com",
+    "emailAriaLabel": "Adresse email",
+    "notifyMe": "Me notifier",
+    "noSpam": "Pas de spam. Pas de tracking. Juste un signal quand on publie.",
+    "submittedTitle": "Note. On vous contactera quand le premier essai sortira.",
+    "submittedNote": "Nous ne conserverons pas cet email au-dela de la liste de diffusion. Pas de spam. Pas de tracking."
+  },
+  "donate": {
+    "title": "Soutenir la cause",
+    "subtitle": "Gratuit pour toujours. Open source. Finance par ceux qui en ont quelque chose a foutre.",
+    "cancelled": "Don annule. Aucun prelevement effectue.",
+    "budgetHeading": "Ou va votre argent",
+    "budgetHostingLabel": "Hebergement et infrastructure.",
+    "budgetHostingDescription": "Serveurs, domaines, envoi d'emails, couts d'API.",
+    "budgetHibpLabel": "Acces a l'API HIBP.",
+    "budgetHibpDescription": "La base de donnees de fuites qui alimente la decouverte de comptes.",
+    "budgetDevLabel": "Developpement.",
+    "budgetDevDescription": "Elargir la base de donnees des services. Construire de nouveaux scanners. Garder une longueur d'avance sur les dark patterns.",
+    "budgetLegalLabel": "Juridique.",
+    "budgetLegalDescription": "Revision des modeles, recherche de conformite, riposte quand les entreprises ignorent les demandes de suppression.",
+    "amountHeading": "Choisissez un montant",
+    "custom": "Personnalise",
+    "amountAriaLabel": "Montant personnalise du don en dollars",
+    "amountPlaceholder": "Montant",
+    "donateButton": "Faire un don",
+    "donateRedirecting": "Redirection vers Stripe...",
+    "donateAriaLabel": "Faire un don du montant selectionne",
+    "donateRedirectingAriaLabel": "Redirection vers Stripe",
+    "finePrint": "Traitement securise par Stripe. Nous ne voyons ni ne conservons vos informations de paiement.",
+    "finePrintLicense": "DEINDEX.ME est open source sous licence MIT.",
+    "philosophy": "\u00ab Nous ne diffuserons jamais de publicites. Nous ne vendrons jamais de donnees. Nous ne mettrons jamais ceci derriere un paywall. Si vous croyez qu'internet devrait avoir un bouton d'ejection, aidez-nous a continuer d'en construire un. \u00bb",
+    "failedToConnect": "Connexion echouee. Reessayez.",
+    "successTitle": "Merci",
+    "successMessage": "Votre soutien permet a cette plateforme de rester gratuite, open source et sans compromis.",
+    "successReceipt": "Aucun recu ne sera conserve de notre cote. Stripe gere tout. Nous ne voyons jamais vos informations de paiement.",
+    "successReturn": "Retour au Manifeste"
+  }
+}

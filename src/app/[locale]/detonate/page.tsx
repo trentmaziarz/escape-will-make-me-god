@@ -1,21 +1,32 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import DetonatorFlow from "@/components/detonator/DetonatorFlow";
 
-export const metadata: Metadata = {
-  title: "DEINDEX.ME — Detonate",
-  description:
-    "Your digital presence ends here. Review discovered services and trigger mass deletion.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: "metadata.detonate",
+  });
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
-export default function DetonatePage() {
+export default async function DetonatePage() {
+  const t = await getTranslations("common");
+
   return (
     <main id="main-content" className="min-h-screen bg-bg-primary">
       <Suspense
         fallback={
           <div className="flex min-h-screen items-center justify-center">
             <span className="text-xs text-text-ghost tracking-[3px] uppercase">
-              Loading...
+              {t("loading")}
             </span>
           </div>
         }

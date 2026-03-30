@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import type { ScannedService } from "@/hooks/useDetonation";
 
 interface ScanPhaseProps {
@@ -9,13 +10,6 @@ interface ScanPhaseProps {
   isRevealing: boolean;
   maskedEmail: string;
 }
-
-const difficultyLabel: Record<ScannedService["deletionDifficulty"], string> = {
-  auto: "AUTO-DELETE",
-  easy: "EASY",
-  medium: "MEDIUM",
-  hard: "HARD",
-};
 
 const difficultyColor: Record<ScannedService["deletionDifficulty"], string> = {
   auto: "text-difficulty-auto",
@@ -29,22 +23,22 @@ export default function ScanPhase({
   progress,
   maskedEmail,
 }: ScanPhaseProps) {
+  const t = useTranslations("detonator");
+
   return (
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
-        {/* Header */}
         <h2 className="text-[10px] tracking-[4px] text-text-muted mb-6 uppercase">
-          Scanning your digital footprint
+          {t("scanning.title")}
         </h2>
 
-        {/* Progress bar */}
         <div
           className="h-[2px] w-full bg-bg-elevated mb-8 overflow-hidden"
           role="progressbar"
           aria-valuenow={progress}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Scan progress: ${progress}%`}
+          aria-label={t("scanning.progressAriaLabel", { progress })}
         >
           <div
             className="h-full bg-accent-red transition-[width] duration-300 ease-out"
@@ -52,13 +46,15 @@ export default function ScanPhase({
           />
         </div>
 
-        {/* Email + progress display */}
         <p className="font-mono text-xs text-text-dim mb-8">
-          {maskedEmail} — {progress}% complete
+          {t("scanning.progress", { maskedEmail, progress })}
         </p>
 
-        {/* Service list */}
-        <div className="flex flex-col" role="list" aria-label="Discovered services">
+        <div
+          className="flex flex-col"
+          role="list"
+          aria-label="Discovered services"
+        >
           {visibleServices.map((service, i) => (
             <motion.div
               key={service.serviceId}
@@ -83,7 +79,7 @@ export default function ScanPhase({
               <span
                 className={`text-[10px] tracking-[1px] uppercase ${difficultyColor[service.deletionDifficulty]}`}
               >
-                {difficultyLabel[service.deletionDifficulty]}
+                {t(`scanDifficulty.${service.deletionDifficulty}`)}
               </span>
             </motion.div>
           ))}

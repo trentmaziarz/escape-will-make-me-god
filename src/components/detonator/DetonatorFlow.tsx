@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useDetonation } from "@/hooks/useDetonation";
 import { useScan } from "@/hooks/useScan";
 import ScanPhase from "./ScanPhase";
@@ -10,6 +11,7 @@ import DetonationPhase from "./DetonationPhase";
 import CompletePhase from "./CompletePhase";
 
 export default function DetonatorFlow() {
+  const t = useTranslations("detonator");
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const scanStarted = useRef(false);
@@ -38,7 +40,6 @@ export default function DetonatorFlow() {
     startReveal,
   } = useScan(discoveredServices);
 
-  // Start scan on mount
   useEffect(() => {
     if (token && !scanStarted.current) {
       scanStarted.current = true;
@@ -46,14 +47,12 @@ export default function DetonatorFlow() {
     }
   }, [token, startScan]);
 
-  // Start progressive reveal when services arrive
   useEffect(() => {
     if (discoveredServices.length > 0 && phase === "scanning") {
       startReveal();
     }
   }, [discoveredServices, phase, startReveal]);
 
-  // Transition to review after reveal completes
   useEffect(() => {
     if (scanRevealComplete) {
       const timer = setTimeout(goToReview, 800);
@@ -66,10 +65,10 @@ export default function DetonatorFlow() {
       <div className="flex min-h-screen items-center justify-center px-4">
         <div className="text-center">
           <h1 className="font-display text-2xl font-bold text-text-primary mb-4">
-            Invalid Link
+            {t("invalidLink")}
           </h1>
           <p className="text-sm text-text-muted">
-            This detonation link is invalid or has expired.
+            {t("invalidLinkDescription")}
           </p>
         </div>
       </div>
@@ -81,7 +80,7 @@ export default function DetonatorFlow() {
       <div className="flex min-h-screen items-center justify-center px-4">
         <div className="text-center">
           <h1 className="font-display text-2xl font-bold text-accent-red mb-4">
-            Error
+            {t("error")}
           </h1>
           <p className="text-sm text-text-muted">{error}</p>
         </div>

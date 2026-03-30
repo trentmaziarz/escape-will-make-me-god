@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { Metadata } from "next";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const SUGGESTED_AMOUNTS = [
   { label: "$5", cents: 500 },
@@ -10,17 +10,21 @@ const SUGGESTED_AMOUNTS = [
   { label: "$25", cents: 2500 },
 ];
 
-export default function DonatePage() {
+interface DonateContentProps {
+  success: boolean;
+  cancelled: boolean;
+}
+
+export default function DonateContent({
+  success,
+  cancelled,
+}: DonateContentProps) {
+  const t = useTranslations("donate");
   const [selected, setSelected] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [isCustom, setIsCustom] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Check URL params for success/cancel
-  const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-  const success = params?.get("success") === "true";
-  const cancelled = params?.get("cancelled") === "true";
 
   function getAmountCents(): number | null {
     if (isCustom) {
@@ -54,7 +58,7 @@ export default function DonatePage() {
 
       window.location.href = data.url;
     } catch {
-      setError("Failed to connect. Try again.");
+      setError(t("failedToConnect"));
     } finally {
       setLoading(false);
     }
@@ -62,23 +66,25 @@ export default function DonatePage() {
 
   if (success) {
     return (
-      <main id="main-content" className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+      <main
+        id="main-content"
+        className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6"
+      >
         <div className="mx-auto w-full max-w-[680px] text-center">
           <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-6">
-            Thank You
+            {t("successTitle")}
           </h1>
           <p className="text-[15px] text-text-secondary leading-[1.8] mb-4">
-            Your support keeps this platform free, open source, and uncompromised.
+            {t("successMessage")}
           </p>
           <p className="text-[13px] text-text-muted leading-[1.8] mb-12">
-            No receipt will be stored on our end. Stripe handles everything.
-            We never see your payment details.
+            {t("successReceipt")}
           </p>
           <Link
             href="/"
             className="inline-block text-[10px] tracking-[4px] uppercase px-8 py-3 border border-text-muted text-text-muted hover:border-text-primary hover:text-text-primary transition-colors"
           >
-            Return to Manifesto
+            {t("successReturn")}
           </Link>
         </div>
       </main>
@@ -86,43 +92,53 @@ export default function DonatePage() {
   }
 
   return (
-    <main id="main-content" className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
+    <main
+      id="main-content"
+      className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6"
+    >
       <div className="mx-auto w-full max-w-[680px]">
-        {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
-          Support the Cause
+          {t("title")}
         </h1>
         <p className="font-display text-[clamp(14px,2.5vw,18px)] font-normal italic text-text-muted mb-10">
-          Free forever. Open source. Funded by people who give a damn.
+          {t("subtitle")}
         </p>
 
         {cancelled && (
           <div className="mb-8 border border-text-dim px-4 py-3 text-[13px] text-text-muted">
-            Donation cancelled. No charge was made.
+            {t("cancelled")}
           </div>
         )}
 
         {/* Transparency */}
         <div className="mb-12">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-6">
-            Where your money goes
+            {t("budgetHeading")}
           </h2>
           <div className="space-y-3 text-[13px] text-text-secondary leading-[1.8]">
             <p>
-              <span className="text-text-primary">Hosting &amp; infrastructure.</span>{" "}
-              Servers, domains, email delivery, API costs.
+              <span className="text-text-primary">
+                {t("budgetHostingLabel")}
+              </span>{" "}
+              {t("budgetHostingDescription")}
             </p>
             <p>
-              <span className="text-text-primary">HIBP API access.</span>{" "}
-              The breach database that powers account discovery.
+              <span className="text-text-primary">
+                {t("budgetHibpLabel")}
+              </span>{" "}
+              {t("budgetHibpDescription")}
             </p>
             <p>
-              <span className="text-text-primary">Development.</span>{" "}
-              Expanding the service database. Building new scanners. Staying ahead of dark patterns.
+              <span className="text-text-primary">
+                {t("budgetDevLabel")}
+              </span>{" "}
+              {t("budgetDevDescription")}
             </p>
             <p>
-              <span className="text-text-primary">Legal.</span>{" "}
-              Template review, compliance research, fighting back when companies ignore deletion requests.
+              <span className="text-text-primary">
+                {t("budgetLegalLabel")}
+              </span>{" "}
+              {t("budgetLegalDescription")}
             </p>
           </div>
         </div>
@@ -130,7 +146,7 @@ export default function DonatePage() {
         {/* Amount Selection */}
         <div className="mb-8">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-6">
-            Choose an amount
+            {t("amountHeading")}
           </h2>
           <div className="flex gap-3 mb-4">
             {SUGGESTED_AMOUNTS.map(({ label, cents }) => (
@@ -162,21 +178,28 @@ export default function DonatePage() {
                   : "border-border text-text-muted hover:border-text-dim hover:text-text-secondary"
               }`}
             >
-              Custom
+              {t("custom")}
             </button>
           </div>
 
           {isCustom && (
             <div className="flex items-center border border-border">
-              <span className="px-4 py-3 text-[15px] text-text-muted border-r border-border" aria-hidden="true">$</span>
-              <label htmlFor="custom-amount" className="sr-only">Custom donation amount in dollars</label>
+              <span
+                className="px-4 py-3 text-[15px] text-text-muted border-r border-border"
+                aria-hidden="true"
+              >
+                $
+              </span>
+              <label htmlFor="custom-amount" className="sr-only">
+                {t("amountAriaLabel")}
+              </label>
               <input
                 id="custom-amount"
                 type="number"
                 min="1"
                 max="1000"
                 step="1"
-                placeholder="Amount"
+                placeholder={t("amountPlaceholder")}
                 value={customAmount}
                 onChange={(e) => {
                   setCustomAmount(e.target.value);
@@ -188,34 +211,30 @@ export default function DonatePage() {
           )}
         </div>
 
-        {/* Error */}
         {error && (
           <p className="mb-4 text-[13px] text-accent-red">{error}</p>
         )}
 
-        {/* Donate Button */}
         <button
           onClick={handleDonate}
           disabled={loading || !getAmountCents()}
-          aria-label={loading ? "Redirecting to Stripe" : "Donate selected amount"}
+          aria-label={
+            loading ? t("donateRedirectingAriaLabel") : t("donateAriaLabel")
+          }
           className="w-full py-4 text-[11px] tracking-[4px] uppercase border border-accent-red text-accent-red hover:bg-accent-red hover:text-bg-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-accent-red"
         >
-          {loading ? "Redirecting to Stripe..." : "Donate"}
+          {loading ? t("donateRedirecting") : t("donateButton")}
         </button>
 
-        {/* Fine print */}
         <p className="mt-6 text-[11px] text-text-ghost leading-[1.8] text-center">
-          Processed securely by Stripe. We never see or store your payment details.
+          {t("finePrint")}
           <br />
-          DEINDEX.ME is open source under MIT license.
+          {t("finePrintLicense")}
         </p>
 
-        {/* Philosophy */}
         <div className="mt-16 pt-8 border-t border-border">
           <p className="text-[13px] text-text-muted leading-[1.8] italic font-display">
-            &ldquo;We will never run ads. We will never sell data. We will never put
-            this behind a paywall. If you believe the internet should have an eject
-            button, help us keep building one.&rdquo;
+            {t("philosophy")}
           </p>
         </div>
       </div>

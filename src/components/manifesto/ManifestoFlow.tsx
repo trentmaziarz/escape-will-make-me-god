@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import ManifestoText from "./ManifestoText";
 
 const InputForm = dynamic(() => import("./InputForm"), { ssr: false });
 
 export default function ManifestoFlow() {
+  const t = useTranslations("landing");
   const [showManifesto, setShowManifesto] = useState(false);
   const [manifestoComplete, setManifestoComplete] = useState(false);
 
@@ -20,10 +22,11 @@ export default function ManifestoFlow() {
       {/* Title — static, no animation, so it is the LCP element at FCP time */}
       <div className="mb-12">
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
-          DEINDEX<span className="text-accent-red">.ME</span>
+          {t("title")}
+          <span className="text-accent-red">{t("titleAccent")}</span>
         </h1>
         <p className="font-mono text-[11px] uppercase tracking-[4px] text-text-muted">
-          Offline is the new luxury
+          {t("tagline")}
         </p>
       </div>
 

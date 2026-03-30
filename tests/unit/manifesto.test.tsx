@@ -2,9 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ManifestoText, {
-  MANIFESTO_LINES,
+  MANIFESTO_SEQUENCE,
 } from "@/components/manifesto/ManifestoText";
 import InputForm from "@/components/manifesto/InputForm";
+import en from "@/i18n/messages/en.json";
 
 // Mock framer-motion to render immediately without animation
 vi.mock("framer-motion", () => ({
@@ -42,10 +43,18 @@ vi.mock("@/hooks/useAudio", () => ({
   }),
 }));
 
-/** Advance through N manifesto lines, wrapping each tick in act(). */
+// Build a text array mirroring the old MANIFESTO_LINES from MANIFESTO_SEQUENCE + en.json
+const manifestoMessages = en.landing.manifesto;
+const LINES: string[] = MANIFESTO_SEQUENCE.map((entry) =>
+  "spacer" in entry
+    ? ""
+    : manifestoMessages[entry.key as keyof typeof manifestoMessages] ?? ""
+);
+
+/** Advance through N manifesto entries, wrapping each tick in act(). */
 function advanceLines(count: number) {
   for (let i = 0; i < count; i++) {
-    const line = MANIFESTO_LINES[i];
+    const line = LINES[i];
     const delay = line === "" ? 400 : 120 + line.length * 30;
     act(() => {
       vi.advanceTimersByTime(delay + 10);
@@ -66,7 +75,7 @@ describe("ManifestoText", () => {
     const onComplete = vi.fn();
     render(<ManifestoText onComplete={onComplete} />);
 
-    const nonEmptyLines = MANIFESTO_LINES.filter((l) => l !== "");
+    const nonEmptyLines = LINES.filter((l) => l !== "");
     for (const line of nonEmptyLines) {
       expect(screen.queryByText(line)).not.toBeInTheDocument();
     }
@@ -78,7 +87,7 @@ describe("ManifestoText", () => {
 
     advanceLines(1);
 
-    expect(screen.getByText(MANIFESTO_LINES[0])).toBeInTheDocument();
+    expect(screen.getByText(LINES[0])).toBeInTheDocument();
   });
 
   it("renders lines in sequence with staggered timing", () => {
@@ -87,40 +96,39 @@ describe("ManifestoText", () => {
 
     advanceLines(3);
 
-    expect(screen.getByText(MANIFESTO_LINES[0])).toBeInTheDocument();
-    expect(screen.getByText(MANIFESTO_LINES[1])).toBeInTheDocument();
-    expect(screen.getByText(MANIFESTO_LINES[2])).toBeInTheDocument();
+    expect(screen.getByText(LINES[0])).toBeInTheDocument();
+    expect(screen.getByText(LINES[1])).toBeInTheDocument();
+    expect(screen.getByText(LINES[2])).toBeInTheDocument();
   });
 
   it("uses 400ms pause for empty lines", () => {
     const onComplete = vi.fn();
     render(<ManifestoText onComplete={onComplete} />);
 
-    // Advance through lines 0-7 (index 7 is empty "")
+    // Advance through lines 0-7 (index 7 is spacer)
     advanceLines(8);
 
     // Line 6 ("They already have everything.") should be visible
-    expect(
-      screen.getByText(MANIFESTO_LINES[6])
-    ).toBeInTheDocument();
+    expect(screen.getByText(LINES[6])).toBeInTheDocument();
   });
 
   it("calls onComplete when all lines are shown", () => {
     const onComplete = vi.fn();
     render(<ManifestoText onComplete={onComplete} />);
 
-    advanceLines(MANIFESTO_LINES.length);
+    advanceLines(LINES.length);
 
     expect(onComplete).toHaveBeenCalledTimes(1);
   });
 
-  it("styles 'Stop counting.' with red color", () => {
+  it("styles final line with red color", () => {
     const onComplete = vi.fn();
     render(<ManifestoText onComplete={onComplete} />);
 
-    advanceLines(MANIFESTO_LINES.length);
+    advanceLines(LINES.length);
 
-    const stopCounting = screen.getByText("Stop counting.");
+    const lastTextLine = LINES.filter((l) => l !== "").at(-1)!;
+    const stopCounting = screen.getByText(lastTextLine);
     expect(stopCounting).toHaveStyle({ color: "var(--accent-red)" });
   });
 
@@ -128,10 +136,10 @@ describe("ManifestoText", () => {
     const onComplete = vi.fn();
     render(<ManifestoText onComplete={onComplete} />);
 
-    advanceLines(MANIFESTO_LINES.length);
+    advanceLines(LINES.length);
 
     const gdprLine = screen.getByText(
-      "GDPR Article 17. CCPA Section 1798.105."
+      en.landing.manifesto.line10
     );
     expect(gdprLine).toHaveStyle({ fontFamily: "var(--font-mono)" });
   });
@@ -141,7 +149,7 @@ describe("ManifestoText", () => {
     render(<ManifestoText onComplete={onComplete} />);
 
     expect(
-      screen.getByRole("region", { name: "Manifesto" })
+      screen.getByRole("region", { name: en.landing.manifesto.ariaLabel })
     ).toBeInTheDocument();
   });
 });

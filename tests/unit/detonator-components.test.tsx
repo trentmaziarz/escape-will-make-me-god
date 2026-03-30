@@ -220,7 +220,7 @@ describe("CompletePhase", () => {
 
     expect(screen.getByText("You are disappearing.")).toBeInTheDocument();
     expect(screen.getByText(/8 deletion requests sent/i)).toBeInTheDocument();
-    expect(screen.getByText("te***@example.com")).toBeInTheDocument();
+    expect(screen.getByText(/te\*\*\*@example\.com/)).toBeInTheDocument();
     expect(
       screen.getByText(/We have already forgotten you/)
     ).toBeInTheDocument();
@@ -258,6 +258,6 @@ describe("CompletePhase", () => {
       />
     );
 
-    expect(screen.getByText("your email")).toBeInTheDocument();
+    expect(screen.getByText(/your email/)).toBeInTheDocument();
   });
 });

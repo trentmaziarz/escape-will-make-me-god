@@ -2,27 +2,16 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import type { ServiceEntry, ServiceCategory, DeletionDifficulty } from "@/data/services/schema";
+import { useTranslations } from "next-intl";
+import type {
+  ServiceEntry,
+  ServiceCategory,
+  DeletionDifficulty,
+} from "@/data/services/schema";
 
 interface ServiceDirectoryProps {
   services: ServiceEntry[];
 }
-
-const CATEGORY_LABELS: Record<ServiceCategory, string> = {
-  "social-media": "SOCIAL MEDIA",
-  "data-broker": "DATA BROKERS",
-  "big-tech": "BIG TECH",
-  shopping: "SHOPPING",
-  "ad-network": "AD NETWORKS",
-  other: "OTHER",
-};
-
-const DIFFICULTY_LABELS: Record<DeletionDifficulty, string> = {
-  auto: "AUTO",
-  easy: "EASY",
-  medium: "MEDIUM",
-  hard: "HARD",
-};
 
 const DIFFICULTY_COLORS: Record<DeletionDifficulty, string> = {
   auto: "text-difficulty-auto border-difficulty-auto",
@@ -31,16 +20,12 @@ const DIFFICULTY_COLORS: Record<DeletionDifficulty, string> = {
   hard: "text-difficulty-hard border-difficulty-hard",
 };
 
-const METHOD_LABELS: Record<ServiceEntry["deletionMethod"], string> = {
-  "auto-api": "API",
-  "auto-email": "AUTO EMAIL",
-  "user-email": "USER EMAIL",
-  "manual-guide": "MANUAL",
-};
-
 export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
+  const t = useTranslations("database");
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState<ServiceCategory | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<
+    ServiceCategory | "all"
+  >("all");
 
   const categories = useMemo(() => {
     const cats = new Set<ServiceCategory>();
@@ -86,14 +71,18 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search services..."
-          aria-label="Search services"
+          placeholder={t("searchPlaceholder")}
+          aria-label={t("searchAriaLabel")}
           className="w-full bg-bg-surface border border-border px-4 py-3 text-[16px] sm:text-[13px] text-text-primary font-mono placeholder:text-text-ghost focus:outline-none focus:border-border-hover transition-colors"
         />
       </div>
 
       {/* Category filters */}
-      <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Filter by category">
+      <div
+        className="flex flex-wrap gap-2 mb-10"
+        role="tablist"
+        aria-label="Filter by category"
+      >
         <button
           role="tab"
           aria-selected={activeCategory === "all"}
@@ -105,7 +94,7 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
               : "border-border text-text-dim hover:text-text-muted hover:border-border-hover"
           }`}
         >
-          ALL ({services.length})
+          {t("allFilter", { count: services.length })}
         </button>
         {categories.map((cat) => {
           const count = services.filter((s) => s.category === cat).length;
@@ -122,7 +111,7 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
                   : "border-border text-text-dim hover:text-text-muted hover:border-border-hover"
               }`}
             >
-              {CATEGORY_LABELS[cat]} ({count})
+              {t(`category.${cat}`)} ({count})
             </button>
           );
         })}
@@ -130,21 +119,25 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
 
       {/* Results count */}
       <p className="text-[10px] text-text-ghost tracking-[2px] uppercase mb-6">
-        {filtered.length} service{filtered.length !== 1 ? "s" : ""} found
+        {t("resultsCount", { count: filtered.length })}
       </p>
 
       {/* Grouped service lists */}
       {filtered.length === 0 ? (
         <p className="text-[13px] text-text-muted py-12 text-center">
-          No services match your search.
+          {t("noResults")}
         </p>
       ) : (
         Array.from(grouped.entries()).map(([category, categoryServices]) => (
           <section key={category} className="mb-12">
             <h2 className="font-display text-[14px] font-bold text-text-muted tracking-[4px] uppercase mb-4 pb-2 border-b border-border">
-              {CATEGORY_LABELS[category]}
+              {t(`category.${category}`)}
             </h2>
-            <div className="flex flex-col gap-1.5" role="list" aria-label={`${CATEGORY_LABELS[category]} services`}>
+            <div
+              className="flex flex-col gap-1.5"
+              role="list"
+              aria-label={`${t(`category.${category}`)} services`}
+            >
               {categoryServices.map((service, i) => (
                 <motion.div
                   key={service.id}
@@ -154,12 +147,9 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
                   transition={{ duration: 0.3, delay: i * 0.03 }}
                   className="flex items-center gap-3 px-4 py-3 border border-border hover:border-border-hover transition-colors"
                 >
-                  {/* Icon */}
                   <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
                     {service.icon}
                   </span>
-
-                  {/* Name + domain */}
                   <div className="flex-1 min-w-0">
                     <span className="text-[13px] text-text-primary block">
                       {service.name}
@@ -168,22 +158,18 @@ export default function ServiceDirectory({ services }: ServiceDirectoryProps) {
                       {service.domain}
                     </span>
                   </div>
-
-                  {/* Method */}
                   <span className="text-[9px] tracking-[2px] uppercase text-text-dim hidden sm:block">
-                    {METHOD_LABELS[service.deletionMethod]}
+                    {t(`method.${service.deletionMethod}`)}
                   </span>
-
-                  {/* Response time */}
                   <span className="text-[9px] tracking-[1px] text-text-ghost hidden sm:block w-16 text-right">
-                    {service.expectedResponseDays}d
+                    {t("responseDays", {
+                      days: service.expectedResponseDays,
+                    })}
                   </span>
-
-                  {/* Difficulty badge */}
                   <span
                     className={`text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 border shrink-0 ${DIFFICULTY_COLORS[service.deletionDifficulty]}`}
                   >
-                    {DIFFICULTY_LABELS[service.deletionDifficulty]}
+                    {t(`difficulty.${service.deletionDifficulty}`)}
                   </span>
                 </motion.div>
               ))}

@@ -1,97 +1,94 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
-export const metadata: Metadata = {
-  title: "About — DEINDEX.ME",
-  description:
-    "Why DEINDEX.ME exists. The philosophy behind mass digital deletion. Open source, free forever, uncompromised.",
-  openGraph: {
-    title: "About — DEINDEX.ME",
-    description:
-      "Why DEINDEX.ME exists. The philosophy behind mass digital deletion.",
-    url: "https://deindex.me/about",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: "metadata.about",
+  });
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url: "https://deindex.me/about",
+    },
+  };
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const t = await getTranslations("about");
+
   return (
-    <main id="main-content" className="flex min-h-screen flex-col px-4 py-10 sm:px-6">
+    <main
+      id="main-content"
+      className="flex min-h-screen flex-col px-4 py-10 sm:px-6"
+    >
       <div className="mx-auto w-full max-w-[680px]">
-        {/* Header */}
         <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
-          The Cause
+          {t("title")}
         </h1>
         <p className="text-[10px] text-text-muted tracking-[2px] uppercase mb-12">
-          Why this exists
+          {t("subtitle")}
         </p>
 
         {/* Philosophy */}
         <section className="mb-16">
           <p className="text-[15px] text-text-secondary leading-[1.8] mb-6">
-            You did not consent to this. Nobody sat you down and asked if it was
-            acceptable for 4,000 companies to build a profile on you. Nobody
-            asked permission before your phone number was sold to data brokers,
-            your browsing history fed to ad networks, or your face indexed by
-            surveillance systems you never knew existed.
+            {t("philosophy1")}
           </p>
           <p className="text-[15px] text-text-secondary leading-[1.8] mb-6">
-            The system was designed to make opting out impossible. Every service
-            buries its deletion page. Every broker requires a different form. The
-            friction is the feature. They are counting on you giving up.
+            {t("philosophy2")}
           </p>
           <p className="text-[15px] text-text-primary leading-[1.8] mb-6">
-            DEINDEX.ME is the eject button they never wanted you to have.
+            {t("philosophy3")}
           </p>
           <p className="text-[15px] text-text-secondary leading-[1.8]">
-            One session. Enter your email. We discover your footprint. You
-            choose what to destroy. We fire the deletion requests. You get a
-            report. We forget you ever existed. No accounts. No stored data. The
-            platform eats itself after serving you.
+            {t("philosophy4")}
           </p>
         </section>
 
         {/* Principles */}
         <section className="mb-16">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
-            Principles
+            {t("principlesHeading")}
           </h2>
           <div className="space-y-6">
             <div>
               <h3 className="text-[13px] text-text-primary mb-1">
-                Free forever
+                {t("freeForever")}
               </h3>
               <p className="text-[13px] text-text-muted leading-[1.8]">
-                Privacy is a right, not a product. This tool will never have a
-                paywall, a premium tier, or a &ldquo;pro&rdquo; plan.
+                {t("freeForeverDescription")}
               </p>
             </div>
             <div>
               <h3 className="text-[13px] text-text-primary mb-1">
-                Open source
+                {t("openSource")}
               </h3>
               <p className="text-[13px] text-text-muted leading-[1.8]">
-                Every line of code is public. Audit it. Fork it. Improve it.
-                Trust is earned by transparency, not promises.
+                {t("openSourceDescription")}
               </p>
             </div>
             <div>
               <h3 className="text-[13px] text-text-primary mb-1">
-                Stateless
+                {t("stateless")}
               </h3>
               <p className="text-[13px] text-text-muted leading-[1.8]">
-                No database. No user sessions. No cookies. Your data exists in
-                your browser for the duration of one session, then it is gone.
-                We cannot be breached because we hold nothing.
+                {t("statelessDescription")}
               </p>
             </div>
             <div>
               <h3 className="text-[13px] text-text-primary mb-1">
-                No surveillance
+                {t("noSurveillance")}
               </h3>
               <p className="text-[13px] text-text-muted leading-[1.8]">
-                No tracking pixels. No analytics that identify individuals. No
-                ads. We use cookieless, privacy-respecting analytics to count
-                page views. That is it.
+                {t("noSurveillanceDescription")}
               </p>
             </div>
           </div>
@@ -100,24 +97,20 @@ export default function AboutPage() {
         {/* Who built this */}
         <section className="mb-16">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
-            Who built this
+            {t("whoBuiltHeading")}
           </h2>
           <p className="text-[15px] text-text-secondary leading-[1.8] mb-6">
-            DEINDEX.ME is built and maintained by people who believe the internet
-            needs an undo button. We are developers, privacy researchers, and
-            digital rights advocates who got tired of watching data brokers
-            profit from information people never agreed to share.
+            {t("whoBuilt1")}
           </p>
           <p className="text-[15px] text-text-secondary leading-[1.8]">
-            The project is community-driven and funded entirely by donations.
-            No investors. No board. No one to answer to except the people we serve.
+            {t("whoBuilt2")}
           </p>
         </section>
 
         {/* Links */}
         <section className="mb-16">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
-            Get involved
+            {t("getInvolvedHeading")}
           </h2>
           <div className="space-y-4">
             <a
@@ -127,10 +120,10 @@ export default function AboutPage() {
               className="block border border-border px-6 py-4 hover:border-text-dim transition-colors group"
             >
               <span className="text-[13px] text-text-primary group-hover:text-accent-red transition-colors">
-                GitHub Repository
+                {t("githubRepo")}
               </span>
               <span className="block text-[11px] text-text-muted mt-1">
-                View the source, report issues, contribute to the service database
+                {t("githubRepoDescription")}
               </span>
             </a>
             <Link
@@ -138,10 +131,10 @@ export default function AboutPage() {
               className="block border border-border px-6 py-4 hover:border-text-dim transition-colors group"
             >
               <span className="text-[13px] text-text-primary group-hover:text-accent-red transition-colors">
-                Support the Cause
+                {t("supportCause")}
               </span>
               <span className="block text-[11px] text-text-muted mt-1">
-                Help fund hosting, API costs, and development
+                {t("supportCauseDescription")}
               </span>
             </Link>
           </div>
@@ -150,10 +143,10 @@ export default function AboutPage() {
         {/* Press */}
         <section className="mb-16">
           <h2 className="text-[10px] tracking-[4px] uppercase text-text-muted mb-8">
-            Press &amp; media
+            {t("pressHeading")}
           </h2>
           <p className="text-[13px] text-text-secondary leading-[1.8] mb-4">
-            For press inquiries, interviews, or media requests:
+            {t("pressDescription")}
           </p>
           <a
             href="mailto:press@deindex.me"
@@ -169,13 +162,13 @@ export default function AboutPage() {
             href="/about/privacy"
             className="text-[11px] text-text-muted hover:text-text-secondary transition-colors tracking-[1px] uppercase"
           >
-            Privacy Policy
+            {t("privacyPolicy")}
           </Link>
           <Link
             href="/about/terms"
             className="text-[11px] text-text-muted hover:text-text-secondary transition-colors tracking-[1px] uppercase"
           >
-            Terms of Service
+            {t("termsOfService")}
           </Link>
         </div>
       </div>

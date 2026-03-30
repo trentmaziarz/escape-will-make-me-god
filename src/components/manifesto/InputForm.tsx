@@ -2,10 +2,13 @@
 
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 type FormState = "idle" | "submitting" | "sent" | "error";
 
 export default function InputForm() {
+  const t = useTranslations("landing.form");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -58,15 +61,19 @@ export default function InputForm() {
         className="text-center"
       >
         <p className="mb-4 font-display text-lg italic text-text-primary">
-          Check your email.
+          {t("sentTitle")}
         </p>
         <p className="font-mono text-[13px] leading-relaxed text-text-dim">
-          We sent a verification link to{" "}
-          <span className="text-text-secondary">{email}</span>.
+          {t.rich("sentDescription", {
+            email,
+            highlight: (chunks) => (
+              <span className="text-text-secondary">{chunks}</span>
+            ),
+          })}
           <br />
-          Click &ldquo;Detonate&rdquo; to begin the scan.
+          {t("sentInstruction")}
           <br />
-          The link expires in 1 hour.
+          {t("sentExpiry")}
         </p>
       </motion.div>
     );
@@ -85,13 +92,13 @@ export default function InputForm() {
           htmlFor="email"
           className="mb-1 block font-mono text-[10px] uppercase tracking-[3px] text-text-muted"
         >
-          EMAIL
+          {t("emailLabel")}
         </label>
         <input
           id="email"
           type="email"
           required
-          placeholder="your@email.com"
+          placeholder={t("emailPlaceholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-[14px] text-text-primary outline-none transition-[border-color] duration-300 placeholder:text-text-dim focus:border-accent-red"
@@ -104,12 +111,15 @@ export default function InputForm() {
           htmlFor="phone"
           className="mb-1 block font-mono text-[10px] uppercase tracking-[3px] text-text-muted"
         >
-          PHONE <span className="tracking-normal text-text-ghost">(optional)</span>
+          {t("phoneLabel")}{" "}
+          <span className="tracking-normal text-text-ghost">
+            {t("phoneOptional")}
+          </span>
         </label>
         <input
           id="phone"
           type="tel"
-          placeholder="+1 (555) 000-0000"
+          placeholder={t("phonePlaceholder")}
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-[14px] text-text-primary outline-none transition-[border-color] duration-300 placeholder:text-text-dim focus:border-accent-red"
@@ -134,16 +144,24 @@ export default function InputForm() {
       />
 
       <p className="mb-6 font-mono text-[11px] leading-relaxed text-text-ghost">
-        We use this to find your digital footprint. When we&apos;re done, we
-        delete everything — including this. By continuing you agree to our{" "}
-        <a href="/about/privacy" className="text-text-muted underline hover:text-text-secondary">
-          privacy policy
-        </a>{" "}
-        and{" "}
-        <a href="/about/terms" className="text-text-muted underline hover:text-text-secondary">
-          terms
-        </a>
-        .
+        {t.rich("consent", {
+          privacy: (chunks) => (
+            <Link
+              href="/about/privacy"
+              className="text-text-muted underline hover:text-text-secondary"
+            >
+              {chunks}
+            </Link>
+          ),
+          terms: (chunks) => (
+            <Link
+              href="/about/terms"
+              className="text-text-muted underline hover:text-text-secondary"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
       </p>
 
       {errorMessage && (
@@ -155,10 +173,10 @@ export default function InputForm() {
       <button
         type="submit"
         disabled={!canSubmit}
-        aria-label="Begin your disappearance"
+        aria-label={t("submitAriaLabel")}
         className="border border-text-primary bg-transparent px-8 py-3.5 font-display text-sm uppercase tracking-[4px] text-text-primary transition-all hover:tracking-[6px] disabled:cursor-not-allowed disabled:opacity-30"
       >
-        {formState === "submitting" ? "Sending..." : "Begin your disappearance \u2192"}
+        {formState === "submitting" ? t("submitting") : t("submit")}
       </button>
     </motion.form>
   );

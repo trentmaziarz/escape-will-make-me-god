@@ -2,25 +2,28 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useAudio } from "@/hooks/useAudio";
 
-const MANIFESTO_LINES = [
-  "You are the product.",
-  "Every click, every scroll, every pause — catalogued.",
-  "Your face is in databases you've never heard of.",
-  "Your phone number is for sale. Right now.",
-  "Data brokers know your home address, your salary, your habits.",
-  "They don't need your permission.",
-  "They already have everything.",
-  "",
-  "But you have something they don't expect.",
-  "The right to disappear.",
-  "",
-  "GDPR Article 17. CCPA Section 1798.105.",
-  "The law says they must delete you.",
-  "They're counting on you never asking.",
-  "",
-  "Stop counting.",
+type ManifestoEntry = { key: string } | { spacer: true };
+
+const MANIFESTO_SEQUENCE: ManifestoEntry[] = [
+  { key: "line1" },
+  { key: "line2" },
+  { key: "line3" },
+  { key: "line4" },
+  { key: "line5" },
+  { key: "line6" },
+  { key: "line7" },
+  { spacer: true },
+  { key: "line8" },
+  { key: "line9" },
+  { spacer: true },
+  { key: "line10" },
+  { key: "line11" },
+  { key: "line12" },
+  { spacer: true },
+  { key: "line13" },
 ];
 
 interface LineStyle {
@@ -31,64 +34,65 @@ interface LineStyle {
   color: string;
 }
 
-function getLineStyle(line: string): LineStyle {
-  if (line === "Stop counting.") {
-    return {
-      fontFamily: "var(--font-mono)",
-      fontSize: "28px",
-      fontWeight: 900,
-      fontStyle: "normal",
-      color: "var(--accent-red)",
-    };
-  }
-  if (line.startsWith("GDPR") || line.startsWith("The law")) {
-    return {
-      fontFamily: "var(--font-mono)",
-      fontSize: "13px",
-      fontWeight: 400,
-      fontStyle: "normal",
-      color: "var(--text-secondary)",
-    };
-  }
-  if (line.startsWith("But you")) {
-    return {
-      fontFamily: "var(--font-display)",
-      fontSize: "18px",
-      fontWeight: 400,
-      fontStyle: "italic",
-      color: "#c8b89a",
-    };
-  }
-  if (line === "They already have everything.") {
-    return {
-      fontFamily: "var(--font-display)",
-      fontSize: "18px",
-      fontWeight: 700,
-      fontStyle: "normal",
-      color: "var(--text-primary)",
-    };
-  }
-  return {
+const LINE_STYLES: Record<string, LineStyle> = {
+  line13: {
+    fontFamily: "var(--font-mono)",
+    fontSize: "28px",
+    fontWeight: 900,
+    fontStyle: "normal",
+    color: "var(--accent-red)",
+  },
+  line10: {
+    fontFamily: "var(--font-mono)",
+    fontSize: "13px",
+    fontWeight: 400,
+    fontStyle: "normal",
+    color: "var(--text-secondary)",
+  },
+  line11: {
+    fontFamily: "var(--font-mono)",
+    fontSize: "13px",
+    fontWeight: 400,
+    fontStyle: "normal",
+    color: "var(--text-secondary)",
+  },
+  line8: {
     fontFamily: "var(--font-display)",
     fontSize: "18px",
     fontWeight: 400,
+    fontStyle: "italic",
+    color: "#c8b89a",
+  },
+  line7: {
+    fontFamily: "var(--font-display)",
+    fontSize: "18px",
+    fontWeight: 700,
     fontStyle: "normal",
     color: "var(--text-primary)",
-  };
-}
+  },
+};
+
+const DEFAULT_STYLE: LineStyle = {
+  fontFamily: "var(--font-display)",
+  fontSize: "18px",
+  fontWeight: 400,
+  fontStyle: "normal",
+  color: "var(--text-primary)",
+};
 
 interface ManifestoTextProps {
   onComplete: () => void;
 }
 
 export default function ManifestoText({ onComplete }: ManifestoTextProps) {
+  const t = useTranslations("landing.manifesto");
   const [visibleCount, setVisibleCount] = useState(0);
   const { playTone } = useAudio();
 
   const advance = useCallback(() => {
     setVisibleCount((prev) => {
       const next = prev + 1;
-      if (next >= MANIFESTO_LINES.length) {
+      if (next >= MANIFESTO_SEQUENCE.length) {
         onComplete();
       }
       return next;
@@ -96,37 +100,36 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
   }, [onComplete]);
 
   useEffect(() => {
-    if (visibleCount >= MANIFESTO_LINES.length) return;
+    if (visibleCount >= MANIFESTO_SEQUENCE.length) return;
 
-    const currentLine = MANIFESTO_LINES[visibleCount];
-    const delay =
-      currentLine === ""
-        ? 400
-        : 120 + currentLine.length * 30;
+    const entry = MANIFESTO_SEQUENCE[visibleCount];
+    const isSpacer = "spacer" in entry;
+    const text = isSpacer ? "" : t(entry.key);
+    const delay = isSpacer ? 400 : 120 + text.length * 30;
 
     const timer = setTimeout(() => {
-      if (currentLine !== "") {
+      if (!isSpacer) {
         playTone(200 + Math.random() * 100, 0.1, "sine", 0.02);
       }
       advance();
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [visibleCount, advance, playTone]);
+  }, [visibleCount, advance, playTone, t]);
 
   return (
     <div
       className="mb-12 min-h-[520px]"
       role="region"
-      aria-label="Manifesto"
+      aria-label={t("ariaLabel")}
     >
       <AnimatePresence>
-        {MANIFESTO_LINES.slice(0, visibleCount).map((line, i) => {
-          if (line === "") {
+        {MANIFESTO_SEQUENCE.slice(0, visibleCount).map((entry, i) => {
+          if ("spacer" in entry) {
             return <div key={i} className="mb-6" aria-hidden="true" />;
           }
 
-          const style = getLineStyle(line);
+          const style = LINE_STYLES[entry.key] || DEFAULT_STYLE;
 
           return (
             <motion.div
@@ -143,7 +146,7 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
                 color: style.color,
               }}
             >
-              {line}
+              {t(entry.key)}
             </motion.div>
           );
         })}
@@ -152,4 +155,4 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
   );
 }
 
-export { MANIFESTO_LINES };
+export { MANIFESTO_SEQUENCE };

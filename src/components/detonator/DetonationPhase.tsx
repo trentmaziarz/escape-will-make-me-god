@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import gsap from "gsap";
+import { useTranslations } from "next-intl";
 import type { ScannedService } from "@/hooks/useDetonation";
 import { useAudio } from "@/hooks/useAudio";
 
@@ -18,6 +19,7 @@ export default function DetonationPhase({
   apiDone,
   onComplete,
 }: DetonationPhaseProps) {
+  const t = useTranslations("detonator.detonation");
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [dissolvedSet, setDissolvedSet] = useState<Set<string>>(new Set());
@@ -29,7 +31,6 @@ export default function DetonationPhase({
     [services, selectedServiceIds]
   );
 
-  // Stable ref for the playTone function to avoid effect re-runs
   const playToneRef = useRef(playTone);
   playToneRef.current = playTone;
 
@@ -46,7 +47,6 @@ export default function DetonationPhase({
       tl.call(
         () => {
           setDissolvedSet((prev) => new Set([...prev, service.serviceId]));
-          // Percussive hit: sawtooth 80Hz 300ms vol 0.12 + sine 40Hz 500ms vol 0.06
           playToneRef.current(80, 0.3, "sawtooth", 0.12);
           setTimeout(() => playToneRef.current(40, 0.5, "sine", 0.06), 50);
         },
@@ -68,7 +68,6 @@ export default function DetonationPhase({
       );
     });
 
-    // 1s silence after last dissolution
     tl.call(
       () => {
         setAnimationDone(true);
@@ -88,7 +87,6 @@ export default function DetonationPhase({
     };
   }, [runTimeline]);
 
-  // Transition when both animation and API are done
   useEffect(() => {
     if (animationDone && apiDone) {
       onComplete();
@@ -98,21 +96,26 @@ export default function DetonationPhase({
   return (
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
-        {/* Header */}
         <h2 className="text-[10px] tracking-[6px] text-accent-red mb-8 uppercase">
-          Detonation in progress
+          {t("title")}
         </h2>
 
-        {/* Screen reader status announcement */}
         <div className="sr-only" aria-live="polite" aria-atomic="false">
-          {selectedServices.map((service) =>
-            dissolvedSet.has(service.serviceId)
-              ? `Deletion request sent for ${service.name}.`
-              : null
-          ).filter(Boolean).slice(-1)[0]}
+          {selectedServices
+            .map((service) =>
+              dissolvedSet.has(service.serviceId)
+                ? t("srAnnouncement", { name: service.name })
+                : null
+            )
+            .filter(Boolean)
+            .slice(-1)[0]}
         </div>
 
-        <div className="flex flex-col gap-1.5" role="list" aria-label="Detonation progress">
+        <div
+          className="flex flex-col gap-1.5"
+          role="list"
+          aria-label="Detonation progress"
+        >
           {selectedServices.map((service, i) => (
             <div
               key={service.serviceId}
@@ -135,7 +138,9 @@ export default function DetonationPhase({
                     : "text-text-ghost"
                 }`}
               >
-                {dissolvedSet.has(service.serviceId) ? "SENT" : "PENDING"}
+                {dissolvedSet.has(service.serviceId)
+                  ? t("sent")
+                  : t("pending")}
               </span>
             </div>
           ))}

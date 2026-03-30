@@ -1,44 +1,49 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
-const NAV_LINKS = [
-  { href: "/detonate", label: "Detonate" },
-  { href: "/database", label: "Database" },
-  { href: "/blog", label: "Blog" },
-  { href: "/about", label: "About" },
-  { href: "/donate", label: "Donate" },
+const NAV_KEYS = [
+  { href: "/detonate" as const, key: "detonate" },
+  { href: "/database" as const, key: "database" },
+  { href: "/blog" as const, key: "blog" },
+  { href: "/about" as const, key: "about" },
+  { href: "/donate" as const, key: "donate" },
 ];
 
-const LEGAL_LINKS = [
-  { href: "/about/privacy", label: "Privacy" },
-  { href: "/about/terms", label: "Terms" },
+const LEGAL_KEYS = [
+  { href: "/about/privacy" as const, key: "privacy" },
+  { href: "/about/terms" as const, key: "terms" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const t = await getTranslations("nav");
+
   return (
     <footer className="w-full border-t border-border mt-auto">
       <div className="mx-auto max-w-[680px] px-4 py-8 sm:px-6">
-        {/* Nav links */}
-        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-2 mb-6">
-          {NAV_LINKS.map(({ href, label }) => (
+        <nav
+          aria-label="Footer navigation"
+          className="flex flex-wrap gap-x-6 gap-y-2 mb-6"
+        >
+          {NAV_KEYS.map(({ href, key }) => (
             <Link
               key={href}
               href={href}
               className="text-[10px] tracking-[3px] uppercase text-text-muted hover:text-text-secondary transition-colors"
             >
-              {label}
+              {t(key)}
             </Link>
           ))}
         </nav>
 
-        {/* Legal + meta */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          {LEGAL_LINKS.map(({ href, label }) => (
+          {LEGAL_KEYS.map(({ href, key }) => (
             <Link
               key={href}
               href={href}
               className="text-[9px] tracking-[2px] uppercase text-text-muted hover:text-text-secondary transition-colors"
             >
-              {label}
+              {t(key)}
             </Link>
           ))}
           <a
@@ -47,10 +52,11 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-[9px] tracking-[2px] uppercase text-text-muted hover:text-text-secondary transition-colors"
           >
-            GitHub
+            {t("github")}
           </a>
+          <LanguageSwitcher />
           <span className="text-[9px] tracking-[1px] text-text-muted ml-auto">
-            MIT License
+            {t("mitLicense")}
           </span>
         </div>
       </div>
