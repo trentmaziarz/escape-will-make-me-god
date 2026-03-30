@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, JetBrains_Mono } from "next/font/google";
 import ScanlineOverlay from "@/components/layout/ScanlineOverlay";
+import Footer from "@/components/layout/Footer";
 import MuteToggle from "@/components/ui/MuteToggle";
 import "@/styles/globals.css";
 
@@ -48,8 +49,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${playfair.variable} ${jetbrains.variable}`}>
-      <body>
+      <body className="flex min-h-screen flex-col">
         {children}
+        <Footer />
         <MuteToggle />
         <ScanlineOverlay />
       </body>
