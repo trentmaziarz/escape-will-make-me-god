@@ -96,6 +96,7 @@ export default function DetonatorFlow() {
           visibleServices={visibleServices}
           progress={progress}
           isRevealing={isRevealing}
+          maskedEmail={maskedEmail}
         />
       )}
 

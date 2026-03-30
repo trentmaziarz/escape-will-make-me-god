@@ -64,13 +64,14 @@ describe("ScanPhase", () => {
         visibleServices={MOCK_SERVICES.slice(0, 2)}
         progress={67}
         isRevealing={true}
+        maskedEmail="te***@example.com"
       />
     );
 
-    expect(screen.getByText("Scanning")).toBeInTheDocument();
+    expect(screen.getByText("Scanning your digital footprint")).toBeInTheDocument();
     expect(screen.getByText("Facebook")).toBeInTheDocument();
     expect(screen.getByText("Spokeo")).toBeInTheDocument();
-    expect(screen.getByText("67% — Scanning...")).toBeInTheDocument();
+    expect(screen.getByText(/67% complete/)).toBeInTheDocument();
   });
 
   it("shows correct index numbers", () => {
@@ -79,6 +80,7 @@ describe("ScanPhase", () => {
         visibleServices={MOCK_SERVICES.slice(0, 2)}
         progress={67}
         isRevealing={true}
+        maskedEmail="te***@example.com"
       />
     );
 
@@ -86,30 +88,32 @@ describe("ScanPhase", () => {
     expect(screen.getByText("02")).toBeInTheDocument();
   });
 
-  it("displays difficulty tags correctly", () => {
+  it("displays difficulty labels correctly", () => {
     render(
       <ScanPhase
         visibleServices={MOCK_SERVICES}
         progress={100}
         isRevealing={false}
+        maskedEmail="te***@example.com"
       />
     );
 
-    expect(screen.getByText("MANUAL")).toBeInTheDocument();
-    expect(screen.getByText("AUTO")).toBeInTheDocument();
-    expect(screen.getByText("EMAIL REQ")).toBeInTheDocument();
+    expect(screen.getByText("HARD")).toBeInTheDocument();
+    expect(screen.getByText("AUTO-DELETE")).toBeInTheDocument();
+    expect(screen.getByText("MEDIUM")).toBeInTheDocument();
   });
 
-  it("hides scanning indicator when not revealing", () => {
+  it("displays masked email in progress text", () => {
     render(
       <ScanPhase
         visibleServices={MOCK_SERVICES}
         progress={100}
         isRevealing={false}
+        maskedEmail="te***@example.com"
       />
     );
 
-    expect(screen.queryByText(/Scanning\.\.\./)).not.toBeInTheDocument();
+    expect(screen.getByText(/te\*\*\*@example\.com/)).toBeInTheDocument();
   });
 });
 

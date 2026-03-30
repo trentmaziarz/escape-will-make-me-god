@@ -84,10 +84,10 @@ export default function ReviewPhase({
                   role="listitem"
                   onClick={() => onToggle(service.serviceId)}
                   type="button"
-                  className={`flex items-center gap-3 px-3 py-2.5 border text-left transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-300 cursor-pointer ${
                     selected
-                      ? "border-border hover:border-border-hover"
-                      : "border-bg-elevated opacity-40 hover:opacity-60"
+                      ? "border-accent-red bg-accent-red-dim"
+                      : "border-border hover:border-border-hover"
                   }`}
                 >
                   <div
@@ -100,14 +100,14 @@ export default function ReviewPhase({
                       <span className="text-[10px] text-accent-red">×</span>
                     )}
                   </div>
-                  <span className="text-sm w-6 shrink-0" aria-hidden="true">
+                  <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
                     {service.icon}
                   </span>
                   <span className="text-[13px] text-text-primary flex-1">
                     {service.name}
                   </span>
                   <span
-                    className={`text-[9px] tracking-[1px] border px-1.5 py-0.5 ${difficultyColor[service.deletionDifficulty]}`}
+                    className={`text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 border ${difficultyColor[service.deletionDifficulty]}`}
                   >
                     {difficultyLabel[service.deletionDifficulty]}
                   </span>
@@ -122,7 +122,7 @@ export default function ReviewPhase({
               onClick={onDetonate}
               disabled={selectedCount === 0}
               type="button"
-              className="px-10 py-4 border-2 border-accent-red font-display text-lg tracking-[6px] text-accent-red uppercase transition-all hover:tracking-[12px] hover:bg-accent-red-dim animate-pulse-red disabled:opacity-30 disabled:animate-none disabled:cursor-not-allowed"
+              className="bg-transparent px-12 py-5 border-2 border-accent-red font-display text-lg tracking-[6px] text-accent-red uppercase transition-all duration-300 animate-pulse-red hover:bg-accent-red hover:text-bg-primary hover:tracking-[10px] disabled:opacity-30 disabled:animate-none disabled:cursor-not-allowed"
             >
               Detonate
             </button>
