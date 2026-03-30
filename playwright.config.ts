@@ -24,6 +24,7 @@ export default defineConfig({
     env: {
       ...process.env,
       DISABLE_RATE_LIMIT: "true",
+      JWT_SECRET: process.env.JWT_SECRET ?? "test-secret-for-dev",
     },
   },
 });

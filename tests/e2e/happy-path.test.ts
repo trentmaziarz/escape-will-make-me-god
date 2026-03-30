@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { EncryptJWT } from "jose";
 import { createHash } from "crypto";
 
-const JWT_SECRET = "test-secret-for-dev";
+const JWT_SECRET = process.env.JWT_SECRET ?? "test-secret-for-dev";
 
 async function createTestToken(
   email = "test@example.com",
