@@ -94,7 +94,7 @@ export default function InputForm() {
           placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-sm text-text-primary outline-none transition-colors placeholder:text-text-dim focus:border-accent-red"
+          className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-[14px] text-text-primary outline-none transition-[border-color] duration-300 placeholder:text-text-dim focus:border-accent-red"
           autoComplete="email"
         />
       </div>
@@ -112,7 +112,7 @@ export default function InputForm() {
           placeholder="+1 (555) 000-0000"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-sm text-text-primary outline-none transition-colors placeholder:text-text-dim focus:border-accent-red"
+          className="w-full border-0 border-b border-text-ghost bg-transparent px-0 py-3 font-mono text-base sm:text-[14px] text-text-primary outline-none transition-[border-color] duration-300 placeholder:text-text-dim focus:border-accent-red"
           autoComplete="tel"
         />
       </div>
@@ -156,7 +156,7 @@ export default function InputForm() {
         type="submit"
         disabled={!canSubmit}
         aria-label="Begin your disappearance"
-        className="border border-text-primary bg-transparent px-8 py-3.5 font-display text-sm uppercase tracking-[4px] text-text-primary transition-all hover:bg-text-primary hover:text-bg-primary disabled:cursor-not-allowed disabled:opacity-30"
+        className="border border-text-primary bg-transparent px-8 py-3.5 font-display text-sm uppercase tracking-[4px] text-text-primary transition-all hover:tracking-[6px] disabled:cursor-not-allowed disabled:opacity-30"
       >
         {formState === "submitting" ? "Sending..." : "Begin your disappearance \u2192"}
       </button>

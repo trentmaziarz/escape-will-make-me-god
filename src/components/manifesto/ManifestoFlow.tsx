@@ -23,10 +23,10 @@ export default function ManifestoFlow() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-none tracking-tight text-text-primary">
+        <h1 className="font-display text-[clamp(32px,6vw,56px)] font-black leading-[1.05] tracking-[-1px] text-text-primary mb-2">
           DEINDEX<span className="text-accent-red">.ME</span>
         </h1>
-        <p className="mt-2 font-mono text-[11px] uppercase tracking-[4px] text-text-muted">
+        <p className="font-mono text-[11px] uppercase tracking-[4px] text-text-muted">
           Offline is the new luxury
         </p>
       </motion.div>

@@ -26,7 +26,7 @@ export default function MuteToggle() {
     <button
       onClick={toggle}
       aria-label={muted ? "Unmute sound" : "Mute sound"}
-      className="fixed top-4 right-4 z-[200] border border-text-ghost bg-transparent px-2.5 py-1.5 font-mono text-[11px] tracking-[2px] text-text-muted transition-colors hover:border-border-hover hover:text-text-primary"
+      className="fixed top-4 right-4 z-[200] border border-text-ghost bg-transparent px-2.5 py-1.5 font-mono text-[11px] tracking-[2px] text-[#666] transition-colors hover:border-[#666] hover:text-text-primary"
     >
       {muted ? "UNMUTE" : "MUTE"}
     </button>
