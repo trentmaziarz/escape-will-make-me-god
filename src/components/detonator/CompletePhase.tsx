@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useAudio } from "@/hooks/useAudio";
 import type { DetonationResults } from "@/hooks/useDetonation";
 
@@ -86,13 +87,13 @@ export default function CompletePhase({
         }}
       />
 
-      <a
+      <Link
         href="/donate"
         aria-label={t("supportAriaLabel")}
         className="font-mono text-[11px] text-text-muted tracking-[2px] hover:text-text-secondary transition-colors"
       >
         {t("supportCause")}
-      </a>
+      </Link>
     </motion.div>
   );
 }
