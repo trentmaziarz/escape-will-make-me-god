@@ -13,21 +13,21 @@ describe("checkRateLimit", () => {
   it("allows requests under the limit", () => {
     const result = checkRateLimit("initiate", "192.168.1.1");
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(9); // 10 max, used 1
+    expect(result.remaining).toBe(4); // 5 max, used 1
   });
 
   it("counts down remaining correctly", () => {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 4; i++) {
       checkRateLimit("initiate", "192.168.1.1");
     }
     const result = checkRateLimit("initiate", "192.168.1.1");
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(0); // 10/10 used
+    expect(result.remaining).toBe(0); // 5/5 used
   });
 
   it("blocks when at the limit", () => {
-    // Use all 10 initiate requests
-    for (let i = 0; i < 10; i++) {
+    // Use all 5 initiate requests
+    for (let i = 0; i < 5; i++) {
       checkRateLimit("initiate", "192.168.1.1");
     }
     const result = checkRateLimit("initiate", "192.168.1.1");
@@ -35,8 +35,8 @@ describe("checkRateLimit", () => {
     expect(result.remaining).toBe(0);
   });
 
-  it("enforces detonate limit of 20/hr", () => {
-    for (let i = 0; i < 20; i++) {
+  it("enforces detonate limit of 2/hr", () => {
+    for (let i = 0; i < 2; i++) {
       checkRateLimit("detonate", "10.0.0.1");
     }
     const result = checkRateLimit("detonate", "10.0.0.1");
@@ -46,18 +46,18 @@ describe("checkRateLimit", () => {
 
   it("tracks actions independently", () => {
     // Exhaust initiate
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       checkRateLimit("initiate", "192.168.1.1");
     }
     // scan should still work (separate action)
     const result = checkRateLimit("scan", "192.168.1.1");
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(29);
+    expect(result.remaining).toBe(4);
   });
 
   it("tracks IPs independently", () => {
     // Exhaust limit for one IP
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       checkRateLimit("initiate", "192.168.1.1");
     }
     // Different IP should still work
@@ -67,7 +67,7 @@ describe("checkRateLimit", () => {
 
   it("resets after the window expires", () => {
     // Use all requests
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       checkRateLimit("initiate", "192.168.1.1");
     }
     expect(checkRateLimit("initiate", "192.168.1.1").allowed).toBe(false);
@@ -78,7 +78,7 @@ describe("checkRateLimit", () => {
 
     const result = checkRateLimit("initiate", "192.168.1.1");
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(9);
+    expect(result.remaining).toBe(4);
 
     vi.useRealTimers();
   });
@@ -95,7 +95,7 @@ describe("checkRateLimit", () => {
     checkRateLimit("initiate", "203.0.113.50");
     const result = checkRateLimit("initiate", "203.0.113.50");
     // Count should be 3 (same hashed key)
-    expect(result.remaining).toBe(7);
+    expect(result.remaining).toBe(2);
   });
 
   it("throws for unknown action", () => {

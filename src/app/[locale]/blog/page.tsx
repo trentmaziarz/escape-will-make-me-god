@@ -4,10 +4,11 @@ import BlogContent from "@/components/blog/BlogContent";
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({
-    locale: params.locale,
+    locale,
     namespace: "metadata.blog",
   });
   return {

@@ -6,10 +6,11 @@ import Counter from "@/components/layout/Counter";
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({
-    locale: params.locale,
+    locale,
     namespace: "metadata.home",
   });
   return {

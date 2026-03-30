@@ -161,14 +161,14 @@ describe("POST /api/initiate", () => {
     expect(mockSend).not.toHaveBeenCalled();
   });
 
-  it("returns 429 when rate limited (11th request)", async () => {
-    // First 10 requests succeed
-    for (let i = 0; i < 10; i++) {
+  it("returns 429 when rate limited (6th request)", async () => {
+    // First 5 requests succeed
+    for (let i = 0; i < 5; i++) {
       const res = await POST(makeRequest(VALID_BODY));
       expect(res.status).toBe(200);
     }
 
-    // 11th request should be rate limited
+    // 6th request should be rate limited
     const res = await POST(makeRequest(VALID_BODY));
     const data = await res.json();
 

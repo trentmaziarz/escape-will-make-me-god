@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { checkRateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 const MIN_AMOUNT = 100; // $1.00 minimum
 const MAX_AMOUNT = 100_000; // $1,000.00 maximum
@@ -17,7 +18,22 @@ function getStripe(): Stripe {
   return _stripe;
 }
 
+function getClientIp(request: NextRequest): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
 export async function POST(request: NextRequest) {
+  // --- Rate limit ---
+  const ip = getClientIp(request);
+  const limit = checkRateLimit("donate", ip);
+  if (!limit.allowed) {
+    return rateLimitResponse(limit.resetAt);
+  }
+
   try {
     const body = await request.json();
     const { amount } = body;

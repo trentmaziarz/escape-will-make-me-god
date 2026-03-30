@@ -4,10 +4,11 @@ import DonateContent from "@/components/donate/DonateContent";
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const t = await getTranslations({
-    locale: params.locale,
+    locale,
     namespace: "metadata.donate",
   });
   return {
@@ -16,13 +17,14 @@ export async function generateMetadata({
   };
 }
 
-export default function DonatePage({
+export default async function DonatePage({
   searchParams,
 }: {
-  searchParams: { success?: string; cancelled?: string };
+  searchParams: Promise<{ success?: string; cancelled?: string }>;
 }) {
-  const success = searchParams.success === "true";
-  const cancelled = searchParams.cancelled === "true";
+  const resolvedSearchParams = await searchParams;
+  const success = resolvedSearchParams.success === "true";
+  const cancelled = resolvedSearchParams.cancelled === "true";
 
   return <DonateContent success={success} cancelled={cancelled} />;
 }

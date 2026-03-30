@@ -29,10 +29,11 @@ const jetbrains = JetBrains_Mono({
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  const { locale } = await params;
   const t = await getTranslations({
-    locale: params.locale,
+    locale,
     namespace: "metadata.home",
   });
   return {
@@ -44,7 +45,7 @@ export async function generateMetadata({
       url: "https://deindex.me",
       siteName: "DEINDEX.ME",
       type: "website",
-      locale: params.locale,
+      locale,
     },
     twitter: {
       card: "summary_large_image",
@@ -60,9 +61,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
 
   if (!routing.locales.includes(locale as Locale)) {
     notFound();
