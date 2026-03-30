@@ -1,6 +1,21 @@
-Subject: Right to Delete Request — California Consumer Privacy Act
+export interface CCPATemplateInput {
+  email: string;
+  phone: string;
+  serviceName: string;
+  dpoEmail: string;
+}
 
-To Whom It May Concern,
+export interface DeletionTemplate {
+  subject: string;
+  body: string;
+}
+
+export function generateCCPA(input: CCPATemplateInput): DeletionTemplate {
+  const { email, phone } = input;
+
+  const subject = "Right to Delete Request — California Consumer Privacy Act";
+
+  const body = `To Whom It May Concern,
 
 I am a California resident exercising my right to delete personal information under the California Consumer Privacy Act (CCPA), Civil Code Section 1798.105.
 
@@ -11,12 +26,15 @@ I request that you delete all personal information you have collected about me, 
 - Marketing and advertising profiles
 
 My identifying information:
-- Email address: {{email}}
-- Phone number: {{phone}}
+- Email address: ${email}
+- Phone number: ${phone}
 
 Please confirm the deletion of my personal information within 45 days of receipt, as required by the CCPA. If you require additional time, please notify me of the extension within 45 days.
 
 If you believe an exception under Section 1798.105(d) applies to any portion of my data, please specify which exception and which data it applies to.
 
 Regards,
-{{email}}
+${email}`;
+
+  return { subject, body };
+}

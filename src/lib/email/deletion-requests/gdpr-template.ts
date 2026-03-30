@@ -1,6 +1,21 @@
-Subject: Right to Erasure Request — GDPR Article 17
+export interface GDPRTemplateInput {
+  email: string;
+  phone: string;
+  serviceName: string;
+  dpoEmail: string;
+}
 
-Dear Data Protection Officer,
+export interface DeletionTemplate {
+  subject: string;
+  body: string;
+}
+
+export function generateGDPR(input: GDPRTemplateInput): DeletionTemplate {
+  const { email, phone } = input;
+
+  const subject = "Right to Erasure Request — GDPR Article 17";
+
+  const body = `Dear Data Protection Officer,
 
 I am writing to exercise my right to erasure under Article 17 of the General Data Protection Regulation (EU) 2016/679.
 
@@ -12,8 +27,8 @@ I request that you erase all personal data you hold concerning me, including but
 - Any backups or archived copies
 
 My identifying information:
-- Email address: {{email}}
-- Phone number: {{phone}}
+- Email address: ${email}
+- Phone number: ${phone}
 
 I withdraw any and all consent previously given for the processing of my personal data.
 
@@ -24,4 +39,7 @@ Please confirm completion of this erasure within 30 days of receipt, as required
 If I do not receive a satisfactory response within 30 days, I reserve the right to lodge a complaint with the relevant supervisory authority.
 
 Regards,
-{{email}}
+${email}`;
+
+  return { subject, body };
+}
