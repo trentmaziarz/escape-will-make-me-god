@@ -171,4 +171,43 @@ describe("hibpScanner", () => {
       expect(message).not.toContain("secret@example.com");
     }
   });
+
+  it("throws timeout error on AbortError", async () => {
+    mockFetch(async (_url, init) => {
+      // Simulate an AbortError (as thrown when AbortController fires)
+      const err = new DOMException("The operation was aborted", "AbortError");
+      throw err;
+    });
+
+    await expect(hibpScanner.scan("test@example.com")).rejects.toThrow(
+      "HIBP API request timed out"
+    );
+  });
+
+  it("handles non-standard error codes (e.g. 503)", async () => {
+    mockFetch(async () => new Response("Service Unavailable", { status: 503 }));
+
+    await expect(hibpScanner.scan("test@example.com")).rejects.toThrow(
+      "HIBP API error: 503"
+    );
+  });
+
+  it("retries on 429 and uses retry-after header", async () => {
+    let callCount = 0;
+    mockFetch(async () => {
+      callCount++;
+      if (callCount <= 2) {
+        return new Response("Rate limited", {
+          status: 429,
+          headers: { "retry-after": "0" },
+        });
+      }
+      return new Response("[]", { status: 200 });
+    });
+
+    // retries=2, so first call + 2 retries = 3 total
+    const results = await hibpScanner.scan("test@example.com");
+    expect(callCount).toBe(3);
+    expect(results).toEqual([]);
+  });
 });

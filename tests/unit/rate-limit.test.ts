@@ -103,6 +103,40 @@ describe("checkRateLimit", () => {
       "Unknown rate limit action"
     );
   });
+
+  it("bypasses rate limit when DISABLE_RATE_LIMIT=true", () => {
+    const original = process.env.DISABLE_RATE_LIMIT;
+    process.env.DISABLE_RATE_LIMIT = "true";
+    try {
+      // Even after exhausting the limit, should still be allowed
+      for (let i = 0; i < 10; i++) {
+        const result = checkRateLimit("initiate", "192.168.1.1");
+        expect(result.allowed).toBe(true);
+        expect(result.remaining).toBe(5);
+      }
+    } finally {
+      if (original === undefined) {
+        delete process.env.DISABLE_RATE_LIMIT;
+      } else {
+        process.env.DISABLE_RATE_LIMIT = original;
+      }
+    }
+  });
+
+  it("cleanup timer removes expired entries", () => {
+    vi.useFakeTimers();
+    // Create an entry
+    checkRateLimit("initiate", "192.168.1.1");
+
+    // Advance past the 1hr window + cleanup interval
+    vi.advanceTimersByTime(60 * 60 * 1000 + 10 * 60 * 1000 + 1);
+
+    // Entry should have been cleaned up; new request should get full remaining
+    const result = checkRateLimit("initiate", "192.168.1.1");
+    expect(result.allowed).toBe(true);
+    expect(result.remaining).toBe(4);
+    vi.useRealTimers();
+  });
 });
 
 describe("rateLimitResponse", () => {
