@@ -17,18 +17,22 @@ export default function CompletePhase({
   const { playTone } = useAudio();
   const chordPlayed = useRef(false);
 
-  // Final chord: sine triad (440, 554, 659Hz), staggered 200ms apart
+  // Final chord: sine triad staggered 200ms apart with matching prototype volumes
   useEffect(() => {
     if (chordPlayed.current) return;
     chordPlayed.current = true;
 
-    const frequencies = [440, 554, 659];
+    const tones: [number, number, number][] = [
+      [440, 2, 0.05],
+      [554, 2, 0.04],
+      [659, 3, 0.03],
+    ];
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
-    frequencies.forEach((freq, i) => {
+    tones.forEach(([freq, dur, vol], i) => {
       timeouts.push(
         setTimeout(() => {
-          playTone(freq, 3, "sine", 0.03);
+          playTone(freq, dur, "sine", vol);
         }, i * 200)
       );
     });
@@ -45,7 +49,7 @@ export default function CompletePhase({
       transition={{ duration: 2, ease: "easeOut" }}
       className="flex min-h-screen flex-col items-center justify-center px-4 py-10"
     >
-      {/* Top decorative line */}
+      {/* Top decorative line — red gradient */}
       <div
         className="w-px h-20 mb-12"
         style={{
@@ -73,7 +77,7 @@ export default function CompletePhase({
         We have already forgotten you.
       </p>
 
-      {/* Bottom decorative line */}
+      {/* Bottom decorative line — subdued #333 gradient */}
       <div
         className="w-px h-20 mb-12"
         style={{
@@ -85,7 +89,7 @@ export default function CompletePhase({
       {/* Subtle donation prompt */}
       <a
         href="/donate"
-        className="text-[10px] text-text-ghost tracking-[2px] hover:text-text-muted transition-colors uppercase"
+        className="font-mono text-[11px] text-text-ghost tracking-[2px] hover:text-text-muted transition-colors"
       >
         Support the cause →
       </a>

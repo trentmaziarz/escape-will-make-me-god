@@ -46,9 +46,9 @@ export default function DetonationPhase({
       tl.call(
         () => {
           setDissolvedSet((prev) => new Set([...prev, service.serviceId]));
-          // Percussive hit: low sawtooth punch + sub-bass tail
-          playToneRef.current(80, 0.3, "sawtooth", 0.06);
-          setTimeout(() => playToneRef.current(40, 0.5, "sine", 0.03), 50);
+          // Percussive hit: sawtooth 80Hz 300ms vol 0.12 + sine 40Hz 500ms vol 0.06
+          playToneRef.current(80, 0.3, "sawtooth", 0.12);
+          setTimeout(() => playToneRef.current(40, 0.5, "sine", 0.06), 50);
         },
         [],
         i * 0.6
@@ -98,11 +98,9 @@ export default function DetonationPhase({
   return (
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
       <div className="mx-auto w-full max-w-[680px]">
-        <h2 className="font-display text-2xl font-bold text-accent-red mb-2">
+        {/* Header: 10px, letter-spacing 6px, #c41e1e, uppercase */}
+        <p className="text-[10px] tracking-[6px] text-accent-red mb-8 uppercase">
           Detonation in progress
-        </h2>
-        <p className="text-xs text-text-muted tracking-[2px] mb-8 uppercase">
-          Do not close this window
         </p>
 
         <div className="flex flex-col gap-1.5" role="list" aria-label="Detonation progress">
@@ -113,9 +111,9 @@ export default function DetonationPhase({
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}
-              className="flex items-center gap-3 px-3 py-2.5 border border-border"
+              className="flex items-center gap-3 px-4 py-3 border border-border cursor-default"
             >
-              <span className="text-sm w-6 shrink-0" aria-hidden="true">
+              <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
                 {service.icon}
               </span>
               <span className="text-[13px] text-text-primary flex-1">
