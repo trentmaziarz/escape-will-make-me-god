@@ -225,7 +225,7 @@ describe("POST /api/detonate", () => {
   });
 
   it("increments counter by number of successful requests", async () => {
-    expect(getCount()).toBe(0);
+    expect(await getCount()).toBe(0);
 
     await POST(
       makeRequest({
@@ -234,7 +234,7 @@ describe("POST /api/detonate", () => {
       })
     );
 
-    expect(getCount()).toBe(2);
+    expect(await getCount()).toBe(2);
 
     // Second detonation adds more
     await POST(
@@ -244,7 +244,7 @@ describe("POST /api/detonate", () => {
       })
     );
 
-    expect(getCount()).toBe(3);
+    expect(await getCount()).toBe(3);
   });
 
   it("returns 400 for missing token", async () => {

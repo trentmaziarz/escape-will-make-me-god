@@ -246,7 +246,7 @@ export async function POST(request: NextRequest) {
 
   // --- Increment counter ---
   if (requestsSent > 0) {
-    incrementCount(requestsSent);
+    await incrementCount(requestsSent);
   }
 
   return NextResponse.json({
