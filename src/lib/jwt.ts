@@ -32,7 +32,7 @@ export async function verifyToken(token: string): Promise<DeindexPayload> {
   if (typeof payload.email !== "string" || !payload.email) {
     throw new Error("Token missing required field: email");
   }
-  if (typeof payload.phone !== "string" || !payload.phone) {
+  if (typeof payload.phone !== "string") {
     throw new Error("Token missing required field: phone");
   }
 
