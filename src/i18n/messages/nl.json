@@ -109,6 +109,12 @@
     "review": {
       "title": "Doellijst",
       "subtitle": "{count, plural, one {# dienst} other {# diensten}} geselecteerd voor verwijdering. Tik om te deselecteren.",
+      "confirmedTitle": "Gevonden accounts",
+      "confirmedSubtitle": "Uw e-mailadres is aangetroffen in bekende datalekken voor deze diensten.",
+      "suggestionsTitle": "U heeft mogelijk ook accounts bij",
+      "suggestionsSubtitle": "We kunnen deze niet bevestigen, maar ze komen vaak voor. Selecteer de diensten die u gebruikt.",
+      "noConfirmedNote": "We hebben geen bevestigde accounts gevonden in bekende datalekken. Selecteer de diensten die u gebruikt:",
+      "hibpErrorNote": "Datalekdatabase niet beschikbaar. Selecteer de diensten die u wilt verwijderen:",
       "all": "ALLE",
       "none": "GEEN",
       "selectAllAriaLabel": "Alle diensten selecteren",

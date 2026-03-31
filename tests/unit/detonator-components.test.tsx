@@ -120,7 +120,8 @@ describe("ScanPhase", () => {
 describe("ReviewPhase", () => {
   const defaultProps = {
     services: MOCK_SERVICES,
-    selectedServiceIds: new Set(["facebook", "spokeo", "linkedin"]),
+    selectedServiceIds: new Set(["facebook", "linkedin"]),
+    hibpError: false,
     onToggle: vi.fn(),
     onSelectAll: vi.fn(),
     onDeselectAll: vi.fn(),
@@ -136,11 +137,84 @@ describe("ReviewPhase", () => {
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
   });
 
+  it("splits services into confirmed and suggestions sections", () => {
+    render(<ReviewPhase {...defaultProps} />);
+
+    // Confirmed section header
+    expect(screen.getByText("Found accounts")).toBeInTheDocument();
+    // Suggestions section header
+    expect(screen.getByText("You may also have accounts on")).toBeInTheDocument();
+
+    // Confirmed section contains HIBP services
+    const confirmedList = screen.getByRole("list", { name: "Confirmed accounts" });
+    expect(confirmedList).toBeInTheDocument();
+
+    // Suggestions section contains database services
+    const suggestedList = screen.getByRole("list", { name: "Suggested services" });
+    expect(suggestedList).toBeInTheDocument();
+  });
+
+  it("shows 'no confirmed' note when HIBP found nothing (no error)", () => {
+    const dbOnlyServices: ScannedService[] = [
+      {
+        serviceId: "spokeo",
+        confidence: 0.2,
+        source: "database",
+        name: "Spokeo",
+        icon: "🔍",
+        category: "data-broker",
+        deletionDifficulty: "auto",
+        deletionMethod: "auto-email",
+      },
+    ];
+    render(
+      <ReviewPhase
+        {...defaultProps}
+        services={dbOnlyServices}
+        selectedServiceIds={new Set()}
+        hibpError={false}
+      />
+    );
+
+    expect(
+      screen.getByText(/didn\u2019t find confirmed accounts/)
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Found accounts")).not.toBeInTheDocument();
+  });
+
+  it("shows HIBP error note when breach database failed", () => {
+    const dbOnlyServices: ScannedService[] = [
+      {
+        serviceId: "spokeo",
+        confidence: 0.2,
+        source: "database",
+        name: "Spokeo",
+        icon: "🔍",
+        category: "data-broker",
+        deletionDifficulty: "auto",
+        deletionMethod: "auto-email",
+      },
+    ];
+    render(
+      <ReviewPhase
+        {...defaultProps}
+        services={dbOnlyServices}
+        selectedServiceIds={new Set()}
+        hibpError={true}
+      />
+    );
+
+    expect(
+      screen.getByText(/Breach database unavailable/)
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Found accounts")).not.toBeInTheDocument();
+  });
+
   it("shows selected count", () => {
     render(<ReviewPhase {...defaultProps} />);
 
     expect(
-      screen.getByText("3 services selected for deletion. Tap to deselect.")
+      screen.getByText("2 services selected for deletion. Tap to deselect.")
     ).toBeInTheDocument();
   });
 

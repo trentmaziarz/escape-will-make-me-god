@@ -22,6 +22,7 @@ export default function DetonatorFlow() {
     selectedServiceIds,
     results,
     maskedEmail,
+    hibpError,
     error,
     startScan,
     toggleService,
@@ -103,6 +104,7 @@ export default function DetonatorFlow() {
         <ReviewPhase
           services={discoveredServices}
           selectedServiceIds={selectedServiceIds}
+          hibpError={hibpError}
           onToggle={toggleService}
           onSelectAll={selectAll}
           onDeselectAll={deselectAll}

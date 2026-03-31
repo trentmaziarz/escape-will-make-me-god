@@ -109,6 +109,12 @@
     "review": {
       "title": "Zielliste",
       "subtitle": "{count, plural, one {# Dienst} other {# Dienste}} zur L\u00f6schung ausgew\u00e4hlt. Antippen zum Abw\u00e4hlen.",
+      "confirmedTitle": "Gefundene Konten",
+      "confirmedSubtitle": "Ihre E-Mail-Adresse wurde in bekannten Datenlecks f\u00fcr diese Dienste gefunden.",
+      "suggestionsTitle": "M\u00f6glicherweise haben Sie auch Konten bei",
+      "suggestionsSubtitle": "Wir k\u00f6nnen diese nicht best\u00e4tigen, aber sie sind verbreitet. W\u00e4hlen Sie die aus, die Sie nutzen.",
+      "noConfirmedNote": "Wir haben keine best\u00e4tigten Konten in bekannten Datenlecks gefunden. W\u00e4hlen Sie die Dienste aus, die Sie nutzen:",
+      "hibpErrorNote": "Datenleck-Datenbank nicht verf\u00fcgbar. W\u00e4hlen Sie die Dienste aus, die Sie l\u00f6schen m\u00f6chten:",
       "all": "ALLE",
       "none": "KEINE",
       "selectAllAriaLabel": "Alle Dienste ausw\u00e4hlen",

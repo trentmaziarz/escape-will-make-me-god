@@ -92,6 +92,7 @@ describe("POST /api/scan", () => {
     expect(res.status).toBe(200);
     expect(data.scannedAt).toBeTruthy();
     expect(data.partial).toBeUndefined();
+    expect(data.hibpError).toBe(false);
 
     // HIBP results should override database for overlapping services
     const facebook = data.services.find(
@@ -134,6 +135,7 @@ describe("POST /api/scan", () => {
 
     expect(res.status).toBe(200);
     expect(data.partial).toBeUndefined();
+    expect(data.hibpError).toBe(false);
     expect(data.services).toHaveLength(DB_RESULTS.length);
     expect(
       data.services.every(
@@ -142,7 +144,7 @@ describe("POST /api/scan", () => {
     ).toBe(true);
   });
 
-  it("returns partial results when HIBP fails", async () => {
+  it("returns partial results with hibpError flag when HIBP fails", async () => {
     mockHibpScan.mockRejectedValue(new Error("HIBP API error"));
 
     const res = await POST(makeRequest(VALID_BODY));
@@ -150,6 +152,7 @@ describe("POST /api/scan", () => {
 
     expect(res.status).toBe(200);
     expect(data.partial).toBe(true);
+    expect(data.hibpError).toBe(true);
     expect(data.note).toContain("unavailable");
     expect(data.services).toHaveLength(DB_RESULTS.length);
     expect(
@@ -227,6 +230,32 @@ describe("POST /api/scan", () => {
     expect(data.services).toHaveLength(1);
     expect(data.services[0].confidence).toBe(0.9);
     expect(data.services[0].source).toBe("hibp");
+  });
+
+  it("excludes HIBP-confirmed services from database suggestions (no duplicates)", async () => {
+    mockHibpScan.mockResolvedValue([
+      { serviceId: "facebook", confidence: 0.9, source: "hibp" },
+    ]);
+    mockDbScan.mockResolvedValue([
+      { serviceId: "facebook", confidence: 0.2, source: "database" },
+      { serviceId: "spokeo", confidence: 0.2, source: "database" },
+    ]);
+
+    const res = await POST(makeRequest(VALID_BODY));
+    const data = await res.json();
+
+    // facebook should appear once with hibp source, not twice
+    const facebookEntries = data.services.filter(
+      (s: { serviceId: string }) => s.serviceId === "facebook"
+    );
+    expect(facebookEntries).toHaveLength(1);
+    expect(facebookEntries[0].source).toBe("hibp");
+
+    // spokeo should appear as a database suggestion
+    const spokeo = data.services.find(
+      (s: { serviceId: string }) => s.serviceId === "spokeo"
+    );
+    expect(spokeo.source).toBe("database");
   });
 
   it("never includes PII in error responses", async () => {

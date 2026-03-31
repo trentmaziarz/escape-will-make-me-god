@@ -69,32 +69,39 @@ export async function POST(request: NextRequest) {
     databaseScanner.scan(email, phone),
   ]);
 
-  let partial = false;
+  let hibpError = false;
 
-  const allServices: DiscoveredService[] = [];
+  const hibpServices: DiscoveredService[] = [];
+  const dbServices: DiscoveredService[] = [];
 
   if (hibpResult.status === "fulfilled") {
-    allServices.push(...hibpResult.value);
+    hibpServices.push(...hibpResult.value);
   } else {
-    partial = true;
+    hibpError = true;
   }
 
   if (dbResult.status === "fulfilled") {
-    allServices.push(...dbResult.value);
+    dbServices.push(...dbResult.value);
   }
 
-  // --- Deduplicate by serviceId, keep highest confidence ---
-  const byServiceId = new Map<string, DiscoveredService>();
-  for (const service of allServices) {
-    const existing = byServiceId.get(service.serviceId);
-    if (!existing || service.confidence > existing.confidence) {
-      byServiceId.set(service.serviceId, service);
+  // Confirmed = HIBP results (deduplicated by serviceId, highest confidence)
+  const confirmedById = new Map<string, DiscoveredService>();
+  for (const svc of hibpServices) {
+    const existing = confirmedById.get(svc.serviceId);
+    if (!existing || svc.confidence > existing.confidence) {
+      confirmedById.set(svc.serviceId, svc);
     }
   }
 
-  const services = Array.from(byServiceId.values()).sort(
-    (a, b) => b.confidence - a.confidence
+  // Suggestions = DB results NOT already confirmed by HIBP
+  const suggestions = dbServices.filter(
+    (svc) => !confirmedById.has(svc.serviceId)
   );
+
+  const services = [
+    ...Array.from(confirmedById.values()),
+    ...suggestions,
+  ].sort((a, b) => b.confidence - a.confidence);
 
   // Enrich with service metadata for client display
   const enriched = services.map((svc) => {
@@ -120,9 +127,10 @@ export async function POST(request: NextRequest) {
     services: enriched,
     scannedAt: new Date().toISOString(),
     maskedEmail,
-    ...(partial && {
+    hibpError,
+    ...(hibpError && {
       partial: true,
-      note: "Some sources were unavailable; results may be incomplete",
+      note: "Breach database unavailable; results may be incomplete",
     }),
   });
 }

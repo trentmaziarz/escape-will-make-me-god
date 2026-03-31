@@ -37,6 +37,7 @@ export function useDetonation(token: string) {
   const [results, setResults] = useState<DetonationResults | null>(null);
   const [maskedEmail, setMaskedEmail] = useState("");
   const [scanPartial, setScanPartial] = useState(false);
+  const [hibpError, setHibpError] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const startScan = useCallback(async () => {
@@ -59,10 +60,15 @@ export function useDetonation(token: string) {
       const data = await res.json();
       setDiscoveredServices(data.services);
       setSelectedServiceIds(
-        new Set(data.services.map((s: ScannedService) => s.serviceId))
+        new Set(
+          data.services
+            .filter((s: ScannedService) => s.source === "hibp")
+            .map((s: ScannedService) => s.serviceId)
+        )
       );
       setMaskedEmail(data.maskedEmail ?? "");
       setScanPartial(data.partial ?? false);
+      setHibpError(data.hibpError ?? false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Scan failed");
       setPhase("idle");
@@ -130,6 +136,7 @@ export function useDetonation(token: string) {
     results,
     maskedEmail,
     scanPartial,
+    hibpError,
     error,
     startScan,
     toggleService,

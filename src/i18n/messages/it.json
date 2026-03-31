@@ -109,6 +109,12 @@
     "review": {
       "title": "Lista obiettivi",
       "subtitle": "{count, plural, one {# servizio selezionato} other {# servizi selezionati}} per la cancellazione. Tocca per deselezionare.",
+      "confirmedTitle": "Account trovati",
+      "confirmedSubtitle": "La tua email \u00e8 apparsa in violazioni note per questi servizi.",
+      "suggestionsTitle": "Potresti avere account anche su",
+      "suggestionsSubtitle": "Non possiamo confermarlo, ma sono comuni. Seleziona quelli che utilizzi.",
+      "noConfirmedNote": "Non abbiamo trovato account confermati nelle violazioni note. Seleziona i servizi che utilizzi:",
+      "hibpErrorNote": "Database delle violazioni non disponibile. Seleziona i servizi che desideri eliminare:",
       "all": "TUTTI",
       "none": "NESSUNO",
       "selectAllAriaLabel": "Seleziona tutti i servizi",

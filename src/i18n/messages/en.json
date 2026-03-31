@@ -109,6 +109,12 @@
     "review": {
       "title": "Target list",
       "subtitle": "{count, plural, one {# service} other {# services}} selected for deletion. Tap to deselect.",
+      "confirmedTitle": "Found accounts",
+      "confirmedSubtitle": "Your email appeared in known breaches for these services.",
+      "suggestionsTitle": "You may also have accounts on",
+      "suggestionsSubtitle": "We can\u2019t confirm these, but they\u2019re common. Select any you use.",
+      "noConfirmedNote": "We didn\u2019t find confirmed accounts in known breaches. Select any services you use:",
+      "hibpErrorNote": "Breach database unavailable. Select the services you want to delete from:",
       "all": "ALL",
       "none": "NONE",
       "selectAllAriaLabel": "Select all services",

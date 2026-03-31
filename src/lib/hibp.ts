@@ -139,8 +139,15 @@ export const hibpScanner: ScannerPlugin = {
   rateLimit: { maxPerMinute: 10 },
 
   async scan(email: string): Promise<DiscoveredService[]> {
-    const breaches = await fetchBreaches(email);
-    return mapBreachesToServices(breaches);
+    try {
+      const breaches = await fetchBreaches(email);
+      return mapBreachesToServices(breaches);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown HIBP error";
+      console.error(`[hibp] scan failed: ${message}`);
+      throw err;
+    }
   },
 };
 

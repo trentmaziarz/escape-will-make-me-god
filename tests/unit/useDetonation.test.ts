@@ -72,7 +72,10 @@ describe("useDetonation", () => {
 
     expect(result.current.phase).toBe("scanning");
     expect(result.current.discoveredServices).toHaveLength(2);
-    expect(result.current.selectedServiceIds.size).toBe(2);
+    // Only HIBP-confirmed services are auto-selected
+    expect(result.current.selectedServiceIds.size).toBe(1);
+    expect(result.current.selectedServiceIds.has("facebook")).toBe(true);
+    expect(result.current.selectedServiceIds.has("spokeo")).toBe(false);
     expect(result.current.maskedEmail).toBe("te***@example.com");
   });
 
@@ -134,15 +137,16 @@ describe("useDetonation", () => {
       await result.current.startScan();
     });
 
-    // Both services selected initially
+    // Only HIBP service (facebook) is auto-selected
     expect(result.current.selectedServiceIds.has("facebook")).toBe(true);
+    expect(result.current.selectedServiceIds.has("spokeo")).toBe(false);
 
     // Deselect facebook
     act(() => {
       result.current.toggleService("facebook");
     });
     expect(result.current.selectedServiceIds.has("facebook")).toBe(false);
-    expect(result.current.selectedServiceIds.has("spokeo")).toBe(true);
+    expect(result.current.selectedServiceIds.has("spokeo")).toBe(false);
 
     // Re-select facebook
     act(() => {
@@ -207,9 +211,7 @@ describe("useDetonation", () => {
     expect(detonateCall[0]).toBe("/api/detonate");
     const body = JSON.parse(detonateCall[1].body);
     expect(body.token).toBe("test-token");
-    expect(body.selectedServiceIds).toEqual(
-      expect.arrayContaining(["facebook", "spokeo"])
-    );
+    expect(body.selectedServiceIds).toEqual(["facebook"]);
   });
 
   it("does not detonate with empty selection", async () => {
@@ -262,6 +264,41 @@ describe("useDetonation", () => {
     expect(result.current.error).toBe("Too many requests");
     // Results still set so the animation can complete
     expect(result.current.results).toBeDefined();
+  });
+
+  it("exposes hibpError flag from scan response", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        ...MOCK_SCAN_RESPONSE,
+        hibpError: true,
+        partial: true,
+      }),
+    });
+
+    const { result } = renderHook(() => useDetonation("test-token"));
+
+    await act(async () => {
+      await result.current.startScan();
+    });
+
+    expect(result.current.hibpError).toBe(true);
+    expect(result.current.scanPartial).toBe(true);
+  });
+
+  it("hibpError defaults to false when not in response", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => MOCK_SCAN_RESPONSE,
+    });
+
+    const { result } = renderHook(() => useDetonation("test-token"));
+
+    await act(async () => {
+      await result.current.startScan();
+    });
+
+    expect(result.current.hibpError).toBe(false);
   });
 
   it("goToReview and goToComplete transition phases", () => {

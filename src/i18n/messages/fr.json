@@ -109,6 +109,12 @@
     "review": {
       "title": "Liste des cibles",
       "subtitle": "{count, plural, one {# service} other {# services}} selectionne(s) pour suppression. Appuyez pour deselectionner.",
+      "confirmedTitle": "Comptes trouv\u00e9s",
+      "confirmedSubtitle": "Votre email est apparu dans des violations connues pour ces services.",
+      "suggestionsTitle": "Vous pourriez aussi avoir des comptes sur",
+      "suggestionsSubtitle": "Nous ne pouvons pas confirmer ceux-ci, mais ils sont courants. S\u00e9lectionnez ceux que vous utilisez.",
+      "noConfirmedNote": "Nous n\u2019avons pas trouv\u00e9 de comptes confirm\u00e9s dans les violations connues. S\u00e9lectionnez les services que vous utilisez :",
+      "hibpErrorNote": "Base de donn\u00e9es de violations indisponible. S\u00e9lectionnez les services que vous souhaitez supprimer :",
       "all": "TOUT",
       "none": "AUCUN",
       "selectAllAriaLabel": "Selectionner tous les services",

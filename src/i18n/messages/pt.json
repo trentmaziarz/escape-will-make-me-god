@@ -109,6 +109,12 @@
     "review": {
       "title": "Lista de alvos",
       "subtitle": "{count, plural, one {# serviço selecionado} other {# serviços selecionados}} para eliminação. Toca para desselecionar.",
+      "confirmedTitle": "Contas encontradas",
+      "confirmedSubtitle": "O seu email apareceu em viola\u00e7\u00f5es conhecidas para estes servi\u00e7os.",
+      "suggestionsTitle": "Tamb\u00e9m pode ter contas em",
+      "suggestionsSubtitle": "N\u00e3o podemos confirmar estes, mas s\u00e3o comuns. Selecione os que utiliza.",
+      "noConfirmedNote": "N\u00e3o encontr\u00e1mos contas confirmadas em viola\u00e7\u00f5es conhecidas. Selecione os servi\u00e7os que utiliza:",
+      "hibpErrorNote": "Base de dados de viola\u00e7\u00f5es indispon\u00edvel. Selecione os servi\u00e7os que deseja eliminar:",
       "all": "TODOS",
       "none": "NENHUM",
       "selectAllAriaLabel": "Selecionar todos os serviços",

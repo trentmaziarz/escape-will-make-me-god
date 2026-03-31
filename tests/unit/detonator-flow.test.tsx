@@ -23,6 +23,7 @@ vi.mock("@/hooks/useDetonation", () => ({
     selectedServiceIds: new Set(),
     results: mockPhase === "complete" ? { requestsSent: 3, guidesGenerated: 1, reportEmailed: true } : null,
     maskedEmail: "te***@example.com",
+    hibpError: false,
     error: mockError,
     startScan: mockStartScan,
     toggleService: vi.fn(),

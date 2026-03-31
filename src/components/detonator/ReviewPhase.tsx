@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import type { ScannedService } from "@/hooks/useDetonation";
@@ -7,6 +8,7 @@ import type { ScannedService } from "@/hooks/useDetonation";
 interface ReviewPhaseProps {
   services: ScannedService[];
   selectedServiceIds: Set<string>;
+  hibpError: boolean;
   onToggle: (id: string) => void;
   onSelectAll: () => void;
   onDeselectAll: () => void;
@@ -20,9 +22,62 @@ const difficultyColor: Record<ScannedService["deletionDifficulty"], string> = {
   hard: "text-difficulty-hard border-difficulty-hard",
 };
 
+function ServiceRow({
+  service,
+  selected,
+  onToggle,
+  t,
+}: {
+  service: ScannedService;
+  selected: boolean;
+  onToggle: (id: string) => void;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <button
+      role="listitem"
+      aria-label={
+        selected
+          ? t("review.serviceSelectedAria", { name: service.name })
+          : t("review.serviceNotSelectedAria", { name: service.name })
+      }
+      onClick={() => onToggle(service.serviceId)}
+      type="button"
+      className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-300 cursor-pointer ${
+        selected
+          ? "border-accent-red bg-accent-red-dim"
+          : "border-border hover:border-border-hover"
+      }`}
+    >
+      <div
+        className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+          selected ? "border-accent-red" : "border-text-ghost"
+        }`}
+        aria-hidden="true"
+      >
+        {selected && (
+          <span className="text-[10px] text-accent-red">&times;</span>
+        )}
+      </div>
+      <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
+        {service.icon}
+      </span>
+      <span className="text-[13px] text-text-primary flex-1">
+        {service.name}
+      </span>
+      <span
+        className={`text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 border ${difficultyColor[service.deletionDifficulty]}`}
+      >
+        {t(`reviewDifficulty.${service.deletionDifficulty}`)}
+      </span>
+    </button>
+  );
+}
+
 export default function ReviewPhase({
   services,
   selectedServiceIds,
+  hibpError,
   onToggle,
   onSelectAll,
   onDeselectAll,
@@ -30,6 +85,21 @@ export default function ReviewPhase({
 }: ReviewPhaseProps) {
   const t = useTranslations("detonator");
   const selectedCount = selectedServiceIds.size;
+
+  const { confirmed, suggestions } = useMemo(() => {
+    const conf: ScannedService[] = [];
+    const sugg: ScannedService[] = [];
+    for (const svc of services) {
+      if (svc.source === "hibp") {
+        conf.push(svc);
+      } else {
+        sugg.push(svc);
+      }
+    }
+    return { confirmed: conf, suggestions: sugg };
+  }, [services]);
+
+  const hasConfirmed = confirmed.length > 0;
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-4 py-10 sm:px-6">
@@ -66,61 +136,72 @@ export default function ReviewPhase({
             </div>
           </div>
 
-          <div
-            className="flex flex-col gap-1.5 mb-12"
-            role="list"
-            aria-label="Services for deletion"
-          >
-            {services.map((service) => {
-              const selected = selectedServiceIds.has(service.serviceId);
-              return (
-                <button
-                  key={service.serviceId}
-                  role="listitem"
-                  aria-label={
-                    selected
-                      ? t("review.serviceSelectedAria", { name: service.name })
-                      : t("review.serviceNotSelectedAria", {
-                          name: service.name,
-                        })
-                  }
-                  onClick={() => onToggle(service.serviceId)}
-                  type="button"
-                  className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-300 cursor-pointer ${
-                    selected
-                      ? "border-accent-red bg-accent-red-dim"
-                      : "border-border hover:border-border-hover"
-                  }`}
-                >
-                  <div
-                    className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                      selected ? "border-accent-red" : "border-text-ghost"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {selected && (
-                      <span className="text-[10px] text-accent-red">
-                        &times;
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-[10px] tracking-[2px] text-text-muted w-6 shrink-0 font-mono">
-                    {service.icon}
-                  </span>
-                  <span className="text-[13px] text-text-primary flex-1">
-                    {service.name}
-                  </span>
-                  <span
-                    className={`text-[9px] tracking-[2px] uppercase px-1.5 py-0.5 border ${difficultyColor[service.deletionDifficulty]}`}
-                  >
-                    {t(
-                      `reviewDifficulty.${service.deletionDifficulty}`
-                    )}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          {/* --- Confirmed accounts (HIBP) --- */}
+          {hasConfirmed && (
+            <div className="mb-10">
+              <h3 className="text-[10px] tracking-[4px] text-accent-red uppercase mb-1">
+                {t("review.confirmedTitle")}
+              </h3>
+              <p className="text-[11px] text-text-dim mb-4">
+                {t("review.confirmedSubtitle")}
+              </p>
+              <div
+                className="flex flex-col gap-1.5"
+                role="list"
+                aria-label="Confirmed accounts"
+              >
+                {confirmed.map((service) => (
+                  <ServiceRow
+                    key={service.serviceId}
+                    service={service}
+                    selected={selectedServiceIds.has(service.serviceId)}
+                    onToggle={onToggle}
+                    t={t}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* --- Contextual note when no confirmed results --- */}
+          {!hasConfirmed && (
+            <p className="text-[11px] text-text-dim mb-6">
+              {hibpError
+                ? t("review.hibpErrorNote")
+                : t("review.noConfirmedNote")}
+            </p>
+          )}
+
+          {/* --- Suggestions (database) --- */}
+          {suggestions.length > 0 && (
+            <div className="mb-12">
+              {hasConfirmed && (
+                <>
+                  <h3 className="text-[10px] tracking-[4px] text-text-muted uppercase mb-1">
+                    {t("review.suggestionsTitle")}
+                  </h3>
+                  <p className="text-[11px] text-text-dim mb-4">
+                    {t("review.suggestionsSubtitle")}
+                  </p>
+                </>
+              )}
+              <div
+                className="flex flex-col gap-1.5"
+                role="list"
+                aria-label="Suggested services"
+              >
+                {suggestions.map((service) => (
+                  <ServiceRow
+                    key={service.serviceId}
+                    service={service}
+                    selected={selectedServiceIds.has(service.serviceId)}
+                    onToggle={onToggle}
+                    t={t}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="text-center">
             <button

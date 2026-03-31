@@ -109,6 +109,12 @@
     "review": {
       "title": "Lista de objetivos",
       "subtitle": "{count, plural, one {# servicio seleccionado} other {# servicios seleccionados}} para eliminacion. Toca para deseleccionar.",
+      "confirmedTitle": "Cuentas encontradas",
+      "confirmedSubtitle": "Su correo electr\u00f3nico apareci\u00f3 en filtraciones conocidas para estos servicios.",
+      "suggestionsTitle": "Tambi\u00e9n podr\u00eda tener cuentas en",
+      "suggestionsSubtitle": "No podemos confirmar estos, pero son comunes. Seleccione los que utiliza.",
+      "noConfirmedNote": "No encontramos cuentas confirmadas en filtraciones conocidas. Seleccione los servicios que utiliza:",
+      "hibpErrorNote": "Base de datos de filtraciones no disponible. Seleccione los servicios que desea eliminar:",
       "all": "TODOS",
       "none": "NINGUNO",
       "selectAllAriaLabel": "Seleccionar todos los servicios",
