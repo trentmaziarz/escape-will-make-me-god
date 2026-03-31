@@ -8,10 +8,13 @@ import {
   generateUserDraft,
 } from "@/lib/email/deletion-requests/sender";
 import { generateReport } from "@/lib/pdf/report";
-import type { ReportService } from "@/lib/pdf/report";
+import type { ReportService, ReportData } from "@/lib/pdf/report";
 import { resend, FROM_NOREPLY } from "@/lib/email/resend";
+import { reportHtml, reportText } from "@/lib/email/templates/report-email";
 import { incrementCount } from "@/lib/counter";
 import type { ServiceEntry } from "@/data/services/schema";
+
+export const runtime = "nodejs";
 
 const DetonateSchema = z.object({
   token: z.string().min(1, "Token is required"),
@@ -207,29 +210,23 @@ export async function POST(request: NextRequest) {
     (r) => r.action === "user-draft" || r.action === "manual-guide"
   ).length;
 
-  // --- Generate PDF report ---
-  let pdfBuffer: Buffer;
-  try {
-    pdfBuffer = await generateReport({
-      email,
-      detonatedAt: new Date().toISOString(),
-      services: reportServices,
-      totalRequestsSent: requestsSent,
-      totalGuidesGenerated: guidesGenerated,
-    });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to generate report" },
-      { status: 500 }
-    );
-  }
+  // --- Generate report & email to user ---
+  // Report delivery is non-fatal: deletion requests have already been sent.
+  // Try PDF attachment first, fall back to comprehensive HTML email.
+  const reportData: ReportData = {
+    email,
+    detonatedAt: new Date().toISOString(),
+    services: reportServices,
+    totalRequestsSent: requestsSent,
+    totalGuidesGenerated: guidesGenerated,
+  };
 
-  // --- Email PDF to user ---
-  // Report email failure is non-fatal: the deletion requests have already
-  // been sent. The user loses the report but their data is still being deleted.
   let reportEmailed = false;
+
+  // Attempt 1: PDF attachment
   try {
-    await resend.emails.send({
+    const pdfBuffer = await generateReport(reportData);
+    const result = await resend.emails.send({
       from: FROM_NOREPLY,
       to: email,
       subject: "DEINDEX.ME — Your Detonation Report",
@@ -237,13 +234,43 @@ export async function POST(request: NextRequest) {
       attachments: [
         {
           filename: "deindex-report.pdf",
-          content: pdfBuffer,
+          content: Buffer.from(pdfBuffer).toString("base64"),
         },
       ],
     });
-    reportEmailed = true;
-  } catch {
-    // Report email failed but we still return success for the deletions
+    if (result.error) {
+      console.error("[detonate] Report email send error:", result.error.name);
+    } else {
+      reportEmailed = true;
+    }
+  } catch (err) {
+    console.error(
+      "[detonate] PDF report failed:",
+      err instanceof Error ? err.message : "unknown"
+    );
+  }
+
+  // Attempt 2: HTML email fallback
+  if (!reportEmailed) {
+    try {
+      const result = await resend.emails.send({
+        from: FROM_NOREPLY,
+        to: email,
+        subject: "DEINDEX.ME — Your Detonation Report",
+        html: reportHtml(reportData),
+        text: reportText(reportData),
+      });
+      if (result.error) {
+        console.error("[detonate] HTML report email error:", result.error.name);
+      } else {
+        reportEmailed = true;
+      }
+    } catch (err) {
+      console.error(
+        "[detonate] HTML report email failed:",
+        err instanceof Error ? err.message : "unknown"
+      );
+    }
   }
 
   // --- Increment counter ---

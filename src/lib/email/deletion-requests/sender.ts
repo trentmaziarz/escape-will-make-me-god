@@ -48,13 +48,16 @@ export async function sendAutoEmail(
 
   const { subject, body } = pickTemplate(service, userEmail, userPhone);
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: FROM_DELETE,
     to,
     cc: userEmail,
     subject,
     text: body,
   });
+  if (result.error) {
+    throw new Error(`Deletion email send failed: ${result.error.name}`);
+  }
 }
 
 /**

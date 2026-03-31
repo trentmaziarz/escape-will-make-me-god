@@ -6,7 +6,9 @@ import { _resetCount, getCount } from "@/lib/counter";
 
 // --- Mocks ---
 
-const mockResendSend = vi.fn().mockResolvedValue({ id: "mock-id" });
+const mockResendSend = vi
+  .fn()
+  .mockResolvedValue({ data: { id: "mock-id" }, error: null });
 
 vi.mock("@/lib/email/resend", () => ({
   resend: { emails: { send: (...args: unknown[]) => mockResendSend(...args) } },
@@ -61,7 +63,7 @@ beforeEach(() => {
   mockGenerateReport.mockReset();
   mockVerifyToken.mockResolvedValue(MOCK_PAYLOAD);
   mockGenerateReport.mockResolvedValue(Buffer.from("fake-pdf"));
-  mockResendSend.mockResolvedValue({ id: "mock-id" });
+  mockResendSend.mockResolvedValue({ data: { id: "mock-id" }, error: null });
   _resetStore();
   _resetCount();
 });
@@ -103,6 +105,8 @@ describe("POST /api/detonate", () => {
     expect(reportCall.to).toBe("test@example.com");
     expect(reportCall.attachments).toHaveLength(1);
     expect(reportCall.attachments[0].filename).toBe("deindex-report.pdf");
+    // Content must be a base64 string, not a raw Buffer
+    expect(typeof reportCall.attachments[0].content).toBe("string");
   });
 
   it("generates guides for manual-guide services", async () => {
@@ -145,13 +149,17 @@ describe("POST /api/detonate", () => {
   });
 
   it("still sends report when some deletion emails fail", async () => {
-    // First call (deletion email) fails, second (deletion email) succeeds,
-    // third (report email) succeeds
+    // First call (deletion email) returns Resend API error,
+    // second (deletion email) succeeds, third (report email) succeeds
     let callCount = 0;
     mockResendSend.mockImplementation(() => {
       callCount++;
-      if (callCount === 1) return Promise.reject(new Error("Send failed"));
-      return Promise.resolve({ id: "mock-id" });
+      if (callCount === 1)
+        return Promise.resolve({
+          data: null,
+          error: { name: "send_error", message: "Send failed", statusCode: 500 },
+        });
+      return Promise.resolve({ data: { id: "mock-id" }, error: null });
     });
 
     const res = await POST(
@@ -288,5 +296,89 @@ describe("POST /api/detonate", () => {
     const data = await res.json();
 
     expect(JSON.stringify(data)).not.toContain("test@example.com");
+  });
+
+  it("falls back to HTML email when PDF generation fails", async () => {
+    mockGenerateReport.mockRejectedValue(new Error("Canvas not available"));
+
+    const res = await POST(
+      makeRequest({
+        token: "valid-token",
+        selectedServiceIds: ["spokeo"],
+      })
+    );
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.reportEmailed).toBe(true);
+
+    // Deletion email + HTML fallback report = 2 calls (no PDF attempt)
+    const lastCall =
+      mockResendSend.mock.calls[mockResendSend.mock.calls.length - 1][0];
+    expect(lastCall.from).toBe("noreply@deindex.me");
+    expect(lastCall.html).toBeDefined();
+    expect(lastCall.text).toBeDefined();
+    // HTML fallback has no attachments
+    expect(lastCall.attachments).toBeUndefined();
+  });
+
+  it("falls back to HTML email when PDF email send returns Resend error", async () => {
+    let callCount = 0;
+    mockResendSend.mockImplementation(() => {
+      callCount++;
+      // First call: deletion email succeeds
+      // Second call: PDF report email fails (Resend API error)
+      // Third call: HTML fallback succeeds
+      if (callCount === 2)
+        return Promise.resolve({
+          data: null,
+          error: { name: "validation_error", message: "Invalid attachment", statusCode: 422 },
+        });
+      return Promise.resolve({ data: { id: "mock-id" }, error: null });
+    });
+
+    const res = await POST(
+      makeRequest({
+        token: "valid-token",
+        selectedServiceIds: ["spokeo"],
+      })
+    );
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.reportEmailed).toBe(true);
+
+    // 1 deletion + 1 failed PDF email + 1 HTML fallback = 3 calls
+    expect(mockResendSend).toHaveBeenCalledTimes(3);
+
+    // Last call should be the HTML fallback
+    const htmlCall = mockResendSend.mock.calls[2][0];
+    expect(htmlCall.html).toBeDefined();
+    expect(htmlCall.attachments).toBeUndefined();
+  });
+
+  it("returns reportEmailed false when both PDF and HTML email fail", async () => {
+    mockGenerateReport.mockRejectedValue(new Error("PDF failed"));
+    // HTML fallback also fails
+    mockResendSend.mockImplementation(() => {
+      return Promise.resolve({
+        data: null,
+        error: { name: "rate_limit", message: "Too many requests", statusCode: 429 },
+      });
+    });
+
+    const res = await POST(
+      makeRequest({
+        token: "valid-token",
+        selectedServiceIds: ["reddit"], // manual-guide, no deletion emails
+      })
+    );
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.reportEmailed).toBe(false);
   });
 });
