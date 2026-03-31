@@ -13,6 +13,7 @@ describe("resend client", () => {
 
   beforeEach(() => {
     vi.resetModules();
+    mockSend.mockClear();
     process.env = { ...originalEnv };
   });
 
@@ -42,5 +43,36 @@ describe("resend client", () => {
     delete process.env.RESEND_FROM_DELETE;
     const { FROM_DELETE } = await import("@/lib/email/resend");
     expect(FROM_DELETE).toBe("delete@deindex.me");
+  });
+
+  it("lazily creates Resend client on first send()", async () => {
+    process.env.RESEND_API_KEY = "test-api-key";
+    const { resend } = await import("@/lib/email/resend");
+    const { Resend } = await import("resend");
+    (Resend as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+    await resend.emails.send({
+      from: "test@test.com",
+      to: "recipient@test.com",
+      subject: "Test",
+      text: "Body",
+    });
+
+    expect(Resend).toHaveBeenCalledOnce();
+    expect(Resend).toHaveBeenCalledWith("test-api-key");
+    expect(mockSend).toHaveBeenCalledOnce();
+  });
+
+  it("reuses Resend client on subsequent send() calls", async () => {
+    process.env.RESEND_API_KEY = "test-api-key";
+    const { resend } = await import("@/lib/email/resend");
+    const { Resend } = await import("resend");
+    (Resend as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+    await resend.emails.send({ from: "a@b.com", to: "c@d.com", subject: "1", text: "1" });
+    await resend.emails.send({ from: "a@b.com", to: "c@d.com", subject: "2", text: "2" });
+
+    expect(Resend).toHaveBeenCalledOnce();
+    expect(mockSend).toHaveBeenCalledTimes(2);
   });
 });

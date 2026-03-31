@@ -192,6 +192,30 @@ describe("hibpScanner", () => {
     );
   });
 
+  it("queues requests when tokens exhausted and drains on refill", async () => {
+    vi.useFakeTimers();
+    _resetRateLimiter();
+
+    mockFetch(async () => new Response("[]", { status: 200 }));
+
+    // Exhaust all 10 tokens
+    for (let i = 0; i < 10; i++) {
+      await hibpScanner.scan("test@example.com");
+    }
+
+    // 11th request enters the waiting queue
+    const queuedScan = hibpScanner.scan("test@example.com");
+
+    // Advance past refill interval per token (60_000 / 10 = 6000ms)
+    await vi.advanceTimersByTimeAsync(6001);
+
+    const result = await queuedScan;
+    expect(result).toEqual([]);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(11);
+
+    vi.useRealTimers();
+  });
+
   it("retries on 429 and uses retry-after header", async () => {
     let callCount = 0;
     mockFetch(async () => {

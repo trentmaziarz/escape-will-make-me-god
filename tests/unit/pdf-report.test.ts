@@ -118,4 +118,50 @@ describe("generateReport", () => {
     expect(buffer).toBeInstanceOf(Buffer);
     expect(buffer.length).toBeGreaterThan(0);
   }, 15000);
+
+  it("handles services with missing optional fields and invalid email", async () => {
+    const data: ReportData = {
+      ...BASE_DATA,
+      email: "invalidemail", // no @ — exercises redactEmail fallback
+      services: [
+        {
+          name: "NoDraft",
+          category: "other",
+          action: "user-draft",
+          status: "pending-user",
+          // no draftEmail — exercises ?? "" fallback branches
+        },
+        {
+          name: "NoSteps",
+          category: "other",
+          action: "manual-guide",
+          status: "pending-user",
+          // no manualSteps — exercises ?? [] fallback
+        },
+      ],
+      totalGuidesGenerated: 2,
+    };
+    const buffer = await generateReport(data);
+    expect(buffer).toBeInstanceOf(Buffer);
+    expect(buffer.length).toBeGreaterThan(0);
+  }, 15000);
+
+  it("handles manual-guide only services", async () => {
+    const data: ReportData = {
+      ...BASE_DATA,
+      services: [
+        {
+          name: "Reddit",
+          category: "social-media",
+          action: "manual-guide",
+          status: "pending-user",
+          manualSteps: ["Go to settings", "Delete account", "Confirm"],
+        },
+      ],
+      totalGuidesGenerated: 1,
+    };
+    const buffer = await generateReport(data);
+    expect(buffer).toBeInstanceOf(Buffer);
+    expect(buffer.length).toBeGreaterThan(0);
+  }, 15000);
 });
