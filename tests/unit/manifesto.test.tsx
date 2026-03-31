@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useEffect } from "react";
 import ManifestoText, {
   MANIFESTO_SEQUENCE,
 } from "@/components/manifesto/ManifestoText";
@@ -42,6 +43,19 @@ vi.mock("@/hooks/useAudio", () => ({
     playTone: vi.fn(),
   }),
 }));
+
+// Mock Turnstile — immediately delivers a test token via onSuccess
+vi.mock("@marsidev/react-turnstile", () => ({
+  Turnstile: ({ onSuccess }: { onSuccess?: (token: string) => void }) => {
+    useEffect(() => {
+      onSuccess?.("test-turnstile-token");
+    }, [onSuccess]);
+    return <div data-testid="turnstile" />;
+  },
+}));
+
+// Ensure the Turnstile site key is set so the widget renders
+process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = "test-site-key";
 
 // Build a text array mirroring the old MANIFESTO_LINES from MANIFESTO_SEQUENCE + en.json
 const manifestoMessages = en.landing.manifesto;
@@ -264,6 +278,7 @@ describe("InputForm", () => {
         body: JSON.stringify({
           email: "test@example.com",
           phone: "+15550001234",
+          turnstileToken: "test-turnstile-token",
         }),
       });
     });

@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -16,7 +17,7 @@ export default function InputForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const canSubmit = isValidEmail && formState === "idle";
+  const canSubmit = isValidEmail && !!turnstileToken && formState === "idle";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -32,7 +33,7 @@ export default function InputForm() {
         body: JSON.stringify({
           email,
           phone: phone || undefined,
-          turnstileToken: turnstileToken || undefined,
+          turnstileToken,
         }),
       });
 
@@ -127,21 +128,16 @@ export default function InputForm() {
         />
       </div>
 
-      {/* Turnstile invisible widget mount point */}
-      <div
-        id="turnstile-container"
-        data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-        data-theme="dark"
-        data-size="invisible"
-        data-callback="onTurnstileSuccess"
-        ref={(el) => {
-          if (typeof window !== "undefined" && el) {
-            // @ts-expect-error — Turnstile callback set on window
-            window.onTurnstileSuccess = (token: string) =>
-              setTurnstileToken(token);
-          }
-        }}
-      />
+      {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+        <Turnstile
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          options={{ theme: "dark", size: "compact" }}
+          onSuccess={(token) => setTurnstileToken(token)}
+          onExpire={() => setTurnstileToken("")}
+          onError={() => setTurnstileToken("")}
+          className="mb-6"
+        />
+      )}
 
       <p className="mb-6 font-mono text-[11px] leading-relaxed text-text-ghost">
         {t.rich("consent", {
