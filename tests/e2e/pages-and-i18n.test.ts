@@ -248,12 +248,18 @@ test.describe("Navigation", () => {
       timeout: 10_000,
     });
 
-    // Navigate to Privacy via footer
-    await page.locator("footer").getByRole("link", { name: "Privacy" }).click();
+    // Navigate to Privacy via footer (scroll to link first to avoid mobile race)
+    const privacyLink = page.locator("footer").getByRole("link", { name: "Privacy" });
+    await privacyLink.scrollIntoViewIfNeeded();
+    await privacyLink.click();
+    await page.waitForURL(/privacy/i, { timeout: 10_000 });
     await expect(page).toHaveTitle(/Privacy/i, { timeout: 10_000 });
 
     // Navigate to Terms via footer
-    await page.locator("footer").getByRole("link", { name: "Terms" }).click();
+    const termsLink = page.locator("footer").getByRole("link", { name: "Terms" });
+    await termsLink.scrollIntoViewIfNeeded();
+    await termsLink.click();
+    await page.waitForURL(/terms/i, { timeout: 10_000 });
     await expect(page).toHaveTitle(/Terms/i, { timeout: 10_000 });
   });
 });

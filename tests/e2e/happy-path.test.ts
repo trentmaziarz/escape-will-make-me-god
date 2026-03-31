@@ -65,10 +65,6 @@ test.describe("Happy Path — Complete Detonation Flow", () => {
       });
     });
 
-    // Block Turnstile script from loading (prevents widget errors)
-    await page.route("**/challenges.cloudflare.com/**", (route) =>
-      route.abort()
-    );
   });
 
   test("complete detonation flow", async ({ page }) => {
@@ -89,11 +85,11 @@ test.describe("Happy Path — Complete Detonation Flow", () => {
     // --- c. Enter email address ---
     await emailInput.fill("test@example.com");
 
-    // --- d. Submit form (Turnstile bypassed via route mock) ---
+    // --- d. Submit form (Turnstile uses Cloudflare test key — auto-passes) ---
     const submitBtn = page.getByRole("button", {
       name: "Begin your disappearance",
     });
-    await expect(submitBtn).toBeEnabled();
+    await expect(submitBtn).toBeEnabled({ timeout: 15_000 });
     await submitBtn.click();
 
     // --- e. Verify "check your email" confirmation appears ---
@@ -136,7 +132,8 @@ test.describe("Happy Path — Complete Detonation Flow", () => {
       page.getByText("THIS ACTION IS IRREVERSIBLE")
     ).toBeVisible();
 
-    // --- i. Click DETONATE button ---
+    // --- i. Select all services and click DETONATE ---
+    await page.getByRole("button", { name: "Select all services", exact: true }).click();
     const detonateBtn = page.getByRole("button", { name: "Detonate" });
     await expect(detonateBtn).toBeEnabled();
     await detonateBtn.click();
@@ -178,11 +175,11 @@ test.describe("Happy Path — Complete Detonation Flow", () => {
     const landingWidth = await page.evaluate(() => document.body.scrollWidth);
     expect(landingWidth).toBeLessThanOrEqual(390);
 
-    // Fill and submit
+    // Fill and submit (wait for Turnstile test key to auto-pass)
     await emailInput.fill("test@example.com");
-    await page
-      .getByRole("button", { name: "Begin your disappearance" })
-      .click();
+    const submitBtn = page.getByRole("button", { name: "Begin your disappearance" });
+    await expect(submitBtn).toBeEnabled({ timeout: 15_000 });
+    await submitBtn.click();
     await expect(page.getByText("Check your email.")).toBeVisible({
       timeout: 10_000,
     });
@@ -201,9 +198,10 @@ test.describe("Happy Path — Complete Detonation Flow", () => {
     const reviewWidth = await page.evaluate(() => document.body.scrollWidth);
     expect(reviewWidth).toBeLessThanOrEqual(390);
 
-    // Detonate button is visible and tappable
+    // Select all services and detonate
+    await page.getByRole("button", { name: "Select all services", exact: true }).click();
     const detonateBtn = page.getByRole("button", { name: "Detonate" });
-    await expect(detonateBtn).toBeVisible();
+    await expect(detonateBtn).toBeEnabled();
     await detonateBtn.click();
 
     // Wait for completion

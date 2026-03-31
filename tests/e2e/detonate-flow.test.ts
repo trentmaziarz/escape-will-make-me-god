@@ -13,7 +13,45 @@ async function createTestToken(): Promise<string> {
     .encrypt(secret);
 }
 
+const MOCK_SCAN_RESPONSE = {
+  services: [
+    { serviceId: "facebook", confidence: 0.9, source: "hibp", name: "Facebook", icon: "FB", category: "social-media", deletionDifficulty: "hard", deletionMethod: "manual-guide" },
+    { serviceId: "linkedin", confidence: 0.9, source: "hibp", name: "LinkedIn", icon: "LI", category: "social-media", deletionDifficulty: "auto", deletionMethod: "auto-api" },
+    { serviceId: "spokeo", confidence: 0.2, source: "database", name: "Spokeo", icon: "SP", category: "data-broker", deletionDifficulty: "easy", deletionMethod: "auto-email" },
+    { serviceId: "whitepages", confidence: 0.2, source: "database", name: "Whitepages", icon: "WP", category: "data-broker", deletionDifficulty: "medium", deletionMethod: "auto-email" },
+  ],
+  scannedAt: new Date().toISOString(),
+  maskedEmail: "te***@example.com",
+};
+
+const MOCK_DETONATE_RESPONSE = {
+  success: true,
+  requestsSent: 3,
+  guidesGenerated: 1,
+  reportEmailed: true,
+};
+
 test.describe("Detonation Flow", () => {
+  test.beforeEach(async ({ page }) => {
+    // Mock /api/scan — deterministic results without real HIBP
+    await page.route("**/api/scan", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(MOCK_SCAN_RESPONSE),
+      });
+    });
+
+    // Mock /api/detonate — bypasses Resend + PDF generation
+    await page.route("**/api/detonate", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(MOCK_DETONATE_RESPONSE),
+      });
+    });
+  });
+
   test("shows invalid link without token", async ({ page }) => {
     await page.goto("/detonate");
     await expect(page.getByText("Invalid Link")).toBeVisible();
@@ -67,13 +105,13 @@ test.describe("Detonation Flow", () => {
 
     // ALL / NONE buttons
     await expect(page.getByText("NONE")).toBeVisible();
-    await page.getByText("NONE").click();
+    await page.getByRole("button", { name: "Deselect all services" }).click();
 
     // Detonate should be disabled with no selection
     await expect(detonateBtn).toBeDisabled();
 
     // Re-select all
-    await page.getByText("ALL").click();
+    await page.getByRole("button", { name: "Select all services", exact: true }).click();
     await expect(detonateBtn).toBeEnabled();
   });
 
@@ -86,7 +124,8 @@ test.describe("Detonation Flow", () => {
       timeout: 45000,
     });
 
-    // Click detonate
+    // Select all services then detonate
+    await page.getByRole("button", { name: "Select all services", exact: true }).click();
     await page.getByRole("button", { name: "Detonate" }).click();
 
     // Detonation phase
@@ -110,7 +149,8 @@ test.describe("Detonation Flow", () => {
       timeout: 45000,
     });
 
-    // Click detonate
+    // Select all services then detonate
+    await page.getByRole("button", { name: "Select all services", exact: true }).click();
     await page.getByRole("button", { name: "Detonate" }).click();
 
     // Wait for completion (dissolution + API + 1s pause)

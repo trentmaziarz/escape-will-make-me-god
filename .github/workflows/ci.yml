@@ -26,10 +26,11 @@ jobs:
       JWT_SECRET: test-secret-for-ci-only
       RESEND_API_KEY: test-key
       HIBP_API_KEY: test-key
-      TURNSTILE_SECRET_KEY: test-key
+      TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA"
       STRIPE_SECRET_KEY: test-key
       NEXT_PUBLIC_APP_URL: http://localhost:3000
-      NEXT_PUBLIC_TURNSTILE_SITE_KEY: test-site-key
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA"
+      E2E_TESTING: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -52,10 +53,11 @@ jobs:
       JWT_SECRET: test-secret-for-ci-only
       RESEND_API_KEY: test-key
       HIBP_API_KEY: test-key
-      TURNSTILE_SECRET_KEY: test-key
+      TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA"
       STRIPE_SECRET_KEY: test-key
       NEXT_PUBLIC_APP_URL: http://localhost:3000
-      NEXT_PUBLIC_TURNSTILE_SITE_KEY: test-site-key
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA"
+      E2E_TESTING: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
