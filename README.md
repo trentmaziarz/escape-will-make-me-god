@@ -163,7 +163,7 @@ We do not track you. We do not profile you. We do not sell you. We help you disa
 MIT — see [LICENSE](LICENSE)
 
 ## Support
-
+Feel free to [reach out to me](https://www.linkedin.com/in/trentmaziarz/) directly
 This project is free forever. If it helped you, consider [donating](https://deindex.me/donate) to keep it running.
 
 Found a bug? Open an issue on the [GitHub repository](https://github.com/deindex-me/deindex.me/issues).
