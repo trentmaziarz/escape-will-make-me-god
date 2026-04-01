@@ -93,6 +93,10 @@
     "redirect": {
       "noToken": "Begin hier om je digitale aanwezigheid te wissen.",
       "expired": "Je sessie is verlopen. Begin opnieuw."
+    },
+    "skip": {
+      "click": "Klik om over te slaan",
+      "tap": "Tik om over te slaan"
     }
   },
   "detonator": {

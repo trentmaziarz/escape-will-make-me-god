@@ -93,6 +93,10 @@
     "redirect": {
       "noToken": "Start here to begin your disappearance.",
       "expired": "Your session has expired. Please start again."
+    },
+    "skip": {
+      "click": "Click to skip",
+      "tap": "Tap to skip"
     }
   },
   "detonator": {

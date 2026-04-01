@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useAudio } from "@/hooks/useAudio";
@@ -82,12 +82,40 @@ const DEFAULT_STYLE: LineStyle = {
 
 interface ManifestoTextProps {
   onComplete: () => void;
+  autoSkip?: boolean;
+  skip?: boolean;
 }
 
-export default function ManifestoText({ onComplete }: ManifestoTextProps) {
+export default function ManifestoText({
+  onComplete,
+  autoSkip = false,
+  skip = false,
+}: ManifestoTextProps) {
   const t = useTranslations("landing.manifesto");
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(
+    autoSkip ? MANIFESTO_SEQUENCE.length : 0
+  );
+  const [skipped, setSkipped] = useState(autoSkip);
+  const skippedRef = useRef(autoSkip);
   const { playTone } = useAudio();
+
+  // Auto-skip: fire onComplete on mount
+  useEffect(() => {
+    if (autoSkip) {
+      onComplete();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Manual skip: reveal all remaining lines
+  useEffect(() => {
+    if (skip && !skippedRef.current) {
+      skippedRef.current = true;
+      setSkipped(true);
+      setVisibleCount(MANIFESTO_SEQUENCE.length);
+      onComplete();
+    }
+  }, [skip, onComplete]);
 
   const advance = useCallback(() => {
     setVisibleCount((prev) => {
@@ -99,7 +127,9 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
     });
   }, [onComplete]);
 
+  // Line-by-line animation timer (disabled when skipped)
   useEffect(() => {
+    if (skipped) return;
     if (visibleCount >= MANIFESTO_SEQUENCE.length) return;
 
     const entry = MANIFESTO_SEQUENCE[visibleCount];
@@ -108,6 +138,7 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
     const delay = isSpacer ? 400 : 120 + text.length * 30;
 
     const timer = setTimeout(() => {
+      if (skippedRef.current) return;
       if (!isSpacer) {
         playTone(200 + Math.random() * 100, 0.1, "sine", 0.02);
       }
@@ -115,7 +146,7 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [visibleCount, advance, playTone, t]);
+  }, [visibleCount, skipped, advance, playTone, t]);
 
   return (
     <div
@@ -134,9 +165,12 @@ export default function ManifestoText({ onComplete }: ManifestoTextProps) {
           return (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 8 }}
+              initial={autoSkip ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{
+                duration: skipped && !autoSkip ? 0.3 : 0.6,
+                ease: "easeOut",
+              }}
               className="mb-2.5 leading-normal"
               style={{
                 fontFamily: style.fontFamily,

@@ -93,6 +93,10 @@
     "redirect": {
       "noToken": "Beginnen Sie hier, um Ihre digitale Pr\u00e4senz zu l\u00f6schen.",
       "expired": "Ihre Sitzung ist abgelaufen. Bitte starten Sie erneut."
+    },
+    "skip": {
+      "click": "Klicken zum \u00dcberspringen",
+      "tap": "Tippen zum \u00dcberspringen"
     }
   },
   "detonator": {
