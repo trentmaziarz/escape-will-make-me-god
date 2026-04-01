@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useDetonation } from "@/hooks/useDetonation";
 import { useScan } from "@/hooks/useScan";
@@ -13,8 +13,10 @@ import CompletePhase from "./CompletePhase";
 export default function DetonatorFlow() {
   const t = useTranslations("detonator");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const token = searchParams.get("token") ?? "";
   const scanStarted = useRef(false);
+  const redirected = useRef(false);
 
   const {
     phase,
@@ -41,6 +43,14 @@ export default function DetonatorFlow() {
     startReveal,
   } = useScan(discoveredServices);
 
+  // Redirect to homepage if no token is present
+  useEffect(() => {
+    if (!token && !redirected.current) {
+      redirected.current = true;
+      router.replace("/?redirect=no-token");
+    }
+  }, [token, router]);
+
   useEffect(() => {
     if (token && !scanStarted.current) {
       scanStarted.current = true;
@@ -61,32 +71,17 @@ export default function DetonatorFlow() {
     }
   }, [scanRevealComplete, goToReview]);
 
-  if (!token) {
-    return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="font-display text-2xl font-bold text-text-primary mb-4">
-            {t("invalidLink")}
-          </h1>
-          <p className="text-sm text-text-muted">
-            {t("invalidLinkDescription")}
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // Redirect to homepage if token is expired/invalid (scan error on idle phase)
+  useEffect(() => {
+    if (error && phase === "idle" && !redirected.current) {
+      redirected.current = true;
+      router.replace("/?redirect=expired");
+    }
+  }, [error, phase, router]);
 
-  if (error && phase === "idle") {
-    return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="font-display text-2xl font-bold text-accent-red mb-4">
-            {t("error")}
-          </h1>
-          <p className="text-sm text-text-muted">{error}</p>
-        </div>
-      </div>
-    );
+  // Show nothing while redirecting
+  if (!token || (error && phase === "idle")) {
+    return null;
   }
 
   return (

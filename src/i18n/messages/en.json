@@ -89,6 +89,10 @@
       "sentDescription": "We sent a verification link to <highlight>{email}</highlight>.",
       "sentInstruction": "Click \u201cDetonate\u201d to begin the scan.",
       "sentExpiry": "The link expires in 1 hour."
+    },
+    "redirect": {
+      "noToken": "Start here to begin your disappearance.",
+      "expired": "Your session has expired. Please start again."
     }
   },
   "detonator": {

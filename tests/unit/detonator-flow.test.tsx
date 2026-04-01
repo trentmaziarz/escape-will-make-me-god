@@ -3,11 +3,20 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 let mockToken = "";
+const mockReplace = vi.fn();
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
   useSearchParams: () => ({
     get: (key: string) => (key === "token" ? mockToken || null : null),
+  }),
+  useRouter: () => ({
+    replace: mockReplace,
+    push: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
   }),
 }));
 
@@ -82,14 +91,11 @@ describe("DetonatorFlow", () => {
     mockError = null;
   });
 
-  it("shows invalid link message when no token", () => {
+  it("redirects to homepage when no token", () => {
     mockToken = "";
     render(<DetonatorFlow />);
 
-    expect(screen.getByText("Invalid Link")).toBeInTheDocument();
-    expect(
-      screen.getByText(/invalid or has expired/)
-    ).toBeInTheDocument();
+    expect(mockReplace).toHaveBeenCalledWith("/?redirect=no-token");
   });
 
   it("starts scan when token is present", () => {
@@ -132,13 +138,12 @@ describe("DetonatorFlow", () => {
     expect(screen.getByText("You are disappearing.")).toBeInTheDocument();
   });
 
-  it("shows error state when scan fails", () => {
+  it("redirects to homepage when scan fails with error", () => {
     mockToken = "valid-token";
     mockPhase = "idle";
     mockError = "Token expired";
     render(<DetonatorFlow />);
 
-    expect(screen.getByText("Error")).toBeInTheDocument();
-    expect(screen.getByText("Token expired")).toBeInTheDocument();
+    expect(mockReplace).toHaveBeenCalledWith("/?redirect=expired");
   });
 });

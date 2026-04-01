@@ -89,6 +89,10 @@
       "sentDescription": "Wir haben einen Best\u00e4tigungslink an <highlight>{email}</highlight> gesendet.",
       "sentInstruction": "Klicke auf \u201eDetonation\u201c, um den Scan zu starten.",
       "sentExpiry": "Der Link l\u00e4uft in 1 Stunde ab."
+    },
+    "redirect": {
+      "noToken": "Beginnen Sie hier, um Ihre digitale Pr\u00e4senz zu l\u00f6schen.",
+      "expired": "Ihre Sitzung ist abgelaufen. Bitte starten Sie erneut."
     }
   },
   "detonator": {

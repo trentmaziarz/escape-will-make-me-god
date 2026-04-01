@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import ManifestoFlow from "@/components/manifesto/ManifestoFlow";
 import Counter from "@/components/layout/Counter";
+import RedirectToast from "@/components/ui/RedirectToast";
 
 export async function generateMetadata({
   params,
@@ -30,6 +31,9 @@ export default function Home() {
       id="main-content"
       className="flex min-h-screen flex-col px-4 pt-[12vh] pb-10 sm:px-6"
     >
+      <Suspense fallback={null}>
+        <RedirectToast />
+      </Suspense>
       <div className="mx-auto w-full max-w-[680px]">
         <ManifestoFlow />
       </div>

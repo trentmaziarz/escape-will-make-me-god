@@ -89,6 +89,10 @@
       "sentDescription": "Enviamos un enlace de verificacion a <highlight>{email}</highlight>.",
       "sentInstruction": "Haz clic en \u201cDetonar\u201d para iniciar el escaneo.",
       "sentExpiry": "El enlace expira en 1 hora."
+    },
+    "redirect": {
+      "noToken": "Comienza aqu\u00ed para iniciar tu desaparici\u00f3n.",
+      "expired": "Tu sesi\u00f3n ha expirado. Por favor, empieza de nuevo."
     }
   },
   "detonator": {

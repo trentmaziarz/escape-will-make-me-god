@@ -89,6 +89,10 @@
       "sentDescription": "We hebben een verificatielink gestuurd naar <highlight>{email}</highlight>.",
       "sentInstruction": "Klik op \u201cDetoneren\u201d om de scan te starten.",
       "sentExpiry": "De link verloopt over 1 uur."
+    },
+    "redirect": {
+      "noToken": "Begin hier om je digitale aanwezigheid te wissen.",
+      "expired": "Je sessie is verlopen. Begin opnieuw."
     }
   },
   "detonator": {
