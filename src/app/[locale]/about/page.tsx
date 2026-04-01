@@ -115,7 +115,7 @@ export default async function AboutPage() {
           </h2>
           <div className="space-y-4">
             <a
-              href="https://github.com/DEINDEX-ME/deindex.me"
+              href="https://github.com/trentmaziarz/escape-will-make-me-god"
               target="_blank"
               rel="noopener noreferrer"
               className="block border border-border px-6 py-4 hover:border-text-dim transition-colors group"

@@ -2,6 +2,14 @@
   "name": "deindex.me",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trentmaziarz/escape-will-make-me-god"
+  },
+  "bugs": {
+    "url": "https://github.com/trentmaziarz/escape-will-make-me-god/issues"
+  },
+  "homepage": "https://deindex.me",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

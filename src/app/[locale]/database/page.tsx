@@ -48,7 +48,7 @@ export default async function DatabasePage() {
             {t("contributeCta")}
           </p>
           <a
-            href="https://github.com/DEINDEX-ME/deindex.me"
+            href="https://github.com/trentmaziarz/escape-will-make-me-god"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-[10px] tracking-[4px] uppercase px-6 py-3 border border-accent-red text-accent-red hover:bg-accent-red hover:text-bg-primary transition-colors"

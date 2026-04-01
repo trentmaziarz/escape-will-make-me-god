@@ -34,8 +34,8 @@ Just visit [deindex.me](https://deindex.me). No installation. No account. No dat
 
 ```bash
 # Clone your fork
-git clone https://github.com/<your-fork>/deindex.me.git
-cd deindex.me
+git clone https://github.com/<your-fork>/escape-will-make-me-god.git
+cd escape-will-make-me-god
 
 # Install dependencies
 npm install
@@ -166,4 +166,4 @@ MIT — see [LICENSE](LICENSE)
 Feel free to [reach out to me](https://www.linkedin.com/in/trentmaziarz/) directly
 This project is free forever. If it helped you, consider [donating](https://deindex.me/donate) to keep it running.
 
-Found a bug? Open an issue on the [GitHub repository](https://github.com/deindex-me/deindex.me/issues).
+Found a bug? Open an issue on the [GitHub repository](https://github.com/trentmaziarz/escape-will-make-me-god/issues).

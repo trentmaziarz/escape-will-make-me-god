@@ -273,7 +273,7 @@ describe("Footer", () => {
     render(jsx);
     expect(screen.getByText("GitHub")).toHaveAttribute(
       "href",
-      "https://github.com/DEINDEX-ME/deindex.me"
+      "https://github.com/trentmaziarz/escape-will-make-me-god"
     );
   });
 

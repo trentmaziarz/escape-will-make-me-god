@@ -60,8 +60,8 @@ See the [Development Setup](#development-setup) and [Code Standards](#code-stand
 ## Development Setup
 
 ```bash
-git clone https://github.com/<your-fork>/deindex.me.git
-cd deindex.me
+git clone https://github.com/<your-fork>/escape-will-make-me-god.git
+cd escape-will-make-me-god
 npm install
 cp .env.example .env.local
 # At minimum, set JWT_SECRET to any random string. See README for full env guide.

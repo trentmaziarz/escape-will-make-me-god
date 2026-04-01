@@ -47,7 +47,7 @@ export default async function Footer() {
             </Link>
           ))}
           <a
-            href="https://github.com/DEINDEX-ME/deindex.me"
+            href="https://github.com/trentmaziarz/escape-will-make-me-god"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[9px] tracking-[2px] uppercase text-text-muted hover:text-text-secondary transition-colors"
