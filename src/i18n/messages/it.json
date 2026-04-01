@@ -103,6 +103,8 @@
     "invalidLink": "Link non valido",
     "invalidLinkDescription": "Questo link di detonazione non è valido o è scaduto.",
     "error": "Errore",
+    "scanErrorDescription": "Qualcosa è andato storto. Per favore riprova.",
+    "returnHome": "Torna alla homepage",
     "scanning": {
       "title": "Scansione della tua impronta digitale",
       "progress": "{maskedEmail} — {progress}% completato",

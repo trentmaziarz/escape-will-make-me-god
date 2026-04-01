@@ -23,6 +23,7 @@ vi.mock("next/navigation", () => ({
 // Mock hooks with controllable state
 let mockPhase = "idle";
 let mockError: string | null = null;
+let mockTokenInvalid = false;
 const mockStartScan = vi.fn();
 
 vi.mock("@/hooks/useDetonation", () => ({
@@ -34,6 +35,7 @@ vi.mock("@/hooks/useDetonation", () => ({
     maskedEmail: "te***@example.com",
     hibpError: false,
     error: mockError,
+    tokenInvalid: mockTokenInvalid,
     startScan: mockStartScan,
     toggleService: vi.fn(),
     selectAll: vi.fn(),
@@ -89,6 +91,7 @@ describe("DetonatorFlow", () => {
     mockToken = "";
     mockPhase = "idle";
     mockError = null;
+    mockTokenInvalid = false;
   });
 
   it("redirects to homepage when no token", () => {
@@ -138,12 +141,14 @@ describe("DetonatorFlow", () => {
     expect(screen.getByText("You are disappearing.")).toBeInTheDocument();
   });
 
-  it("redirects to homepage when scan fails with error", () => {
+  it("shows scan error UI when scan fails with error", () => {
     mockToken = "valid-token";
     mockPhase = "idle";
-    mockError = "Token expired";
+    mockError = "Internal server error";
     render(<DetonatorFlow />);
 
-    expect(mockReplace).toHaveBeenCalledWith("/?redirect=expired");
+    expect(screen.getByText("Something went wrong. Please try again.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Return to homepage" })).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 });

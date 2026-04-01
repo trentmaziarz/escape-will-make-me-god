@@ -103,6 +103,8 @@
     "invalidLink": "Link Inválido",
     "invalidLinkDescription": "Este link de detonação é inválido ou expirou.",
     "error": "Erro",
+    "scanErrorDescription": "Algo correu mal. Por favor, tenta novamente.",
+    "returnHome": "Voltar à página inicial",
     "scanning": {
       "title": "A analisar a tua pegada digital",
       "progress": "{maskedEmail} — {progress}% completo",

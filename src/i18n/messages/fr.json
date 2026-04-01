@@ -103,6 +103,8 @@
     "invalidLink": "Lien invalide",
     "invalidLinkDescription": "Ce lien de detonation est invalide ou a expire.",
     "error": "Erreur",
+    "scanErrorDescription": "Une erreur est survenue. Veuillez réessayer.",
+    "returnHome": "Retour à l'accueil",
     "scanning": {
       "title": "Analyse de votre empreinte numerique",
       "progress": "{maskedEmail} — {progress}% termine",

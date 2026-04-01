@@ -103,6 +103,8 @@
     "invalidLink": "Ongeldige link",
     "invalidLinkDescription": "Deze detonatielink is ongeldig of verlopen.",
     "error": "Fout",
+    "scanErrorDescription": "Er is iets misgegaan. Probeer het opnieuw.",
+    "returnHome": "Terug naar de homepage",
     "scanning": {
       "title": "Je digitale voetafdruk wordt gescand",
       "progress": "{maskedEmail} — {progress}% voltooid",

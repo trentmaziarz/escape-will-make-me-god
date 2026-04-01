@@ -103,6 +103,8 @@
     "invalidLink": "Ung\u00fcltiger Link",
     "invalidLinkDescription": "Dieser Detonationslink ist ung\u00fcltig oder abgelaufen.",
     "error": "Fehler",
+    "scanErrorDescription": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "returnHome": "Zurück zur Startseite",
     "scanning": {
       "title": "Dein digitaler Fu\u00dfabdruck wird gescannt",
       "progress": "{maskedEmail} \u2014 {progress}% abgeschlossen",

@@ -103,6 +103,8 @@
     "invalidLink": "Enlace invalido",
     "invalidLinkDescription": "Este enlace de detonacion es invalido o ha expirado.",
     "error": "Error",
+    "scanErrorDescription": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "returnHome": "Volver al inicio",
     "scanning": {
       "title": "Escaneando tu huella digital",
       "progress": "{maskedEmail} \u2014 {progress}% completado",
