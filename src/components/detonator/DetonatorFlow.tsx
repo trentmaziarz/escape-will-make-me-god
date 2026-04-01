@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useDetonation } from "@/hooks/useDetonation";
@@ -26,6 +27,7 @@ export default function DetonatorFlow() {
     maskedEmail,
     hibpError,
     error,
+    tokenInvalid,
     startScan,
     toggleService,
     selectAll,
@@ -71,17 +73,39 @@ export default function DetonatorFlow() {
     }
   }, [scanRevealComplete, goToReview]);
 
-  // Redirect to homepage if token is expired/invalid (scan error on idle phase)
+  // Redirect to homepage if token is expired/invalid
   useEffect(() => {
-    if (error && phase === "idle" && !redirected.current) {
+    if (tokenInvalid && phase === "idle" && !redirected.current) {
       redirected.current = true;
       router.replace("/?redirect=expired");
     }
-  }, [error, phase, router]);
+  }, [tokenInvalid, phase, router]);
 
-  // Show nothing while redirecting
-  if (!token || (error && phase === "idle")) {
+  // Show nothing while redirecting (no token or token invalid)
+  if (!token || (tokenInvalid && phase === "idle")) {
     return null;
+  }
+
+  // Show error UI for scan failures (valid token, but scan API failed)
+  if (error && phase === "idle") {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <h1 className="font-headline text-2xl font-bold text-text-primary mb-4">
+            {t("error")}
+          </h1>
+          <p className="font-mono text-sm text-text-muted mb-6">
+            {t("scanErrorDescription")}
+          </p>
+          <Link
+            href="/"
+            className="font-mono text-xs text-accent-red hover:underline tracking-widest uppercase"
+          >
+            {t("returnHome")}
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -39,6 +39,7 @@ export function useDetonation(token: string) {
   const [scanPartial, setScanPartial] = useState(false);
   const [hibpError, setHibpError] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tokenInvalid, setTokenInvalid] = useState(false);
 
   const startScan = useCallback(async () => {
     if (!token) return;
@@ -54,6 +55,9 @@ export function useDetonation(token: string) {
 
       if (!res.ok) {
         const data = await res.json();
+        if (res.status === 401) {
+          setTokenInvalid(true);
+        }
         throw new Error(data.error || `Scan failed (${res.status})`);
       }
 
@@ -138,6 +142,7 @@ export function useDetonation(token: string) {
     scanPartial,
     hibpError,
     error,
+    tokenInvalid,
     startScan,
     toggleService,
     selectAll,

@@ -103,6 +103,8 @@
     "invalidLink": "Invalid Link",
     "invalidLinkDescription": "This detonation link is invalid or has expired.",
     "error": "Error",
+    "scanErrorDescription": "Something went wrong. Please try again.",
+    "returnHome": "Return to homepage",
     "scanning": {
       "title": "Scanning your digital footprint",
       "progress": "{maskedEmail} \u2014 {progress}% complete",

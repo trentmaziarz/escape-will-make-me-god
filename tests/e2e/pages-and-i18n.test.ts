@@ -332,14 +332,12 @@ test.describe("Language switching", () => {
 // Error states
 // ---------------------------------------------------------------------------
 test.describe("Error states", () => {
-  test("expired token shows error on /detonate", async ({ page }) => {
+  test("expired token redirects to homepage", async ({ page }) => {
     const expiredToken = await createExpiredToken();
     await page.goto(`/detonate?token=${encodeURIComponent(expiredToken)}`);
 
-    // Should show an error about the expired/invalid link
-    await expect(
-      page.getByText(/expired|invalid/i).first()
-    ).toBeVisible({ timeout: 10_000 });
+    // Should redirect away from detonate page
+    await page.waitForURL(url => !url.toString().includes("/detonate"), { timeout: 15000 });
   });
 
   test("network failure during scan shows error state", async ({ page }) => {
@@ -362,25 +360,24 @@ test.describe("Error states", () => {
     const token = await createTestToken();
     await page.goto(`/detonate?token=${encodeURIComponent(token)}`);
 
-    // The mocked 500 returns instantly, so the scan phase may flash by.
-    // Wait for the error heading which appears when phase reverts to "idle"
-    // with an error set (DetonatorFlow renders t("error") = "Error" heading).
+    // Should show error UI with "Something went wrong" message
     await expect(
-      page.getByText(/error|failed|Internal server error/i).first()
+      page.getByText(/something went wrong/i)
     ).toBeVisible({ timeout: 30_000 });
-  });
 
-  test("missing token shows Invalid Link", async ({ page }) => {
-    await page.goto("/detonate");
-    await expect(page.getByText("Invalid Link")).toBeVisible({
-      timeout: 10_000,
-    });
-  });
-
-  test("garbage token shows error", async ({ page }) => {
-    await page.goto("/detonate?token=not-a-valid-jwt");
+    // Should have a link back to homepage
     await expect(
-      page.getByText(/invalid|error|expired/i).first()
-    ).toBeVisible({ timeout: 10_000 });
+      page.getByRole("link", { name: /return to homepage/i })
+    ).toBeVisible();
+  });
+
+  test("missing token redirects to homepage", async ({ page }) => {
+    await page.goto("/detonate");
+    await page.waitForURL(url => !url.toString().includes("/detonate"), { timeout: 15000 });
+  });
+
+  test("garbage token redirects to homepage", async ({ page }) => {
+    await page.goto("/detonate?token=not-a-valid-jwt");
+    await page.waitForURL(url => !url.toString().includes("/detonate"), { timeout: 15000 });
   });
 });

@@ -52,9 +52,9 @@ test.describe("Detonation Flow", () => {
     });
   });
 
-  test("shows invalid link without token", async ({ page }) => {
+  test("redirects to homepage without token", async ({ page }) => {
     await page.goto("/detonate");
-    await expect(page.getByText("Invalid Link")).toBeVisible();
+    await page.waitForURL(url => !url.toString().includes("/detonate"), { timeout: 15000 });
   });
 
   test("scan phase: services appear progressively", async ({ page }) => {
